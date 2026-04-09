@@ -1,631 +1,1129 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="theme-color" content="#0b1220" />
-
-    <title>SBfinance — AI Finance Copilot that turns raw data into decision-grade forecasts</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SBfinance — AI Finance Copilot</title>
     <meta name="description"
-        content="SBfinance is an AI finance copilot for SMBs. Connect raw data (CSV/Excel), ask questions in chat, get risk-aware forecasts, recommendations, and BI-ready dashboards." />
+        content="SBfinance is an AI finance copilot for startups and SMBs. Turn raw financial data into answers, forecasts, and decision-ready insights." />
+    <style>
+        :root {
+            --bg: #07111f;
+            --bg-soft: #0d1a2d;
+            --card: rgba(255, 255, 255, 0.04);
+            --card-strong: rgba(255, 255, 255, 0.07);
+            --text: #f5f7fb;
+            --muted: #a9b7cc;
+            --line: rgba(255, 255, 255, 0.1);
+            --primary: #6ee7b7;
+            --primary-dark: #0f172a;
+            --accent: #7dd3fc;
+            --warning: #fbbf24;
+            --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+            --radius-xl: 28px;
+            --radius-lg: 20px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
+            --max-width: 1180px;
+        }
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="SBfinance — AI Finance Copilot" />
-    <meta property="og:description"
-        content="From raw CSVs to forecasts, risks, and recommendations — in chat + dashboards." />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content="en_US" />
-    <!-- Optional: add later -->
-    <!-- <meta property="og:image" content="./assets/og.png" /> -->
+        * {
+            box-sizing: border-box;
+        }
 
-    <link rel="icon"
-        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%2360a5fa' d='M10 42c10-6 18-7 27-4 9 3 15-2 17-16 2 26-10 39-32 30-5-2-8-5-12-10z'/%3E%3Cpath fill='%2322c55e' d='M12 44c11 8 25 7 36-1-7 13-26 19-40 7-2-2-3-4-4-6 3 0 6 0 8 0z'/%3E%3C/svg%3E" />
+        html {
+            scroll-behavior: smooth;
+        }
 
-    <link rel="stylesheet" href="./styles.css" />
+        body {
+            margin: 0;
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at top left, rgba(125, 211, 252, 0.15), transparent 28%),
+                radial-gradient(circle at top right, rgba(110, 231, 183, 0.1), transparent 24%),
+                linear-gradient(180deg, #06101d 0%, #091426 55%, #08111e 100%);
+            line-height: 1.55;
+        }
 
-    <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "SBfinance",
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "Web",
-    "description": "AI finance copilot for SMBs: chat over financial data, forecasting, risk-aware recommendations, and BI-ready dashboards.",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    }
-  }
-  </script>
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        .container {
+            width: min(var(--max-width), calc(100% - 40px));
+            margin: 0 auto;
+        }
+
+        .section {
+            padding: 88px 0;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            margin-bottom: 18px;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: var(--primary);
+            box-shadow: 0 0 20px rgba(110, 231, 183, 0.8);
+        }
+
+        .section-header {
+            max-width: 760px;
+            margin-bottom: 46px;
+        }
+
+        .section-header h2 {
+            margin: 0 0 16px;
+            font-size: clamp(32px, 4vw, 52px);
+            line-height: 1.08;
+            letter-spacing: -0.03em;
+        }
+
+        .section-header p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 18px;
+            max-width: 720px;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            backdrop-filter: blur(14px);
+            background: rgba(6, 16, 29, 0.72);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .nav {
+            height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            font-size: 18px;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-mark {
+            width: 40px;
+            height: 40px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #07111f;
+            display: grid;
+            place-items: center;
+            font-weight: 900;
+            box-shadow: 0 12px 30px rgba(110, 231, 183, 0.2);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 999px;
+            padding: 14px 22px;
+            font-size: 15px;
+            font-weight: 700;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #8bffcf);
+            color: var(--primary-dark);
+            box-shadow: 0 18px 38px rgba(110, 231, 183, 0.24);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text);
+            border: 1px solid var(--line);
+        }
+
+        .hero {
+            padding: 76px 0 48px;
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 38px;
+            align-items: center;
+        }
+
+        .hero-copy h1 {
+            margin: 0 0 18px;
+            font-size: clamp(44px, 6vw, 76px);
+            line-height: 0.98;
+            letter-spacing: -0.05em;
+            max-width: 760px;
+        }
+
+        .hero-copy p {
+            margin: 0;
+            max-width: 650px;
+            color: var(--muted);
+            font-size: 19px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin: 28px 0 20px;
+        }
+
+        .hero-points {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 30px;
+        }
+
+        .hero-point {
+            padding: 18px;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .hero-point strong {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text);
+            font-size: 15px;
+        }
+
+        .dashboard {
+            position: relative;
+            border-radius: 32px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow);
+            padding: 18px;
+        }
+
+        .dashboard-shell {
+            border-radius: 26px;
+            background: linear-gradient(180deg, rgba(6, 12, 22, 0.95), rgba(8, 16, 30, 0.98));
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 18px;
+        }
+
+        .dash-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 18px;
+        }
+
+        .dash-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(110, 231, 183, 0.08);
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .dash-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .metric-card,
+        .chat-card,
+        .panel-card {
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            background: rgba(255, 255, 255, 0.035);
+            padding: 16px;
+        }
+
+        .metric-card span {
+            display: block;
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .metric-card strong {
+            font-size: 28px;
+            letter-spacing: -0.03em;
+        }
+
+        .metric-chip {
+            margin-top: 12px;
+            display: inline-flex;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            background: rgba(125, 211, 252, 0.1);
+            color: var(--accent);
+        }
+
+        .chat-card {
+            grid-column: 1 / -1;
+        }
+
+        .chat-title,
+        .panel-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .chat-title strong,
+        .panel-title strong {
+            font-size: 15px;
+        }
+
+        .bubble {
+            padding: 12px 14px;
+            border-radius: 14px;
+            font-size: 14px;
+            margin-bottom: 10px;
+            max-width: 90%;
+        }
+
+        .bubble.user {
+            background: rgba(125, 211, 252, 0.1);
+            color: #d7f1ff;
+            margin-left: auto;
+        }
+
+        .bubble.ai {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text);
+        }
+
+        .answer-box {
+            margin-top: 12px;
+            padding: 14px;
+            border-radius: 14px;
+            background: rgba(110, 231, 183, 0.06);
+            border: 1px solid rgba(110, 231, 183, 0.16);
+            color: #dffef1;
+            font-size: 14px;
+        }
+
+        .problem-grid,
+        .features-grid,
+        .audience-grid,
+        .difference-grid,
+        .stats-grid {
+            display: grid;
+            gap: 18px;
+        }
+
+        .problem-grid,
+        .features-grid,
+        .difference-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .audience-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .card {
+            padding: 24px;
+            border-radius: var(--radius-lg);
+            background: var(--card);
+            border: 1px solid var(--line);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .card h3 {
+            margin: 0 0 10px;
+            font-size: 22px;
+            letter-spacing: -0.03em;
+        }
+
+        .card p,
+        .card li {
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        .card ul {
+            margin: 14px 0 0;
+            padding-left: 18px;
+        }
+
+        .number-card {
+            padding: 26px 22px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--line);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.025));
+        }
+
+        .number-card span {
+            display: block;
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .number-card strong {
+            display: block;
+            font-size: 34px;
+            letter-spacing: -0.04em;
+            margin-bottom: 8px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .step {
+            padding: 26px;
+            border-radius: var(--radius-lg);
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid var(--line);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step::after {
+            content: "";
+            position: absolute;
+            inset: auto -40px -40px auto;
+            width: 120px;
+            height: 120px;
+            border-radius: 999px;
+            background: radial-gradient(circle, rgba(110, 231, 183, 0.14), transparent 70%);
+        }
+
+        .step-index {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            margin-bottom: 18px;
+        }
+
+        .step h3 {
+            margin: 0 0 10px;
+            font-size: 22px;
+            letter-spacing: -0.03em;
+        }
+
+        .step p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        .highlight-box {
+            padding: 28px;
+            border-radius: 24px;
+            border: 1px solid rgba(110, 231, 183, 0.18);
+            background: linear-gradient(180deg, rgba(110, 231, 183, 0.08), rgba(125, 211, 252, 0.04));
+            color: #eafef5;
+        }
+
+        .highlight-box h3 {
+            margin: 0 0 10px;
+            font-size: 28px;
+            letter-spacing: -0.03em;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            color: #d5e9df;
+            font-size: 16px;
+            max-width: 760px;
+        }
+
+        .cta {
+            padding-bottom: 100px;
+        }
+
+        .cta-box {
+            padding: 36px;
+            border-radius: 30px;
+            border: 1px solid var(--line);
+            background:
+                radial-gradient(circle at top right, rgba(110, 231, 183, 0.14), transparent 22%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+            box-shadow: var(--shadow);
+        }
+
+        .cta-box h2 {
+            margin: 0 0 14px;
+            font-size: clamp(34px, 4vw, 54px);
+            line-height: 1.05;
+            letter-spacing: -0.04em;
+            max-width: 760px;
+        }
+
+        .cta-box p {
+            margin: 0 0 24px;
+            color: var(--muted);
+            font-size: 18px;
+            max-width: 720px;
+        }
+
+        footer {
+            padding: 24px 0 42px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--muted);
+        }
+
+        .footer-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: transparent;
+            border: 1px solid var(--line);
+            color: var(--text);
+            border-radius: 12px;
+            padding: 10px 12px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 1100px) {
+
+            .hero-grid,
+            .problem-grid,
+            .features-grid,
+            .difference-grid,
+            .audience-grid,
+            .stats-grid,
+            .steps {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .hero-copy h1 {
+                max-width: 100%;
+            }
+
+            .hero-points {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 860px) {
+
+            .nav-links,
+            .nav-actions .btn-secondary {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: inline-flex;
+            }
+
+            .nav.open .nav-links {
+                display: flex;
+                position: absolute;
+                top: 76px;
+                left: 20px;
+                right: 20px;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 18px;
+                border-radius: 20px;
+                background: rgba(6, 16, 29, 0.96);
+                border: 1px solid var(--line);
+            }
+
+            .hero-grid,
+            .problem-grid,
+            .features-grid,
+            .difference-grid,
+            .audience-grid,
+            .stats-grid,
+            .steps,
+            .dash-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 72px 0;
+            }
+
+            .hero {
+                padding-top: 48px;
+            }
+
+            .hero-copy p,
+            .section-header p,
+            .cta-box p {
+                font-size: 16px;
+            }
+
+            .container {
+                width: min(var(--max-width), calc(100% - 24px));
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <a class="skip" href="#main">Skip to content</a>
-
-    <div class="bg">
-        <div class="bg__grid" aria-hidden="true"></div>
-        <div class="bg__glow" aria-hidden="true"></div>
-    </div>
-
-    <header class="site-header" id="top">
-        <div class="container header__row">
-            <a class="brand" href="#top" aria-label="SBfinance home">
-                <span class="brand__mark" aria-hidden="true">SB</span>
-                <span class="brand__name">SBfinance</span>
+    <header>
+        <div class="container nav" id="nav">
+            <a href="#top" class="brand">
+                <span class="brand-mark">S</span>
+                <span>SBfinance</span>
             </a>
 
-            <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false"
-                aria-controls="siteNav">
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-                <span aria-hidden="true"></span>
-            </button>
-
-            <nav class="nav" id="siteNav" aria-label="Primary">
-                <a href="#overview">Overview</a>
-                <a href="#how">How it works</a>
-                <a href="#demo">Live demo</a>
-                <a href="#capabilities">Capabilities</a>
-                <a href="#security">Security</a>
-                <a href="#pricing">Pricing</a>
-                <a href="#faq">FAQ</a>
-                <button class="btn btn--primary btn--sm" data-open-modal="demoModal">Request a demo</button>
+            <nav class="nav-links">
+                <a href="#problem">Problem</a>
+                <a href="#solution">Solution</a>
+                <a href="#how-it-works">How it works</a>
+                <a href="#features">Features</a>
+                <a href="#who-its-for">Who it's for</a>
+                <a href="#status">Status</a>
             </nav>
+
+            <div class="nav-actions">
+                <a class="btn btn-secondary" href="#how-it-works">See product</a>
+                <a class="btn btn-primary" href="#cta">Request a demo</a>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">Menu</button>
+            </div>
         </div>
     </header>
 
-    <main id="main">
-        <!-- HERO -->
+    <main id="top">
         <section class="hero">
-            <div class="container hero__grid">
-                <div class="hero__copy">
-                    <div class="pill">
-                        <span class="dot" aria-hidden="true"></span>
-                        YC Speedrun-ready landing • static • no fluff
-                    </div>
-
-                    <h1>
-                        Turn raw finance data into
-                        <span class="grad">decision-grade forecasts</span>
-                        and risk-aware recommendations.
-                    </h1>
-
-                    <p class="lead">
-                        SBfinance is an AI finance copilot for SMBs.
-                        Connect CSV/Excel data, ask questions in chat, and get realistic forecasts that account for risk
-                        — plus BI-ready dashboards.
-                    </p>
-
-                    <div class="hero__cta">
-                        <button class="btn btn--primary" data-open-modal="demoModal">Request a demo</button>
-                        <a class="btn btn--ghost" href="#demo">See the live demo</a>
-                    </div>
-
-                    <div class="micro">
-                        <div class="micro__item">
-                            <span class="micro__k">Input</span>
-                            <span class="micro__v">CSV / Excel / exports from accounting & ERP</span>
-                        </div>
-                        <div class="micro__item">
-                            <span class="micro__k">Output</span>
-                            <span class="micro__v">Chat answers • forecasts • risk notes • dashboards</span>
-                        </div>
-                        <div class="micro__item">
-                            <span class="micro__k">Note</span>
-                            <span class="micro__v">Not financial advice</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="hero__panel" aria-label="Product preview panel">
-                    <div class="panel">
-                        <div class="panel__top">
-                            <div class="panel__lights" aria-hidden="true">
-                                <span></span><span></span><span></span>
-                            </div>
-                            <div class="panel__title">SBfinance • preview</div>
-                            <div class="panel__badge">Private beta</div>
-                        </div>
-
-                        <div class="panel__body">
-                            <div class="kpis">
-                                <div class="kpi">
-                                    <div class="kpi__label">Forecast confidence</div>
-                                    <div class="kpi__value">Risk-aware</div>
-                                </div>
-                                <div class="kpi">
-                                    <div class="kpi__label">Data required</div>
-                                    <div class="kpi__value">Raw exports</div>
-                                </div>
-                                <div class="kpi">
-                                    <div class="kpi__label">Delivery</div>
-                                    <div class="kpi__value">Chat + dashboards</div>
-                                </div>
-                            </div>
-
-                            <div class="mini">
-                                <div class="mini__row">
-                                    <div class="tag">Chat over data</div>
-                                    <div class="tag">Forecast</div>
-                                    <div class="tag">Risk notes</div>
-                                    <div class="tag">Recommendations</div>
-                                </div>
-
-                                <div class="mini__box">
-                                    <div class="mini__header">
-                                        <span class="mini__hint">Example question</span>
-                                        <span class="mini__chip">grounded</span>
-                                    </div>
-                                    <div class="mini__q">“If revenue dips 10%, how long is our runway?”</div>
-                                    <div class="mini__a">
-                                        SBfinance builds a simple model from your inputs, tests scenarios,
-                                        flags risks (e.g., cash crunch), and suggests actions (e.g., reduce burn, adjust
-                                        pricing, renegotiate terms).
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="panel__footer">
-                                <span class="muted">Designed to replace “guessing in spreadsheets”.</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="hero__note">
-                        <strong>What you get:</strong> a living model that updates as your data changes — not a static
-                        dashboard screenshot.
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- OVERVIEW -->
-        <section class="section" id="overview">
-            <div class="container">
-                <div class="section__head">
-                    <h2>Why SBfinance</h2>
+            <div class="container hero-grid">
+                <div class="hero-copy">
+                    <div class="eyebrow">AI finance copilot for startups and SMBs</div>
+                    <h1>Turn raw financial data into answers, forecasts, and smarter decisions.</h1>
                     <p>
-                        Most teams have data — but not a model they trust. Forecasting becomes “best guesses”,
-                        risks go unnoticed, and decisions happen late.
+                        SBfinance helps teams work with messy spreadsheets, raw exports, and fragmented finance data.
+                        Ask questions in plain English, understand what is changing, explore future scenarios, and move
+                        faster with more confidence.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="#cta">Request a demo</a>
+                        <a class="btn btn-secondary" href="#how-it-works">See how it works</a>
+                    </div>
+
+                    <div class="hero-points">
+                        <div class="hero-point">
+                            <strong>Ask in plain language</strong>
+                            Explore your business numbers without digging through spreadsheets manually.
+                        </div>
+                        <div class="hero-point">
+                            <strong>See risks earlier</strong>
+                            Surface changes in cost, revenue pressure, and other signals before they become painful.
+                        </div>
+                        <div class="hero-point">
+                            <strong>Make decisions faster</strong>
+                            Go from scattered data to decision-ready visibility in one product flow.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard">
+                    <div class="dashboard-shell">
+                        <div class="dash-top">
+                            <div>
+                                <strong style="display:block; font-size:18px; margin-bottom:6px;">Finance
+                                    workspace</strong>
+                                <span style="color: var(--muted); font-size:14px;">One interface for data, questions,
+                                    forecasting, and insight generation</span>
+                            </div>
+                            <div class="dash-badge">Live product concept</div>
+                        </div>
+
+                        <div class="dash-grid">
+                            <div class="metric-card">
+                                <span>Revenue trend</span>
+                                <strong>$148.2K</strong>
+                                <div class="metric-chip">+12.4% vs last month</div>
+                            </div>
+
+                            <div class="metric-card">
+                                <span>Runway estimate</span>
+                                <strong>11.2 mo</strong>
+                                <div class="metric-chip">Monitor cash pressure</div>
+                            </div>
+
+                            <div class="chat-card">
+                                <div class="chat-title">
+                                    <strong>Ask your data</strong>
+                                    <span style="color: var(--muted); font-size:13px;">Natural-language finance
+                                        Q&amp;A</span>
+                                </div>
+                                <div class="bubble user">What changed in our expenses this month?</div>
+                                <div class="bubble ai">Operating expenses increased by 14.8%, driven mainly by
+                                    contractor spend, software subscriptions, and paid acquisition.</div>
+                                <div class="answer-box">
+                                    Largest increase came from marketing tools and campaign costs. If current spend
+                                    continues, projected monthly burn rises by 9–11% over the next quarter.
+                                </div>
+                            </div>
+
+                            <div class="panel-card">
+                                <div class="panel-title">
+                                    <strong>Forecast view</strong>
+                                    <span style="color: var(--accent); font-size:13px;">Scenario ready</span>
+                                </div>
+                                <p style="margin:0; color:var(--muted); font-size:14px;">
+                                    Model best-case, base-case, and downside scenarios to understand revenue pressure,
+                                    cost growth, and possible runway impact.
+                                </p>
+                            </div>
+
+                            <div class="panel-card">
+                                <div class="panel-title">
+                                    <strong>Risk signals</strong>
+                                    <span style="color: var(--warning); font-size:13px;">Early warning</span>
+                                </div>
+                                <p style="margin:0; color:var(--muted); font-size:14px;">
+                                    Surface anomalies, changes in key categories, and patterns that deserve attention
+                                    before the next reporting cycle.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="problem">
+            <div class="container">
+                <div class="section-header">
+                    <div class="eyebrow">The problem</div>
+                    <h2>Most businesses already have the data. They just cannot use it fast enough.</h2>
+                    <p>
+                        Finance teams and founders often work across CSV exports, Excel files, accounting records, and
+                        disconnected reports.
+                        The data exists — but turning it into clear answers still takes too much manual work.
                     </p>
                 </div>
 
-                <div class="cards">
-                    <article class="card">
-                        <h3>The problem</h3>
-                        <ul>
-                            <li>Data is scattered across spreadsheets, exports, and tools.</li>
-                            <li>Forecasts are fragile and break when reality changes.</li>
-                            <li>Risk is invisible until you hit the wall (cash, churn, margin).</li>
-                        </ul>
-                    </article>
-
-                    <article class="card card--accent">
-                        <h3>The solution</h3>
-                        <ul>
-                            <li>Ingest raw data and normalize it automatically.</li>
-                            <li>Build a forecasting model (and keep it updated).</li>
-                            <li>Explain results in chat, with risks + recommended actions.</li>
-                        </ul>
-                    </article>
-
-                    <article class="card">
-                        <h3>Who it’s for</h3>
-                        <ul>
-                            <li>SMBs, startups, finance leads, ops teams.</li>
-                            <li>Anyone who needs answers fast — without a data team.</li>
-                            <li>Teams who want BI-level visibility + narrative reasoning.</li>
-                        </ul>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <!-- HOW -->
-        <section class="section" id="how">
-            <div class="container">
-                <div class="section__head">
-                    <h2>How it works</h2>
-                    <p>Three steps from raw exports to decisions you can defend.</p>
-                </div>
-
-                <ol class="steps">
-                    <li class="step">
-                        <div class="step__num">1</div>
-                        <div class="step__body">
-                            <h3>Connect your data</h3>
-                            <p>Upload CSV/Excel exports (and later: direct integrations). SBfinance cleans and maps it
-                                into a consistent finance schema.</p>
-                        </div>
-                    </li>
-
-                    <li class="step">
-                        <div class="step__num">2</div>
-                        <div class="step__body">
-                            <h3>Ask in chat</h3>
-                            <p>Ask finance questions in plain English. SBfinance answers based on your data and
-                                highlights assumptions.</p>
-                        </div>
-                    </li>
-
-                    <li class="step">
-                        <div class="step__num">3</div>
-                        <div class="step__body">
-                            <h3>Forecast + risk + actions</h3>
-                            <p>Get realistic forecasts, risk notes, and concrete recommendations — plus a dashboard view
-                                for stakeholders.</p>
-                        </div>
-                    </li>
-                </ol>
-            </div>
-        </section>
-
-        <!-- DEMO -->
-        <section class="section" id="demo">
-            <div class="container">
-                <div class="section__head">
-                    <h2>Live demo (static)</h2>
-                    <p>This is a lightweight interactive mock — designed to communicate the product instantly.</p>
-                </div>
-
-                <div class="demo">
-                    <div class="demo__left">
-                        <div class="demo__toolbar" role="group" aria-label="Scenario toggles">
-                            <button class="seg" data-scenario="base" aria-pressed="true">Base</button>
-                            <button class="seg" data-scenario="down">Downside</button>
-                            <button class="seg" data-scenario="up">Upside</button>
-                        </div>
-
-                        <div class="chart card">
-                            <div class="chart__head">
-                                <div>
-                                    <div class="chart__title">Cash Forecast</div>
-                                    <div class="chart__sub">Simple line chart rendered as inline SVG (no libraries)
-                                    </div>
-                                </div>
-                                <div class="chart__stat">
-                                    <span class="muted">Risk note:</span>
-                                    <span id="riskNote" class="risk">Watch burn rate in months 5–7</span>
-                                </div>
-                            </div>
-
-                            <svg id="forecastChart" class="chart__svg" viewBox="0 0 800 260" role="img"
-                                aria-label="Cash forecast line chart">
-                                <desc>Forecast line chart that changes with scenario selection.</desc>
-                            </svg>
-
-                            <div class="chart__foot">
-                                <div class="legend">
-                                    <span class="legend__item"><span class="swatch swatch--a" aria-hidden="true"></span>
-                                        Cash balance</span>
-                                    <span class="legend__item"><span class="swatch swatch--b" aria-hidden="true"></span>
-                                        Revenue</span>
-                                </div>
-
-                                <div class="drop">
-                                    <label class="drop__label" for="csvInput">Optional: try your own CSV</label>
-                                    <div class="drop__row">
-                                        <input id="csvInput" type="file" accept=".csv,text/csv" />
-                                        <button class="btn btn--ghost btn--sm" id="loadSample">Load sample</button>
-                                    </div>
-                                    <div class="drop__hint muted">CSV columns expected: Month,Revenue,Expenses (e.g.,
-                                        2026-01,120000,90000)</div>
-                                    <div class="drop__result" id="csvResult" aria-live="polite"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="demo__right">
-                        <div class="chat card">
-                            <div class="chat__head">
-                                <div class="chat__title">Ask SBfinance</div>
-                                <div class="chat__meta">Answers are grounded in the loaded dataset (mock logic).</div>
-                            </div>
-
-                            <div class="chat__log" id="chatLog" aria-live="polite" aria-label="Chat messages"></div>
-
-                            <form class="chat__form" id="chatForm" aria-label="Ask a question">
-                                <input class="chat__input" id="chatInput" type="text"
-                                    placeholder="Try: “What’s our runway in the downside scenario?”" autocomplete="off"
-                                    aria-label="Type your question" required />
-                                <button class="btn btn--primary btn--sm" type="submit">Send</button>
-                            </form>
-
-                            <div class="chat__foot muted">
-                                SBfinance should surface assumptions, risks, and actions — not just numbers.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CAPABILITIES -->
-        <section class="section" id="capabilities">
-            <div class="container">
-                <div class="section__head">
-                    <h2>Capabilities</h2>
-                    <p>Built for real-world finance messiness: raw exports, changing conditions, and risk.</p>
-                </div>
-
-                <div class="grid">
-                    <article class="tile">
-                        <h3>Raw data ingestion</h3>
-                        <p>Bring “messy” CSV/Excel exports. SBfinance maps, cleans, and validates inputs before
-                            modeling.</p>
-                    </article>
-
-                    <article class="tile">
-                        <h3>Chat over your numbers</h3>
-                        <p>Ask questions like a teammate would. SBfinance responds based on your data and highlights
-                            assumptions.</p>
-                    </article>
-
-                    <article class="tile">
-                        <h3>Forecasting engine</h3>
-                        <p>Builds predictive models to estimate revenue, expenses, and cash — and keeps them updateable.
+                <div class="problem-grid">
+                    <div class="card">
+                        <h3>Too much reporting work is still manual</h3>
+                        <p>
+                            Teams spend hours collecting files, cleaning numbers, rebuilding views, and checking
+                            inconsistencies before they can even start analysis.
                         </p>
-                    </article>
-
-                    <article class="tile">
-                        <h3>Risk-aware recommendations</h3>
-                        <p>Flags likely risks (cash crunch, margin pressure, volatility) and suggests actions to reduce
-                            exposure.</p>
-                    </article>
-
-                    <article class="tile">
-                        <h3>BI-ready dashboards</h3>
-                        <p>Clear visuals for stakeholders — compatible with Power BI / Tableau style reporting.</p>
-                    </article>
-
-                    <article class="tile">
-                        <h3>Scenario planning</h3>
-                        <p>Up/Down/Base scenarios help you stress-test decisions before they become painful.</p>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <!-- INTEGRATIONS -->
-        <section class="section" id="integrations">
-            <div class="container">
-                <div class="section__head">
-                    <h2>Integrations</h2>
-                    <p>Start with exports now. Add direct connections later.</p>
-                </div>
-
-                <div class="logos card">
-                    <div class="logo">CSV</div>
-                    <div class="logo">Excel</div>
-                    <div class="logo">Accounting / ERP (export)</div>
-                    <div class="logo">BI export</div>
-                    <div class="logo">Data warehouse (later)</div>
-                </div>
-
-                <div class="callout">
-                    <div class="callout__icon" aria-hidden="true">↗</div>
-                    <div class="callout__body">
-                        <strong>YC-style clarity:</strong> the product is “chat + forecasting + risk notes” on top of
-                        your own finance data.
-                        No magic. Just fast, grounded decision support.
+                    </div>
+                    <div class="card">
+                        <h3>Decisions happen before the reporting catches up</h3>
+                        <p>
+                            By the time the report is ready, the team may already be late to react to a cost spike, cash
+                            pressure, or changing revenue pattern.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>Data is hard to access for non-finance people</h3>
+                        <p>
+                            Founders and operators need answers now, but too often they must wait for static reports or
+                            manually search across spreadsheets.
+                        </p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- SECURITY -->
-        <section class="section" id="security">
+        <section class="section" id="solution">
             <div class="container">
-                <div class="section__head">
-                    <h2>Security & privacy</h2>
-                    <p>Built with a default posture: your data stays yours.</p>
+                <div class="section-header">
+                    <div class="eyebrow">The solution</div>
+                    <h2>SBfinance turns raw finance files into decision-ready clarity.</h2>
+                    <p>
+                        Instead of building heavyweight workflows from scratch, SBfinance gives teams a faster way to
+                        understand performance, ask better questions, explore scenarios, and spot risks earlier.
+                    </p>
                 </div>
 
-                <div class="cards">
-                    <article class="card">
-                        <h3>Data ownership</h3>
-                        <p>You own your data. SBfinance is designed to process it to generate outputs, not to resell it.
+                <div class="highlight-box">
+                    <h3>Bring in data → ask questions → understand the numbers → decide what to do next.</h3>
+                    <p>
+                        SBfinance is designed as a finance copilot experience that combines data ingestion,
+                        natural-language interaction, forecasting logic, and dashboard-style outputs in one simple
+                        product flow.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="how-it-works">
+            <div class="container">
+                <div class="section-header">
+                    <div class="eyebrow">How it works</div>
+                    <h2>A simple workflow built for real, spreadsheet-heavy teams.</h2>
+                    <p>
+                        The product is designed to meet businesses where they already are: raw data, messy inputs, fast
+                        decisions, and limited time.
+                    </p>
+                </div>
+
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-index">01</div>
+                        <h3>Bring in your data</h3>
+                        <p>
+                            Upload CSVs, spreadsheets, and raw finance exports from the tools your business already
+                            uses.
                         </p>
-                    </article>
-                    <article class="card">
-                        <h3>Access control</h3>
-                        <p>Workspace-based access and role separation (e.g., admin vs viewer) can be supported as the
-                            product matures.</p>
-                    </article>
-                    <article class="card">
-                        <h3>Claims policy</h3>
-                        <p>No “guarantees.” Forecasts are estimates. We surface assumptions and risk factors
-                            transparently.</p>
-                    </article>
+                    </div>
+                    <div class="step">
+                        <div class="step-index">02</div>
+                        <h3>Ask in plain English</h3>
+                        <p>
+                            Explore questions like “What changed in our costs?” or “What does our runway look like under
+                            a lower-sales scenario?”
+                        </p>
+                    </div>
+                    <div class="step">
+                        <div class="step-index">03</div>
+                        <h3>Get structured outputs</h3>
+                        <p>
+                            See direct answers, metric summaries, dashboard views, forecasts, and risk-oriented
+                            observations.
+                        </p>
+                    </div>
+                    <div class="step">
+                        <div class="step-index">04</div>
+                        <h3>Make faster decisions</h3>
+                        <p>
+                            Use the output to understand trade-offs, catch issues earlier, and move with more financial
+                            confidence.
+                        </p>
+                    </div>
                 </div>
-
-                <p class="disclaimer">
-                    Disclaimer: SBfinance provides analytics and recommendations based on your inputs.
-                    It does not provide financial, legal, or investment advice.
-                </p>
             </div>
         </section>
 
-        <!-- PRICING -->
-        <section class="section" id="pricing">
+        <section class="section" id="features">
             <div class="container">
-                <div class="section__head">
-                    <h2>Pricing</h2>
-                    <p>Simple tiers for early customers. Adjust as you learn from users.</p>
+                <div class="section-header">
+                    <div class="eyebrow">What the product does</div>
+                    <h2>Built for finance questions, visibility, forecasting, and action.</h2>
+                    <p>
+                        SBfinance is not just another dashboard layer. It is designed to help teams understand what
+                        happened, what is changing, and what deserves attention next.
+                    </p>
                 </div>
 
-                <div class="pricing">
-                    <article class="price card">
-                        <h3>Starter</h3>
-                        <p class="price__tag">For founders</p>
-                        <div class="price__num">$0</div>
-                        <ul>
-                            <li>Upload CSV/Excel</li>
-                            <li>Basic chat Q&A</li>
-                            <li>Simple dashboards</li>
-                        </ul>
-                        <button class="btn btn--ghost" data-open-modal="demoModal">Join waitlist</button>
-                    </article>
-
-                    <article class="price card card--accent">
-                        <h3>Growth</h3>
-                        <p class="price__tag">For SMB teams</p>
-                        <div class="price__num">$149<span class="per">/mo</span></div>
-                        <ul>
-                            <li>Forecasting + scenarios</li>
-                            <li>Risk notes + recommendations</li>
-                            <li>BI export</li>
-                        </ul>
-                        <button class="btn btn--primary" data-open-modal="demoModal">Request demo</button>
-                    </article>
-
-                    <article class="price card">
-                        <h3>Scale</h3>
-                        <p class="price__tag">For larger ops</p>
-                        <div class="price__num">Custom</div>
-                        <ul>
-                            <li>Custom schema & pipelines</li>
-                            <li>Team roles & governance</li>
-                            <li>Dedicated support</li>
-                        </ul>
-                        <button class="btn btn--ghost" data-open-modal="demoModal">Talk to us</button>
-                    </article>
+                <div class="features-grid">
+                    <div class="card">
+                        <h3>Chat with your financial data</h3>
+                        <p>
+                            Ask natural-language questions and explore business numbers without manually navigating
+                            every file and tab.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>Turn messy inputs into visibility</h3>
+                        <p>
+                            Work from raw spreadsheet exports instead of spending hours rebuilding reports before
+                            analysis can begin.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>Surface key business signals</h3>
+                        <p>
+                            Understand revenue movement, expense changes, profitability patterns, and cash-related
+                            pressure faster.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>Explore future scenarios</h3>
+                        <p>
+                            Use forecasting logic and scenario thinking to see what may happen under different
+                            assumptions.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>Spot risks earlier</h3>
+                        <p>
+                            Highlight unusual changes, anomalies, pressure points, and areas that may need attention
+                            before problems escalate.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>Support better decisions</h3>
+                        <p>
+                            The goal is not only to report what happened, but to help teams decide what to do next with
+                            more confidence.
+                        </p>
+                    </div>
                 </div>
-
-                <p class="muted small">
-                    Pricing is placeholder for YC speedrun. Keep it simple — the goal is clarity, not perfection.
-                </p>
             </div>
         </section>
 
-        <!-- FAQ -->
-        <section class="section" id="faq">
+        <section class="section">
             <div class="container">
-                <div class="section__head">
-                    <h2>FAQ</h2>
-                    <p>Quick answers to the questions people ask before they trust finance tooling.</p>
+                <div class="section-header">
+                    <div class="eyebrow">Why this matters</div>
+                    <h2>Financial clarity should not require heavyweight systems or full BI teams.</h2>
+                    <p>
+                        Many businesses are too early, too lean, or too fast-moving for complex finance infrastructure.
+                        SBfinance is designed for that reality.
+                    </p>
                 </div>
 
-                <div class="faq">
-                    <details class="faq__item">
-                        <summary>What data do you need to get started?</summary>
-                        <div class="faq__body">
-                            CSV/Excel exports are enough: revenue, expenses, cash, and (optionally) customer metrics.
-                            Start messy — we can refine the schema over time.
-                        </div>
-                    </details>
-
-                    <details class="faq__item">
-                        <summary>Is this just another dashboard?</summary>
-                        <div class="faq__body">
-                            Dashboards show “what happened.” SBfinance focuses on “what will happen” and “what to do
-                            next”
-                            — with chat explanations, scenario stress tests, and risk notes.
-                        </div>
-                    </details>
-
-                    <details class="faq__item">
-                        <summary>How do you handle uncertainty?</summary>
-                        <div class="faq__body">
-                            Forecasts are estimates. We surface assumptions, highlight risk drivers, and encourage
-                            scenario planning
-                            instead of pretending the future is deterministic.
-                        </div>
-                    </details>
-
-                    <details class="faq__item">
-                        <summary>Can I export results to Power BI / Tableau?</summary>
-                        <div class="faq__body">
-                            Yes — SBfinance can produce BI-ready outputs (e.g., CSV tables) to plug into your
-                            visualization tool of choice.
-                        </div>
-                    </details>
-
-                    <details class="faq__item">
-                        <summary>Is SBfinance financial advice?</summary>
-                        <div class="faq__body">
-                            No. It’s analytics + recommendations based on your inputs. You remain responsible for
-                            decisions.
-                        </div>
-                    </details>
+                <div class="stats-grid">
+                    <div class="number-card">
+                        <span>Start with the data you already have</span>
+                        <strong>CSV + XLSX</strong>
+                        <div style="color: var(--muted); font-size: 14px;">Designed around raw files and real-world
+                            workflows.</div>
+                    </div>
+                    <div class="number-card">
+                        <span>Interact naturally</span>
+                        <strong>Plain English</strong>
+                        <div style="color: var(--muted); font-size: 14px;">Ask finance questions like you would ask an
+                            analyst.</div>
+                    </div>
+                    <div class="number-card">
+                        <span>Focus on action</span>
+                        <strong>Decision-ready</strong>
+                        <div style="color: var(--muted); font-size: 14px;">More than reporting — built to support
+                            business moves.</div>
+                    </div>
+                    <div class="number-card">
+                        <span>Think ahead</span>
+                        <strong>Forecasts + Risks</strong>
+                        <div style="color: var(--muted); font-size: 14px;">Understand what may happen next before it
+                            hits operations.</div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- FINAL CTA -->
-        <section class="cta">
-            <div class="container cta__row">
-                <div>
-                    <h2>Want the “finance brain” your business should have?</h2>
-                    <p>Show us your data shape. We’ll show you what SBfinance can produce.</p>
+        <section class="section" id="who-its-for">
+            <div class="container">
+                <div class="section-header">
+                    <div class="eyebrow">Who it's for</div>
+                    <h2>Built for teams that need financial clarity without slowing down.</h2>
+                    <p>
+                        SBfinance is especially relevant for companies that already have data, but still rely heavily on
+                        spreadsheets, manual reporting, and fragmented visibility.
+                    </p>
                 </div>
-                <div class="cta__actions">
-                    <button class="btn btn--primary" data-open-modal="demoModal">Request a demo</button>
-                    <a class="btn btn--ghost" href="#top">Back to top</a>
+
+                <div class="audience-grid">
+                    <div class="card">
+                        <h3>Founders</h3>
+                        <p>
+                            Get faster answers about burn, runway, performance, and financial health without waiting for
+                            static reports.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>Finance managers</h3>
+                        <p>
+                            Reduce repetitive reporting work and get a better view across raw data sources.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>Operators</h3>
+                        <p>
+                            Understand the numbers behind decisions, trade-offs, and business trends in a faster, more
+                            accessible way.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>SMBs & startups</h3>
+                        <p>
+                            Best fit for lean teams that need sharper finance visibility without adopting heavy systems
+                            too early.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="section-header">
+                    <div class="eyebrow">Why SBfinance</div>
+                    <h2>Designed for how businesses really operate — not how software assumes they should.</h2>
+                    <p>
+                        The strongest finance products meet teams where they already are and help them move toward
+                        clarity without making work heavier.
+                    </p>
+                </div>
+
+                <div class="difference-grid">
+                    <div class="card">
+                        <h3>Starts with imperfect data</h3>
+                        <p>
+                            You do not need a perfect finance stack to get value. SBfinance is built for raw, messy,
+                            real-world inputs.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>Built for action, not vanity dashboards</h3>
+                        <p>
+                            The point is not to create another reporting layer no one uses. The point is to make
+                            decisions easier and faster.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>Makes finance more accessible</h3>
+                        <p>
+                            Not every company has a full finance team, analyst, or BI function. SBfinance lowers the
+                            barrier to financial understanding.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="status">
+            <div class="container">
+                <div class="section-header">
+                    <div class="eyebrow">Current status</div>
+                    <h2>Presented today as a clear product demo and concept experience.</h2>
+                    <p>
+                        The current version is focused on showing the full product logic clearly: how data enters the
+                        system, how users ask questions, what kinds of outputs they receive, and how the workflow
+                        supports faster decision-making.
+                    </p>
+                </div>
+
+                <div class="card" style="padding: 30px;">
+                    <h3 style="margin-bottom: 14px;">What this version is designed to communicate</h3>
+                    <ul>
+                        <li>A clear product vision for an AI finance copilot</li>
+                        <li>The core workflow from data input to insight and forecasting</li>
+                        <li>A strong demonstration of how the experience should feel in practice</li>
+                        <li>A credible direction for future backend, data, and integration depth</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section cta" id="cta">
+            <div class="container">
+                <div class="cta-box">
+                    <div class="eyebrow">Final call to action</div>
+                    <h2>See how SBfinance could work for your business.</h2>
+                    <p>
+                        If your team is still spending too much time turning finance files into answers, SBfinance is
+                        built for that gap.
+                        Use this landing page as your public product story, demo surface, or startup application front
+                        page.
+                    </p>
+                    <div class="hero-actions" style="margin-bottom: 0;">
+                        <a class="btn btn-primary" href="mailto:hello@sbfinance.ai">Request a demo</a>
+                        <a class="btn btn-secondary" href="#top">Back to top</a>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="footer">
-        <div class="container footer__row">
-            <div class="footer__left">
-                <div class="brand brand--footer">
-                    <span class="brand__mark" aria-hidden="true">SB</span>
-                    <span class="brand__name">SBfinance</span>
-                </div>
-                <p class="muted small">
-                    © <span id="year"></span> SBfinance. Not financial advice.
-                </p>
+    <footer>
+        <div class="container footer-wrap">
+            <div style="display:flex; align-items:center; gap:12px; font-weight:700; color:var(--text);">
+                <span class="brand-mark" style="width:34px; height:34px; border-radius:12px; font-size:14px;">S</span>
+                <span>SBfinance</span>
             </div>
-
-            <div class="footer__right">
-                <a class="muted" href="#security">Security</a>
-                <a class="muted" href="#pricing">Pricing</a>
-                <button class="linklike" data-open-modal="demoModal">Contact</button>
-            </div>
+            <div>AI finance copilot for startups and SMBs.</div>
         </div>
     </footer>
 
-    <!-- MODAL -->
-    <div class="modal" id="demoModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Request a demo">
-        <div class="modal__backdrop" data-close-modal></div>
-        <div class="modal__card" role="document">
-            <div class="modal__head">
-                <div>
-                    <div class="modal__title">Request a demo</div>
-                    <div class="muted small">Replace placeholders with your real links/emails.</div>
-                </div>
-                <button class="modal__close" data-close-modal aria-label="Close modal">✕</button>
-            </div>
+    <script>
+        const nav = document.getElementById('nav');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 
-            <div class="modal__body">
-                <div class="form">
-                    <label class="label" for="email">Email</label>
-                    <input class="input" id="email" type="email" placeholder="you@company.com" />
+        mobileMenuBtn.addEventListener('click', () => {
+            nav.classList.toggle('open');
+        });
 
-                    <label class="label" for="note">What do you want to forecast?</label>
-                    <textarea class="input" id="note" rows="4"
-                        placeholder="Revenue + cash runway, pricing sensitivity, churn risk, etc."></textarea>
-
-                    <div class="form__row">
-                        <button class="btn btn--primary" id="sendEmail">Send</button>
-                        <button class="btn btn--ghost" data-close-modal>Cancel</button>
-                    </div>
-
-                    <p class="muted small">
-                        This static page opens your email client via a mailto link (GitHub Pages friendly).
-                        You can later swap this for a real form provider.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="./app.js"></script>
+        document.querySelectorAll('.nav-links a').forEach((link) => {
+            link.addEventListener('click', () => nav.classList.remove('open'));
+        });
+    </script>
 </body>
 
 </html>
