@@ -1,0 +1,2873 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SBFinance — Local-first AI Financial Analyst</title>
+    <meta name="description"
+        content="SBFinance turns messy financial CSV/XLSX exports into cashflow insights, anomaly detection, dashboards, and executive PDF reports — locally and privately." />
+    <meta property="og:title" content="SBFinance — AI Financial Analyst for Private Business Data" />
+    <meta property="og:description"
+        content="Analyze financial exports, detect anomalies, generate dashboards, and create executive reports without uploading sensitive data to the cloud." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --bg: #05050a;
+            --bg2: #0b0b14;
+            --bg3: #10101c;
+            --border: rgba(255, 255, 255, 0.07);
+            --border-bright: rgba(120, 220, 200, 0.25);
+            --text: #e2e2d8;
+            --muted: #6b6b78;
+            --accent: #5dffd3;
+            --accent2: #ff6b35;
+            --accent3: #a78bfa;
+            --glow: rgba(93, 255, 211, 0.15);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(93, 255, 211, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(93, 255, 211, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 60px;
+            background: rgba(5, 5, 10, 0.88);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 21px;
+            letter-spacing: 0.04em;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .logo-mark {
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-mark svg {
+            color: #05050a;
+        }
+
+        .logo-text {
+            color: var(--text);
+        }
+
+        .logo-text em {
+            color: var(--accent);
+            font-style: normal;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 36px;
+        }
+
+        nav ul a {
+            text-decoration: none;
+            color: var(--muted);
+            font-size: 13px;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.05em;
+            transition: color 0.2s;
+        }
+
+        nav ul a:hover {
+            color: var(--accent);
+        }
+
+        .nav-cta {
+            background: var(--accent) !important;
+            color: #05050a !important;
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-weight: 600 !important;
+        }
+
+        /* SHARED */
+        section {
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--accent);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-tag::before {
+            content: '';
+            width: 20px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(30px, 4vw, 52px);
+            font-weight: 800;
+            line-height: 1.08;
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
+        }
+
+        .section-sub {
+            color: var(--muted);
+            font-size: 17px;
+            font-weight: 300;
+            max-width: 540px;
+            margin-bottom: 60px;
+            line-height: 1.7;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 0.65s ease, transform 0.65s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* HERO */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 140px 60px 80px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--accent);
+            border: 1px solid var(--border-bright);
+            padding: 7px 16px;
+            border-radius: 100px;
+            margin-bottom: 32px;
+            width: fit-content;
+            animation: fadeUp 0.6s ease both;
+        }
+
+        .pulse-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--accent);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1)
+            }
+
+            50% {
+                opacity: .4;
+                transform: scale(.8)
+            }
+        }
+
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(44px, 6vw, 88px);
+            line-height: 1.0;
+            letter-spacing: -0.02em;
+            margin-bottom: 28px;
+            animation: fadeUp 0.6s 0.1s ease both;
+        }
+
+        h1 em {
+            font-style: normal;
+            color: var(--accent);
+        }
+
+        .hero-sub {
+            font-size: 20px;
+            color: var(--muted);
+            max-width: 600px;
+            line-height: 1.7;
+            margin-bottom: 44px;
+            font-weight: 300;
+            animation: fadeUp 0.6s 0.2s ease both;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            animation: fadeUp 0.6s 0.3s ease both;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent);
+            color: #05050a;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            padding: 14px 28px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 40px var(--glow);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            text-decoration: none;
+            border: 1px solid var(--border);
+            padding: 14px 22px;
+            border-radius: 6px;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            margin-top: 72px;
+            padding-top: 40px;
+            border-top: 1px solid var(--border);
+            animation: fadeUp 0.6s 0.4s ease both;
+        }
+
+        .stat-num {
+            font-family: 'Syne', sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 4px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* TERMINAL */
+        .hero-visual {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 520px;
+            animation: fadeUp 0.8s 0.5s ease both;
+        }
+
+        .terminal {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(93, 255, 211, 0.05);
+        }
+
+        .terminal-bar {
+            background: var(--bg2);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot.r {
+            background: #ff5f56;
+        }
+
+        .dot.y {
+            background: #ffbd2e;
+        }
+
+        .dot.g {
+            background: #27c93f;
+        }
+
+        .terminal-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            margin: 0 auto;
+        }
+
+        .terminal-body {
+            padding: 20px 20px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            line-height: 1.9;
+            min-height: 280px;
+        }
+
+        .t-line {
+            display: flex;
+            gap: 10px;
+        }
+
+        .t-prompt {
+            color: var(--accent);
+        }
+
+        .t-cmd {
+            color: var(--text);
+        }
+
+        .t-out {
+            color: #8b8b9a;
+            padding-left: 18px;
+        }
+
+        .t-success {
+            color: var(--accent);
+            padding-left: 18px;
+        }
+
+        .t-warn {
+            color: var(--accent2);
+            padding-left: 18px;
+        }
+
+        .t-info {
+            color: var(--accent3);
+            padding-left: 18px;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 7px;
+            height: 14px;
+            background: var(--accent);
+            vertical-align: middle;
+            animation: blink 1.1s step-end infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: 0
+            }
+        }
+
+        .type-line {
+            opacity: 0;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* PIPELINE */
+        #pipeline {
+            padding: 100px 60px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .pipeline-flow {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            position: relative;
+        }
+
+        .pipe-step {
+            flex: 1;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            padding: 28px 20px;
+            position: relative;
+            transition: border-color 0.3s, background 0.3s;
+            cursor: default;
+        }
+
+        .pipe-step:first-child {
+            border-radius: 10px 0 0 10px;
+        }
+
+        .pipe-step:last-child {
+            border-radius: 0 10px 10px 0;
+        }
+
+        .pipe-step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: -13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+            font-size: 15px;
+            z-index: 2;
+            background: var(--bg);
+            padding: 2px 3px;
+        }
+
+        .pipe-step:hover {
+            border-color: var(--border-bright);
+            background: var(--bg3);
+        }
+
+        .pipe-step:hover .pipe-icon-wrap {
+            background: rgba(93, 255, 211, 0.15);
+        }
+
+        .pipe-step:hover .pipe-icon-wrap svg {
+            color: var(--accent);
+        }
+
+        .pipe-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--muted);
+            margin-bottom: 12px;
+            letter-spacing: 0.1em;
+        }
+
+        .pipe-icon-wrap {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            transition: background 0.3s;
+        }
+
+        .pipe-icon-wrap svg {
+            color: var(--muted);
+            transition: color 0.3s;
+        }
+
+        .pipe-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 5px;
+        }
+
+        .pipe-desc {
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        /* PRIVACY */
+        #privacy {
+            padding: 80px 60px;
+        }
+
+        .privacy-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: linear-gradient(135deg, rgba(93, 255, 211, 0.04), rgba(167, 139, 250, 0.04));
+            border: 1px solid var(--border-bright);
+            border-radius: 20px;
+            padding: 64px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+        }
+
+        .privacy-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(93, 255, 211, 0.07);
+            border: 1px solid var(--border-bright);
+            border-radius: 8px;
+            padding: 10px 16px;
+            margin-bottom: 28px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--accent);
+        }
+
+        .privacy-points {
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            margin-top: 32px;
+        }
+
+        .privacy-point {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .pp-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background: rgba(93, 255, 211, 0.07);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .pp-icon svg {
+            color: var(--accent);
+        }
+
+        .pp-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .pp-desc {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        .privacy-visual {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .audit-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 8px;
+            letter-spacing: 0.08em;
+        }
+
+        .data-flow-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            transition: border-color 0.3s;
+        }
+
+        .data-flow-card:hover {
+            border-color: var(--border-bright);
+        }
+
+        .dfc-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .dfc-dot.green {
+            background: #27c93f;
+            box-shadow: 0 0 8px #27c93f55;
+        }
+
+        .dfc-dot.red {
+            background: #ff5f56;
+            box-shadow: 0 0 8px #ff5f5655;
+        }
+
+        .dfc-label {
+            color: var(--text);
+            flex: 1;
+        }
+
+        .dfc-status {
+            font-size: 11px;
+        }
+
+        .dfc-status.ok {
+            color: var(--accent);
+        }
+
+        .dfc-status.blocked {
+            color: #ff5f56;
+        }
+
+        /* FEATURES */
+        #features {
+            padding: 100px 60px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1px;
+            background: var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .feat-card {
+            background: var(--bg);
+            padding: 36px 30px;
+            transition: background 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .feat-card:hover {
+            background: var(--bg2);
+        }
+
+        .feat-card:hover::before {
+            opacity: 1;
+        }
+
+        .feat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: rgba(93, 255, 211, 0.07);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            transition: background 0.3s;
+        }
+
+        .feat-card:hover .feat-icon {
+            background: rgba(93, 255, 211, 0.14);
+        }
+
+        .feat-icon svg {
+            color: var(--accent);
+        }
+
+        .feat-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 17px;
+            margin-bottom: 10px;
+        }
+
+        .feat-desc {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.65;
+        }
+
+        /* CHAT DEMO */
+        #chat-demo {
+            padding: 100px 60px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .chat-layout {
+            display: grid;
+            grid-template-columns: 1fr 440px;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .chat-window {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .chat-topbar {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg3);
+        }
+
+        .chat-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-avatar svg {
+            color: #05050a;
+        }
+
+        .chat-name {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .chat-status {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .chat-status::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .chat-messages {
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-height: 320px;
+        }
+
+        .msg {
+            max-width: 85%;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .msg-user {
+            align-self: flex-end;
+            background: rgba(93, 255, 211, 0.09);
+            border: 1px solid var(--border-bright);
+            padding: 12px 16px;
+            border-radius: 12px 12px 2px 12px;
+        }
+
+        .msg-ai {
+            align-self: flex-start;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            border-radius: 2px 12px 12px 12px;
+        }
+
+        .msg-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--accent);
+            margin-bottom: 6px;
+            letter-spacing: 0.1em;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .msg-label svg {
+            color: var(--accent);
+        }
+
+        .msg-highlight {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .chat-input-bar {
+            padding: 14px 18px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: var(--muted);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .chat-send {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: var(--accent);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-send svg {
+            color: #05050a;
+        }
+
+        .chart-preview {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .chart-bar {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg3);
+            font-family: 'Syne', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chart-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--accent);
+            background: rgba(93, 255, 211, 0.08);
+            border: 1px solid var(--border-bright);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .chart-body {
+            padding: 22px 18px;
+        }
+
+        .mini-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            height: 80px;
+            margin-bottom: 14px;
+        }
+
+        .bar {
+            flex: 1;
+            border-radius: 3px 3px 0 0;
+            transition: opacity 0.2s;
+        }
+
+        .bar:hover {
+            opacity: 0.75;
+        }
+
+        .metric-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .metric-box {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 14px;
+        }
+
+        .metric-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        .metric-val {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .metric-delta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            margin-top: 2px;
+        }
+
+        .metric-delta.up {
+            color: var(--accent);
+        }
+
+        .metric-delta.down {
+            color: var(--accent2);
+        }
+
+        /* RISK */
+        #risk {
+            padding: 100px 60px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .risk-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-top: 56px;
+        }
+
+        .risk-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 28px;
+            transition: border-color 0.3s;
+        }
+
+        .risk-card:hover {
+            border-color: var(--border-bright);
+        }
+
+        .risk-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .risk-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .risk-title svg {
+            color: var(--muted);
+        }
+
+        .risk-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            padding: 3px 10px;
+            border-radius: 100px;
+        }
+
+        .risk-badge.low {
+            background: rgba(39, 201, 63, 0.1);
+            color: #27c93f;
+            border: 1px solid rgba(39, 201, 63, 0.3);
+        }
+
+        .risk-badge.med {
+            background: rgba(255, 189, 46, 0.1);
+            color: #ffbd2e;
+            border: 1px solid rgba(255, 189, 46, 0.3);
+        }
+
+        .risk-badge.high {
+            background: rgba(255, 107, 53, 0.1);
+            color: var(--accent2);
+            border: 1px solid rgba(255, 107, 53, 0.3);
+        }
+
+        .risk-bar-wrap {
+            height: 5px;
+            background: var(--border);
+            border-radius: 3px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+
+        .risk-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 1.2s ease;
+        }
+
+        .risk-desc {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        /* WHO */
+        #who {
+            padding: 100px 60px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .who-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            margin-top: 56px;
+        }
+
+        .who-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 28px 22px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .who-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-bright);
+        }
+
+        .who-icon-wrap {
+            width: 46px;
+            height: 46px;
+            border-radius: 10px;
+            background: rgba(93, 255, 211, 0.07);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 18px;
+            transition: background 0.3s;
+        }
+
+        .who-card:hover .who-icon-wrap {
+            background: rgba(93, 255, 211, 0.14);
+        }
+
+        .who-icon-wrap svg {
+            color: var(--accent);
+        }
+
+        .who-role {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .who-desc {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* COMPARISON */
+        #comparison {
+            padding: 100px 60px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .comp-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-top: 56px;
+        }
+
+        .comp-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 32px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            transition: border-color 0.3s;
+        }
+
+        .comp-card:hover {
+            border-color: var(--border-bright);
+        }
+
+        .comp-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .comp-problem, .comp-solution {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .comp-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .comp-text {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .comp-solution .comp-label {
+            color: var(--accent);
+        }
+
+        .comp-solution .comp-text {
+            color: #d1d5e0;
+        }
+
+        .comp-highlight {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(93, 255, 211, 0.1), rgba(93, 255, 211, 0.02));
+            border: 1px solid var(--accent);
+            border-radius: 14px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-top: 24px;
+        }
+        
+        .comp-highlight h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 24px;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+
+        .comp-highlight p {
+            font-size: 15px;
+            color: var(--muted);
+            line-height: 1.6;
+            max-width: 800px;
+            margin-bottom: 24px;
+        }
+
+        .comp-bullets {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 32px;
+            text-align: left;
+        }
+
+        .comp-bullets li {
+            font-size: 14px;
+            color: #d1d5e0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .comp-bullets li::before {
+            content: '✓';
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* FAQ */
+        #faq {
+            padding: 100px 60px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-list {
+            margin-top: 56px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .faq-item {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .faq-item:hover {
+            border-color: var(--border-bright);
+        }
+
+        .faq-btn {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            text-align: left;
+            color: var(--text);
+            font-family: 'Syne', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .faq-icon {
+            width: 20px;
+            height: 20px;
+            position: relative;
+            flex-shrink: 0;
+            margin-left: 16px;
+        }
+
+        .faq-icon::before, .faq-icon::after {
+            content: '';
+            position: absolute;
+            background: var(--accent);
+            border-radius: 2px;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-icon::before {
+            top: 9px; left: 4px; right: 4px; height: 2px;
+        }
+
+        .faq-icon::after {
+            top: 4px; bottom: 4px; left: 9px; width: 2px;
+        }
+
+        .faq-btn[aria-expanded="true"] .faq-icon::after {
+            transform: rotate(90deg);
+            opacity: 0;
+        }
+
+        .faq-content {
+            padding: 0 24px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+
+        .faq-btn[aria-expanded="true"] + .faq-content {
+            padding: 0 24px 24px;
+        }
+
+        .faq-content p {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* CTA */
+        #cta {
+            padding: 80px 60px 120px;
+        }
+
+        .cta-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 80px 64px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-inner::before {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 200px;
+            background: radial-gradient(ellipse, rgba(93, 255, 211, 0.10), transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta-inner h2 {
+            margin-bottom: 14px;
+        }
+
+        .cta-inner>p {
+            color: var(--muted);
+            font-size: 18px;
+            font-weight: 300;
+            margin-bottom: 40px;
+        }
+
+        .cta-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 520px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .cta-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .cta-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .cta-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .cta-input {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px 18px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            width: 100%;
+        }
+
+        .cta-input::placeholder {
+            color: var(--muted);
+        }
+
+        .cta-input:focus {
+            border-color: var(--border-bright);
+            box-shadow: 0 0 0 3px rgba(93, 255, 211, 0.08);
+        }
+
+        .cta-textarea {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px 18px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            width: 100%;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .cta-textarea::placeholder {
+            color: var(--muted);
+        }
+
+        .cta-textarea:focus {
+            border-color: var(--border-bright);
+            box-shadow: 0 0 0 3px rgba(93, 255, 211, 0.08);
+        }
+
+        .cta-submit {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--accent);
+            color: #05050a;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            padding: 16px 32px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        .cta-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 40px var(--glow);
+        }
+
+        .cta-submit:active {
+            transform: translateY(0);
+        }
+
+        .cta-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .cta-submit .spinner {
+            display: none;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(5, 5, 10, 0.3);
+            border-top-color: #05050a;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        .cta-submit.loading .spinner {
+            display: inline-block;
+        }
+
+        .cta-submit.loading .btn-text {
+            display: none;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .form-message {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 15px;
+            line-height: 1.6;
+            animation: fadeUp 0.4s ease;
+        }
+
+        .form-message.success {
+            display: block;
+            background: rgba(93, 255, 211, 0.08);
+            border: 1px solid var(--border-bright);
+            color: var(--accent);
+        }
+
+        .form-message.error {
+            display: block;
+            background: rgba(255, 95, 86, 0.08);
+            border: 1px solid rgba(255, 95, 86, 0.3);
+            color: #ff5f56;
+        }
+
+        .form-message .msg-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 32px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        footer p {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        footer a {
+            color: var(--muted);
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: var(--accent);
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px)
+            }
+
+            to {
+                opacity: 1;
+                transform: none
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .hero-visual {
+                display: none;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .chat-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .who-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .risk-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .comp-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .privacy-inner {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                padding: 16px 24px;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            #hero,
+            #pipeline,
+            #features,
+            #chat-demo,
+            #risk,
+            #who,
+            #comparison,
+            #faq {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+
+            #privacy,
+            #cta {
+                padding-left: 24px;
+                padding-right: 24px;
+            }
+
+            footer {
+                padding: 24px;
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            .features-grid,
+            .risk-grid,
+            .who-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comp-bullets {
+                grid-template-columns: 1fr;
+            }
+
+            .who-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pipeline-flow {
+                flex-direction: column;
+            }
+
+            .pipe-step:first-child {
+                border-radius: 10px 10px 0 0;
+            }
+
+            .pipe-step:last-child {
+                border-radius: 0 0 10px 10px;
+            }
+
+            .pipe-step:not(:last-child)::after {
+                content: '↓';
+                right: auto;
+                left: 50%;
+                top: auto;
+                bottom: -16px;
+                transform: translateX(-50%);
+            }
+
+            .hero-stats {
+                flex-wrap: wrap;
+                gap: 24px;
+            }
+
+            .cta-form {
+                flex-direction: column;
+            }
+
+            .cta-form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .privacy-inner {
+                padding: 36px 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SVG SPRITE -->
+    <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+        <symbol id="ico-activity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+        </symbol>
+        <symbol id="ico-alert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+        </symbol>
+        <symbol id="ico-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+            <polyline points="12 5 19 12 12 19" />
+        </symbol>
+        <symbol id="ico-bar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+            <line x1="2" y1="20" x2="22" y2="20" />
+        </symbol>
+        <symbol id="ico-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="21 8 21 21 3 21 3 8" />
+            <rect x="1" y="3" width="22" height="5" />
+            <line x1="10" y1="12" x2="14" y2="12" />
+        </symbol>
+        <symbol id="ico-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+        </symbol>
+        <symbol id="ico-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6" />
+            <polyline points="8 6 2 12 8 18" />
+        </symbol>
+        <symbol id="ico-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="4" width="16" height="16" rx="2" />
+            <rect x="9" y="9" width="6" height="6" />
+            <line x1="9" y1="1" x2="9" y2="4" />
+            <line x1="15" y1="1" x2="15" y2="4" />
+            <line x1="9" y1="20" x2="9" y2="23" />
+            <line x1="15" y1="20" x2="15" y2="23" />
+            <line x1="20" y1="9" x2="23" y2="9" />
+            <line x1="20" y1="14" x2="23" y2="14" />
+            <line x1="1" y1="9" x2="4" y2="9" />
+            <line x1="1" y1="14" x2="4" y2="14" />
+        </symbol>
+        <symbol id="ico-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+        </symbol>
+        <symbol id="ico-flame" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+                d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+        </symbol>
+        <symbol id="ico-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </symbol>
+        <symbol id="ico-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+            <line x1="8" y1="21" x2="16" y2="21" />
+            <line x1="12" y1="17" x2="12" y2="21" />
+        </symbol>
+        <symbol id="ico-msg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+        </symbol>
+        <symbol id="ico-nocloud" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="1" y1="1" x2="23" y2="23" />
+            <path d="M9.59 9.59A4.5 4.5 0 0 0 7 13.5a4.5 4.5 0 0 0 4.5 4.5H18a3 3 0 0 0 .2-6A5 5 0 0 0 9.59 9.59z" />
+        </symbol>
+        <symbol id="ico-play" viewBox="0 0 24 24" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3" />
+        </symbol>
+        <symbol id="ico-sb" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+        </symbol>
+        <symbol id="ico-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13" />
+            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+        </symbol>
+        <symbol id="ico-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </symbol>
+        <symbol id="ico-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3L9.5 9.5 3 12l6.5 2.5L12 21l2.5-6.5L21 12l-6.5-2.5L12 3z" />
+        </symbol>
+        <symbol id="ico-target" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <circle cx="12" cy="12" r="6" />
+            <circle cx="12" cy="12" r="2" />
+        </symbol>
+        <symbol id="ico-trend" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+            <polyline points="17 6 23 6 23 12" />
+        </symbol>
+        <symbol id="ico-trenddn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 18 13.5 8.5 8.5 13.5 1 6" />
+            <polyline points="17 18 23 18 23 12" />
+        </symbol>
+        <symbol id="ico-upload" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 16 12 12 8 16" />
+            <line x1="12" y1="12" x2="12" y2="21" />
+            <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3" />
+        </symbol>
+        <symbol id="ico-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+        </symbol>
+    </svg>
+
+    <!-- NAV -->
+    <nav>
+        <div class="logo">
+            <div class="logo-mark"><svg width="16" height="16">
+                    <use href="#ico-sb" />
+                </svg></div>
+            <span class="logo-text">SB<em>finance</em></span>
+        </div>
+        <ul>
+            <li><a href="#pipeline">How it works</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#privacy">Privacy</a></li>
+            <li><a href="#who">Use cases</a></li>
+            <li><a href="#cta" class="nav-cta">Request a Demo</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <div style="position:relative;overflow:hidden;">
+        <section id="hero">
+            <div class="hero-tag">
+                <div class="pulse-dot"></div>
+                Local-first AI Financial Analyst &nbsp;·&nbsp; Private business data &nbsp;·&nbsp; 2026
+            </div>
+            <h1>AI financial analyst<br />for <em>private</em><br />business data.</h1>
+            <p class="hero-sub">
+                Turn messy CSV/XLSX exports into cashflow insights, anomaly detection,
+                dashboards, and executive PDF reports — without uploading sensitive data to the cloud.
+            </p>
+            <p
+                style="font-size:15px;color:var(--muted);max-width:560px;margin-bottom:36px;font-weight:300;line-height:1.7;animation:fadeUp 0.6s 0.22s ease both;">
+                Built for SMB founders, finance teams, accounting firms, and fintech teams
+                that need answers faster than spreadsheets can deliver.
+            </p>
+            <div class="hero-actions">
+                <a href="#cta" class="btn-primary">
+                    <svg width="13" height="13">
+                        <use href="#ico-play" />
+                    </svg>
+                    Request a Demo
+                </a>
+                <a href="#pipeline" class="btn-secondary">
+                    See Sample Report
+                    <svg width="14" height="14">
+                        <use href="#ico-arrow" />
+                    </svg>
+                </a>
+            </div>
+            <div class="hero-stats">
+                <div style="display:flex;flex-wrap:wrap;gap:10px;animation:fadeUp 0.6s 0.4s ease both;">
+                    <span
+                        style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);border:1px solid var(--border-bright);padding:6px 14px;border-radius:100px;">Runs
+                        locally</span>
+                    <span
+                        style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);border:1px solid var(--border-bright);padding:6px 14px;border-radius:100px;">No
+                        cloud upload</span>
+                    <span
+                        style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);border:1px solid var(--border-bright);padding:6px 14px;border-radius:100px;">CSV/XLSX
+                        support</span>
+                    <span
+                        style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);border:1px solid var(--border-bright);padding:6px 14px;border-radius:100px;">PDF
+                        reports</span>
+                    <span
+                        style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);border:1px solid var(--border-bright);padding:6px 14px;border-radius:100px;">Free
+                        beta demo</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="hero-visual">
+            <div class="terminal">
+                <div class="terminal-bar">
+                    <div class="dot r"></div>
+                    <div class="dot y"></div>
+                    <div class="dot g"></div>
+                    <div class="terminal-title">sbfinance — local financial analyst</div>
+                </div>
+                <div class="terminal-body">
+                    <div class="t-line type-line" style="animation-delay:0.2s"><span class="t-prompt">›</span><span
+                            class="t-cmd">sbfinance analyze transactions_april.xlsx</span></div>
+                    <div class="t-line type-line" style="animation-delay:0.6s"><span class="t-out">⟳ Reading financial
+                            export... 14 columns, 8,420 rows</span></div>
+                    <div class="t-line type-line" style="animation-delay:1.1s"><span class="t-success">✓ Date, amount,
+                            category, vendor columns detected</span></div>
+                    <div class="t-line type-line" style="animation-delay:1.7s"><span class="t-out">⟳ Cleaning
+                            transactions and normalizing categories...</span></div>
+                    <div class="t-line type-line" style="animation-delay:2.1s"><span class="t-success">✓ Cashflow
+                            dashboard generated</span></div>
+                    <div class="t-line type-line" style="animation-delay:2.7s"><span class="t-warn">⚠ 12 duplicate
+                            transactions found</span></div>
+                    <div class="t-line type-line" style="animation-delay:3.2s"><span class="t-warn">⚠ 7 unusual expenses
+                            flagged</span></div>
+                    <div class="t-line type-line" style="animation-delay:3.7s"><span class="t-info">ℹ Recurring
+                            subscriptions detected: 18</span></div>
+                    <div class="t-line type-line" style="animation-delay:4.2s"><span class="t-success">✓ Executive PDF
+                            report generated → sbfinance_report.pdf</span></div>
+                    <div class="t-line type-line" style="animation-delay:4.7s"><span class="t-success">✓ Data chat ready
+                            — ask questions about your financial data</span></div>
+                    <div class="t-line type-line" style="animation-delay:5.0s"><span class="t-prompt">›</span><span
+                            class="cursor"></span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PIPELINE -->
+    <section id="pipeline">
+        <div class="section-tag">how it works</div>
+        <h2>From raw exports to<br />financial clarity.</h2>
+        <p class="section-sub">Upload your financial files. SBFinance cleans, analyzes, explains, and reports — locally
+            on your machine.</p>
+        <div class="pipeline-flow reveal">
+            <div class="pipe-step">
+                <div class="pipe-num">01</div>
+                <div class="pipe-icon-wrap"><svg width="18" height="18">
+                        <use href="#ico-upload" />
+                    </svg></div>
+                <div class="pipe-name">Upload</div>
+                <div class="pipe-desc">Add CSV/XLSX exports from accounting tools, bank statements, payment systems,
+                    CRM, or internal spreadsheets.</div>
+            </div>
+            <div class="pipe-step">
+                <div class="pipe-num">02</div>
+                <div class="pipe-icon-wrap"><svg width="18" height="18">
+                        <use href="#ico-code" />
+                    </svg></div>
+                <div class="pipe-name">Map & Clean</div>
+                <div class="pipe-desc">SBFinance detects dates, amounts, vendors, categories, and descriptions, then
+                    prepares data for analysis.</div>
+            </div>
+            <div class="pipe-step">
+                <div class="pipe-num">03</div>
+                <div class="pipe-icon-wrap"><svg width="18" height="18">
+                        <use href="#ico-bar" />
+                    </svg></div>
+                <div class="pipe-name">Analyze</div>
+                <div class="pipe-desc">Get cashflow, revenue, expenses, category trends, KPI changes, and
+                    month-over-month movement.</div>
+            </div>
+            <div class="pipe-step">
+                <div class="pipe-num">04</div>
+                <div class="pipe-icon-wrap"><svg width="18" height="18">
+                        <use href="#ico-shield" />
+                    </svg></div>
+                <div class="pipe-name">Detect Risks</div>
+                <div class="pipe-desc">Flag duplicates, unusual transactions, outliers, recurring costs, and suspicious
+                    patterns.</div>
+            </div>
+            <div class="pipe-step">
+                <div class="pipe-num">05</div>
+                <div class="pipe-icon-wrap"><svg width="18" height="18">
+                        <use href="#ico-monitor" />
+                    </svg></div>
+                <div class="pipe-name">Dashboard</div>
+                <div class="pipe-desc">View clean charts, KPIs, and financial summaries without building spreadsheets
+                    manually.</div>
+            </div>
+            <div class="pipe-step">
+                <div class="pipe-num">06</div>
+                <div class="pipe-icon-wrap"><svg width="18" height="18">
+                        <use href="#ico-file" />
+                    </svg></div>
+                <div class="pipe-name">Report & Ask</div>
+                <div class="pipe-desc">Generate executive PDF reports and ask questions grounded in your uploaded
+                    financial data.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRIVACY -->
+    <section id="privacy">
+        <div class="privacy-inner reveal">
+            <div>
+                <div class="privacy-badge">
+                    <svg width="15" height="15">
+                        <use href="#ico-lock" />
+                    </svg>
+                    Local-first architecture
+                </div>
+                <h2 style="font-size:clamp(26px,3.5vw,44px);">Your financial data<br />stays on your machine.</h2>
+                <p style="color:var(--muted);font-size:16px;font-weight:300;margin-top:12px;line-height:1.7;">
+                    SBFinance is designed for sensitive business and client financial data.
+                    Analysis, dashboards, summaries, and reports can run locally — so raw files
+                    do not need to be uploaded to cloud tools.
+                </p>
+                <div class="privacy-points">
+                    <div class="privacy-point">
+                        <div class="pp-icon"><svg width="18" height="18">
+                                <use href="#ico-monitor" />
+                            </svg></div>
+                        <div>
+                            <div class="pp-title">Local-first processing</div>
+                            <div class="pp-desc">Raw financial exports stay on your device or private environment.</div>
+                        </div>
+                    </div>
+                    <div class="privacy-point">
+                        <div class="pp-icon"><svg width="18" height="18">
+                                <use href="#ico-nocloud" />
+                            </svg></div>
+                        <div>
+                            <div class="pp-title">No unnecessary data sharing</div>
+                            <div class="pp-desc">Designed to reduce exposure of sensitive client, transaction, and
+                                business data.</div>
+                        </div>
+                    </div>
+                    <div class="privacy-point">
+                        <div class="pp-icon"><svg width="18" height="18">
+                                <use href="#ico-check" />
+                            </svg></div>
+                        <div>
+                            <div class="pp-title">Built for trust</div>
+                            <div class="pp-desc">Useful for finance teams and accounting firms that cannot freely upload
+                                client data to third-party AI tools.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="privacy-visual">
+                <div class="audit-label">// data flow audit</div>
+                <div class="data-flow-card">
+                    <div class="dfc-dot green"></div>
+                    <div class="dfc-label">Raw CSV/XLSX export</div>
+                    <div class="dfc-status ok">LOCAL ✓</div>
+                </div>
+                <div class="data-flow-card">
+                    <div class="dfc-dot green"></div>
+                    <div class="dfc-label">Data cleaning</div>
+                    <div class="dfc-status ok">LOCAL ✓</div>
+                </div>
+                <div class="data-flow-card">
+                    <div class="dfc-dot green"></div>
+                    <div class="dfc-label">Financial analysis</div>
+                    <div class="dfc-status ok">LOCAL ✓</div>
+                </div>
+                <div class="data-flow-card">
+                    <div class="dfc-dot green"></div>
+                    <div class="dfc-label">Anomaly detection</div>
+                    <div class="dfc-status ok">LOCAL ✓</div>
+                </div>
+                <div class="data-flow-card">
+                    <div class="dfc-dot green"></div>
+                    <div class="dfc-label">Dashboard rendering</div>
+                    <div class="dfc-status ok">LOCAL ✓</div>
+                </div>
+                <div class="data-flow-card">
+                    <div class="dfc-dot green"></div>
+                    <div class="dfc-label">PDF report generation</div>
+                    <div class="dfc-status ok">LOCAL ✓</div>
+                </div>
+                <div class="data-flow-card">
+                    <div class="dfc-dot red"></div>
+                    <div class="dfc-label">Cloud upload of raw files</div>
+                    <div class="dfc-status blocked">NOT REQUIRED ✗</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features">
+        <div class="section-tag">capabilities</div>
+        <h2>Financial analysis without<br />manual spreadsheet work.</h2>
+        <p class="section-sub">SBFinance helps teams move from raw exports to decision-ready reports faster.</p>
+        <div class="features-grid reveal">
+            <div class="feat-card">
+                <div class="feat-icon"><svg width="20" height="20">
+                        <use href="#ico-trend" />
+                    </svg></div>
+                <div class="feat-title">Cashflow & KPI Analysis</div>
+                <div class="feat-desc">Track revenue, expenses, net cashflow, category trends, month-over-month changes,
+                    and business health.</div>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon"><svg width="20" height="20">
+                        <use href="#ico-alert" />
+                    </svg></div>
+                <div class="feat-title">Transaction Anomaly Detection</div>
+                <div class="feat-desc">Find duplicate transactions, unusual expenses, outliers, suspicious changes, and
+                    recurring payments that deserve review.</div>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon"><svg width="20" height="20">
+                        <use href="#ico-bar" />
+                    </svg></div>
+                <div class="feat-title">Auto-Generated Dashboards</div>
+                <div class="feat-desc">Get charts and KPIs from your uploaded financial data without building dashboards
+                    manually.</div>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon"><svg width="20" height="20">
+                        <use href="#ico-file" />
+                    </svg></div>
+                <div class="feat-title">Executive PDF Reports</div>
+                <div class="feat-desc">Generate clean reports for founders, CFOs, clients, investors, or internal
+                    reviews.</div>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon"><svg width="20" height="20">
+                        <use href="#ico-msg" />
+                    </svg></div>
+                <div class="feat-title">Ask Your Data</div>
+                <div class="feat-desc">Ask plain-English questions like “Why did expenses increase?” or “Which category
+                    changed the most?” and get answers grounded in your file.</div>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon"><svg width="20" height="20">
+                        <use href="#ico-lock" />
+                    </svg></div>
+                <div class="feat-title">Local-first Privacy</div>
+                <div class="feat-desc">Analyze sensitive business and client data without relying on cloud-first AI
+                    tools.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHAT DEMO -->
+    <section id="chat-demo">
+        <div class="section-tag">data chat</div>
+        <h2>Ask your financial data.<br />Get grounded answers.</h2>
+        <p class="section-sub">SBFinance answers using your uploaded transactions, KPIs, dashboards, and report context
+            — not generic guesses.</p>
+        <div class="chat-layout reveal">
+            <div class="chat-window">
+                <div class="chat-topbar">
+                    <div class="chat-avatar"><svg width="16" height="16">
+                            <use href="#ico-sparkle" />
+                        </svg></div>
+                    <div>
+                        <div class="chat-name">SBFinance Data Chat</div>
+                        <div class="chat-status">connected to dataset · 8,420 transactions</div>
+                    </div>
+                </div>
+                <div class="chat-messages">
+                    <div class="msg msg-user">What caused the expense increase in April?</div>
+                    <div class="msg msg-ai">
+                        <div class="msg-label"><svg width="11" height="11">
+                                <use href="#ico-sparkle" />
+                            </svg> SBFINANCE · grounded in your data</div>
+                        Expenses increased by <span class="msg-highlight">18.7%</span> compared to March. The largest
+                        contributors were marketing spend (<span class="msg-highlight">+$4,200</span>), contractor
+                        payments (<span class="msg-highlight">+$2,850</span>), and cloud services (+$740).
+                    </div>
+                    <div class="msg msg-user">Are there any duplicate transactions?</div>
+                    <div class="msg msg-ai">
+                        <div class="msg-label"><svg width="11" height="11">
+                                <use href="#ico-sparkle" />
+                            </svg> SBFINANCE · anomaly detection</div>
+                        I found <span class="msg-highlight">12 possible duplicates</span> with matching date, amount,
+                        and vendor. The largest duplicate group is two payments to <span class="msg-highlight">'Facebook
+                            Ads'</span> for $850 each on April 12.
+                    </div>
+                    <div class="msg msg-user">Create a summary for the founder.</div>
+                    <div class="msg msg-ai">
+                        <div class="msg-label"><svg width="11" height="11">
+                                <use href="#ico-sparkle" />
+                            </svg> SBFINANCE · executive summary</div>
+                        Net cashflow improved by <span class="msg-highlight">9.4%</span>, revenue grew by <span
+                            class="msg-highlight">12.1%</span>, but operating expenses increased faster than revenue.
+                        Main recommendation: review marketing and software spend before the next reporting cycle.
+                    </div>
+                </div>
+
+            </div>
+            <div class="chart-preview">
+                <div class="chart-bar">
+                    Monthly Expense Breakdown
+                    <span class="chart-tag">LIVE ANALYSIS</span>
+                </div>
+                <div class="chart-body">
+                    <div class="mini-chart">
+                        <div class="bar" style="height:65%;background:linear-gradient(to top,#5dffd355,#5dffd311)">
+                        </div>
+                        <div class="bar" style="height:82%;background:linear-gradient(to top,#5dffd388,#5dffd322)">
+                        </div>
+                        <div class="bar" style="height:48%;background:linear-gradient(to top,#27c93f66,#27c93f11)">
+                        </div>
+                        <div class="bar" style="height:90%;background:linear-gradient(to top,#ff6b3588,#ff6b3522)">
+                        </div>
+                        <div class="bar" style="height:55%;background:linear-gradient(to top,#ffbd2e88,#ffbd2e22)">
+                        </div>
+                        <div class="bar" style="height:38%;background:linear-gradient(to top,#27c93f66,#27c93f11)">
+                        </div>
+                    </div>
+                    <div
+                        style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);">
+                        <span>Payroll</span><span>Mktg</span><span>SaaS</span><span>Contr.</span><span>Ops</span><span>Other</span>
+                    </div>
+                    <div class="metric-row">
+                        <div class="metric-box">
+                            <div class="metric-label">MONTHLY REVENUE</div>
+                            <div class="metric-val">$84.2K</div>
+                            <div class="metric-delta up">↑ +12.1%</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">TOTAL EXPENSES</div>
+                            <div class="metric-val">$71.8K</div>
+                            <div class="metric-delta down">↑ +18.7%</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">NET CASHFLOW</div>
+                            <div class="metric-val">$12.4K</div>
+                            <div class="metric-delta up">↑ +9.4%</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">ANOMALIES FOUND</div>
+                            <div class="metric-val">19</div>
+                            <div class="metric-delta down">12 duplicates</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RISK -->
+    <section id="risk">
+        <div class="section-tag">anomaly detection</div>
+        <h2>Find financial issues<br />before they become expensive.</h2>
+        <p class="section-sub">SBFinance highlights transactions and patterns that deserve human review.</p>
+        <div class="risk-grid reveal">
+            <div class="risk-card">
+                <div class="risk-header">
+                    <div class="risk-title"><svg width="16" height="16">
+                            <use href="#ico-target" />
+                        </svg> Duplicate Transactions</div>
+                    <div class="risk-badge high">FOUND 12</div>
+                </div>
+                <div class="risk-bar-wrap">
+                    <div class="risk-bar-fill" style="width:72%;background:linear-gradient(90deg,#ff6b35,#ff3b30)">
+                    </div>
+                </div>
+                <div class="risk-desc">Same date, amount, and vendor detected across multiple rows. Largest group: two
+                    payments to 'Facebook Ads' for $850 each.</div>
+            </div>
+            <div class="risk-card">
+                <div class="risk-header">
+                    <div class="risk-title"><svg width="16" height="16">
+                            <use href="#ico-alert" />
+                        </svg> Unusual Expenses</div>
+                    <div class="risk-badge med">7 FLAGGED</div>
+                </div>
+                <div class="risk-bar-wrap">
+                    <div class="risk-bar-fill" style="width:58%;background:linear-gradient(90deg,#ffbd2e,#ff6b35)">
+                    </div>
+                </div>
+                <div class="risk-desc">Transactions significantly above normal category and vendor behavior. Includes
+                    contractor payment 3.4× above average.</div>
+            </div>
+            <div class="risk-card">
+                <div class="risk-header">
+                    <div class="risk-title"><svg width="16" height="16">
+                            <use href="#ico-activity" />
+                        </svg> Recurring Costs</div>
+                    <div class="risk-badge low">18 DETECTED</div>
+                </div>
+                <div class="risk-bar-wrap">
+                    <div class="risk-bar-fill" style="width:85%;background:linear-gradient(90deg,#27c93f,#5dffd3)">
+                    </div>
+                </div>
+                <div class="risk-desc">Subscriptions and repeated monthly payments identified. 4 low-usage subscriptions
+                    flagged for potential review.</div>
+            </div>
+            <div class="risk-card">
+                <div class="risk-header">
+                    <div class="risk-title"><svg width="16" height="16">
+                            <use href="#ico-trenddn" />
+                        </svg> Category Spikes</div>
+                    <div class="risk-badge med">MARKETING +42%</div>
+                </div>
+                <div class="risk-bar-wrap">
+                    <div class="risk-bar-fill" style="width:65%;background:linear-gradient(90deg,#ffbd2e,#ff6b35)">
+                    </div>
+                </div>
+                <div class="risk-desc">Sudden increase in marketing spend compared to 3-month average. Contractor and
+                    software categories also above trend.</div>
+            </div>
+            <div class="risk-card">
+                <div class="risk-header">
+                    <div class="risk-title"><svg width="16" height="16">
+                            <use href="#ico-flame" />
+                        </svg> Cashflow Pressure</div>
+                    <div class="risk-badge med">WATCH</div>
+                </div>
+                <div class="risk-bar-wrap">
+                    <div class="risk-bar-fill" style="width:55%;background:linear-gradient(90deg,#ffbd2e,#ff6b35)">
+                    </div>
+                </div>
+                <div class="risk-desc">Expenses growing faster than revenue. Operating margin compressed from 18.2% to
+                    14.7% over the last two months.</div>
+            </div>
+            <div class="risk-card">
+                <div class="risk-header">
+                    <div class="risk-title"><svg width="16" height="16">
+                            <use href="#ico-check" />
+                        </svg> Data Quality</div>
+                    <div class="risk-badge low">CLEAN</div>
+                </div>
+                <div class="risk-bar-wrap">
+                    <div class="risk-bar-fill" style="width:94%;background:linear-gradient(90deg,#27c93f,#5dffd3)">
+                    </div>
+                </div>
+                <div class="risk-desc">Missing dates: 0. Broken categories: 3 corrected. Invalid amounts: 0. Vendor name
+                    inconsistencies: 8 normalized.</div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- WHO -->
+    <section id="who">
+        <div class="section-tag">built for</div>
+        <h2>Built for teams that live<br />in financial exports.</h2>
+        <div class="who-grid reveal">
+            <div class="who-card">
+                <div class="who-icon-wrap"><svg width="20" height="20">
+                        <use href="#ico-zap" />
+                    </svg></div>
+                <div class="who-role">SMB Founders</div>
+                <div class="who-desc">Understand cashflow, expenses, and business health without waiting for manual
+                    reports.</div>
+            </div>
+            <div class="who-card">
+                <div class="who-icon-wrap"><svg width="20" height="20">
+                        <use href="#ico-trend" />
+                    </svg></div>
+                <div class="who-role">Finance Managers</div>
+                <div class="who-desc">Prepare recurring analysis, detect unusual transactions, and generate executive
+                    summaries faster.</div>
+            </div>
+            <div class="who-card">
+                <div class="who-icon-wrap"><svg width="20" height="20">
+                        <use href="#ico-file" />
+                    </svg></div>
+                <div class="who-role">Accounting Firms</div>
+                <div class="who-desc">Analyze client exports locally and produce cleaner reports with less manual work.
+                </div>
+            </div>
+            <div class="who-card">
+                <div class="who-icon-wrap"><svg width="20" height="20">
+                        <use href="#ico-activity" />
+                    </svg></div>
+                <div class="who-role">Outsourced Finance Teams</div>
+                <div class="who-desc">Turn client spreadsheets into dashboards and reports without rebuilding the same
+                    workflow every month.</div>
+            </div>
+            <div class="who-card">
+                <div class="who-icon-wrap"><svg width="20" height="20">
+                        <use href="#ico-shield" />
+                    </svg></div>
+                <div class="who-role">Fintech & Lending Teams</div>
+                <div class="who-desc">Review transaction patterns, risk signals, borrower data, and portfolio exports in
+                    a private workflow.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPARISON -->
+    <section id="comparison">
+        <div class="section-tag">HONEST COMPARISON</div>
+        <h2>Not another spreadsheet.<br />Not another cloud AI tool.</h2>
+        <p class="section-sub">SBFinance is built for teams that need financial answers from sensitive data — without rebuilding dashboards manually or uploading raw files to generic AI tools.</p>
+        
+        <div class="comp-grid reveal">
+            <div class="comp-card">
+                <div class="comp-title">Excel / Google Sheets</div>
+                <div class="comp-problem">
+                    <span class="comp-label">Problem</span>
+                    <span class="comp-text">Flexible, but manual. Teams still spend hours cleaning exports, checking formulas, building charts, and writing explanations.</span>
+                </div>
+                <div class="comp-solution">
+                    <span class="comp-label">SBFinance Difference</span>
+                    <span class="comp-text">SBFinance maps financial exports, calculates KPIs, flags anomalies, generates dashboards, and creates summaries faster.</span>
+                </div>
+            </div>
+
+            <div class="comp-card">
+                <div class="comp-title">ChatGPT / Cloud AI Tools</div>
+                <div class="comp-problem">
+                    <span class="comp-label">Problem</span>
+                    <span class="comp-text">Useful for explanation, but not designed for structured financial export analysis. Sensitive files may need to be uploaded.</span>
+                </div>
+                <div class="comp-solution">
+                    <span class="comp-label">SBFinance Difference</span>
+                    <span class="comp-text">SBFinance is designed around local-first financial workflows, grounded analysis, transaction checks, dashboards, and reports.</span>
+                </div>
+            </div>
+
+            <div class="comp-card">
+                <div class="comp-title">BI Dashboards</div>
+                <div class="comp-problem">
+                    <span class="comp-label">Problem</span>
+                    <span class="comp-text">Powerful, but setup-heavy. BI is best for permanent dashboards, not fast analysis of messy monthly exports or client spreadsheets.</span>
+                </div>
+                <div class="comp-solution">
+                    <span class="comp-label">SBFinance Difference</span>
+                    <span class="comp-text">SBFinance works directly from CSV/XLSX exports and helps create quick financial insights without a full BI implementation.</span>
+                </div>
+            </div>
+
+            <div class="comp-card">
+                <div class="comp-title">Accounting Software</div>
+                <div class="comp-problem">
+                    <span class="comp-label">Problem</span>
+                    <span class="comp-text">Great for recording transactions, but often limited when teams need flexible analysis, anomaly review, and plain-English explanations.</span>
+                </div>
+                <div class="comp-solution">
+                    <span class="comp-label">SBFinance Difference</span>
+                    <span class="comp-text">SBFinance analyzes exported financial data and explains revenue, expenses, cashflow movement, duplicates, and unusual transactions.</span>
+                </div>
+            </div>
+
+            <div class="comp-card">
+                <div class="comp-title">Manual Analysts</div>
+                <div class="comp-problem">
+                    <span class="comp-label">Problem</span>
+                    <span class="comp-text">Accurate, but slow and expensive for repetitive reporting. The same cleanup and summary work happens again every month.</span>
+                </div>
+                <div class="comp-solution">
+                    <span class="comp-label">SBFinance Difference</span>
+                    <span class="comp-text">SBFinance reduces repetitive spreadsheet work so analysts, accountants, and finance teams can focus on judgment.</span>
+                </div>
+            </div>
+
+            <div class="comp-card">
+                <div class="comp-title">Generic AutoML Tools</div>
+                <div class="comp-problem">
+                    <span class="comp-label">Problem</span>
+                    <span class="comp-text">Built for data scientists and model experiments, not founders or finance teams trying to understand business numbers.</span>
+                </div>
+                <div class="comp-solution">
+                    <span class="comp-label">SBFinance Difference</span>
+                    <span class="comp-text">SBFinance focuses on financial exports, cashflow, expenses, anomalies, dashboards, and executive reports.</span>
+                </div>
+            </div>
+
+            <div class="comp-highlight">
+                <h3>So what makes SBFinance different?</h3>
+                <p>SBFinance combines AI speed, financial analysis structure, and local-first privacy. It is not just chat, not just BI, and not just another spreadsheet. It is a faster way to turn private financial exports into decision-ready reports.</p>
+                <ul class="comp-bullets">
+                    <li>Upload CSV/XLSX financial exports</li>
+                    <li>Clean and map messy data</li>
+                    <li>Detect duplicates, anomalies, and recurring costs</li>
+                    <li>Generate dashboards and executive reports</li>
+                    <li>Ask questions grounded in your own financial data</li>
+                    <li>Keep sensitive data in a local/private workflow</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <div class="section-tag">QUESTIONS FINANCE TEAMS ASK</div>
+        <h2>Common questions before the demo.</h2>
+        <p class="section-sub">SBFinance is built for teams working with sensitive financial exports, recurring reports, and spreadsheet-heavy analysis.</p>
+        
+        <div class="faq-list reveal">
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="true" aria-controls="faq-ans-1">
+                    What exactly does SBFinance do?
+                    <div class="faq-icon"></div>
+                </button>
+                <div id="faq-ans-1" class="faq-content" style="max-height: 500px;">
+                    <p>SBFinance turns messy financial CSV/XLSX exports into cashflow insights, KPI summaries, anomaly detection, dashboards, and executive PDF reports. Instead of manually cleaning spreadsheets and writing summaries every month, teams can upload financial exports and get a structured first-pass analysis much faster.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false" aria-controls="faq-ans-2">
+                    Who is SBFinance built for?
+                    <div class="faq-icon"></div>
+                </button>
+                <div id="faq-ans-2" class="faq-content">
+                    <p>SBFinance is built for SMB founders, finance managers, accounting firms, outsourced finance teams, and fintech/lending teams. It is especially useful for teams that regularly work with transaction exports, bank statements, client spreadsheets, accounting reports, or revenue/expense data.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false" aria-controls="faq-ans-3">
+                    How is SBFinance different from Excel or Google Sheets?
+                    <div class="faq-icon"></div>
+                </button>
+                <div id="faq-ans-3" class="faq-content">
+                    <p>Excel is flexible, but most financial reporting still requires manual cleaning, formulas, checks, charts, and written explanations. SBFinance helps automate the repetitive parts: mapping columns, cleaning exports, calculating KPIs, detecting anomalies, generating dashboards, and creating executive summaries.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false" aria-controls="faq-ans-4">
+                    How is SBFinance different from ChatGPT?
+                    <div class="faq-icon"></div>
+                </button>
+                <div id="faq-ans-4" class="faq-content">
+                    <p>Generic AI tools are useful for explanation, but they are not built specifically for financial export analysis. SBFinance is designed around structured financial workflows: it reads CSV/XLSX files, analyzes transactions, detects duplicates and unusual expenses, builds dashboards, and then generates summaries grounded in the uploaded data.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false" aria-controls="faq-ans-5">
+                    Does my financial data leave my machine?
+                    <div class="faq-icon"></div>
+                </button>
+                <div id="faq-ans-5" class="faq-content">
+                    <p>SBFinance is designed for local-first workflows, so sensitive financial exports do not need to be uploaded to cloud-first AI tools. If a deployment uses optional external AI services, that should be clearly configured and disclosed.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false" aria-controls="faq-ans-6">
+                    What file formats does SBFinance support?
+                    <div class="faq-icon"></div>
+                </button>
+                <div id="faq-ans-6" class="faq-content">
+                    <p>SBFinance is focused on CSV and XLSX financial exports. These can come from accounting tools, bank statements, payment processors, CRM exports, internal spreadsheets, or client reports.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false" aria-controls="faq-ans-7">
+                    What kind of problems can SBFinance detect?
+                    <div class="faq-icon"></div>
+                </button>
+                <div id="faq-ans-7" class="faq-content">
+                    <p>SBFinance can help flag duplicate transactions, unusual expenses, recurring costs, category spikes, missing or inconsistent data, and periods where expenses grow faster than revenue. It is designed to highlight items that deserve human review, not to make final financial decisions automatically.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false" aria-controls="faq-ans-8">
+                    Does SBFinance replace accountants or finance teams?
+                    <div class="faq-icon"></div>
+                </button>
+                <div id="faq-ans-8" class="faq-content">
+                    <p>No. SBFinance is not a replacement for accountants, CFOs, or financial judgment. It reduces repetitive spreadsheet work and gives teams a faster first-pass analysis. Humans still review the results, make decisions, and apply accounting, tax, or business context.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false" aria-controls="faq-ans-9">
+                    Can accounting firms use SBFinance with client data?
+                    <div class="faq-icon"></div>
+                </button>
+                <div id="faq-ans-9" class="faq-content">
+                    <p>Yes, that is one of the strongest use cases. Accounting and outsourced finance teams can use SBFinance to analyze client exports, detect issues, generate dashboards, and prepare cleaner client-facing reports faster. The local-first approach is especially useful when client data is sensitive.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false" aria-controls="faq-ans-10">
+                    Can SBFinance generate reports for clients or founders?
+                    <div class="faq-icon"></div>
+                </button>
+                <div id="faq-ans-10" class="faq-content">
+                    <p>Yes. SBFinance is designed to generate executive-style summaries and PDF reports from uploaded financial data. Reports should explain key KPIs, cashflow movement, revenue and expense changes, anomalies, and recommended review areas in plain English.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false" aria-controls="faq-ans-11">
+                    Is SBFinance only for large companies?
+                    <div class="faq-icon"></div>
+                </button>
+                <div id="faq-ans-11" class="faq-content">
+                    <p>No. SBFinance is especially useful for small and mid-sized businesses that have real financial data but do not have a large analytics team. It is also useful for accounting firms and finance teams that manage reporting for multiple clients.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false" aria-controls="faq-ans-12">
+                    What happens during the demo?
+                    <div class="faq-icon"></div>
+                </button>
+                <div id="faq-ans-12" class="faq-content">
+                    <p>In the demo, we show how SBFinance takes a sample CSV/XLSX financial export and turns it into KPIs, anomaly flags, dashboards, plain-English insights, and a report. We can also discuss how the workflow would fit your company, finance team, or accounting firm.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false" aria-controls="faq-ans-13">
+                    Can SBFinance work with messy data?
+                    <div class="faq-icon"></div>
+                </button>
+                <div id="faq-ans-13" class="faq-content">
+                    <p>Yes, that is one of the main reasons it exists. SBFinance is designed for real-world exports where columns may be inconsistent, categories may be messy, and reports may require cleanup before analysis.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false" aria-controls="faq-ans-14">
+                    Is SBFinance accounting, tax, or legal advice?
+                    <div class="faq-icon"></div>
+                </button>
+                <div id="faq-ans-14" class="faq-content">
+                    <p>No. SBFinance is a financial analysis and reporting assistant. It can help analyze data, flag patterns, and generate summaries, but it does not provide official accounting, tax, legal, or investment advice. Final decisions should be reviewed by qualified professionals.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-btn" aria-expanded="false" aria-controls="faq-ans-15">
+                    How do I request access?
+                    <div class="faq-icon"></div>
+                </button>
+                <div id="faq-ans-15" class="faq-content">
+                    <p>Click “Request a Demo” and leave your work email, company, role, and a short note about the financial workflow you want to improve. We will follow up with a private demo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="cta">
+        <div class="cta-inner reveal">
+            <div class="section-tag" style="justify-content:center;display:flex;">request demo · 2026</div>
+            <h2>Want to test SBFinance on<br />your own financial workflow?</h2>
+            <p>Request a private demo and see how SBFinance turns raw financial exports into dashboards, risk signals,
+                and executive reports.</p>
+
+            <form id="demo-form" class="cta-form" action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="a4ab62bb-7dc4-49ea-b6fd-ee00dad74efa">
+                <input type="hidden" name="subject" value="New Demo Request — SBfinance">
+                <input type="hidden" name="from_name" value="SBfinance Landing">
+
+                <div class="cta-form-row">
+                    <div class="cta-field">
+                        <label class="cta-label" for="demo-name">Name</label>
+                        <input class="cta-input" type="text" name="name" id="demo-name" placeholder="John Doe"
+                            required />
+                    </div>
+                    <div class="cta-field">
+                        <label class="cta-label" for="demo-company">Company</label>
+                        <input class="cta-input" type="text" name="company" id="demo-company" placeholder="Acme Corp" />
+                    </div>
+                </div>
+
+                <div class="cta-field">
+                    <label class="cta-label" for="demo-email">Work Email</label>
+                    <input class="cta-input" type="email" name="email" id="demo-email" placeholder="you@company.com"
+                        required />
+                </div>
+
+                <div class="cta-field">
+                    <label class="cta-label" for="demo-role">Role</label>
+                    <input class="cta-input" type="text" name="role" id="demo-role"
+                        placeholder="CFO, Finance Manager, Founder..." />
+                </div>
+
+                <div class="cta-field">
+                    <label class="cta-label" for="demo-message">What financial workflow do you want to improve?</label>
+                    <textarea class="cta-textarea" name="message" id="demo-message"
+                        placeholder="E.g., monthly expense analysis, client reporting, cashflow tracking, anomaly detection..."
+                        required></textarea>
+                </div>
+
+                <button type="submit" class="cta-submit" id="demo-submit">
+                    <span class="btn-text">Request Demo
+                        <svg width="14" height="14" style="vertical-align:middle;margin-left:4px;">
+                            <use href="#ico-arrow" />
+                        </svg>
+                    </span>
+                    <div class="spinner"></div>
+                </button>
+            </form>
+
+            <div id="form-success" class="form-message">
+                <div class="msg-icon">✓</div>
+                <strong>Demo request sent.</strong><br />
+                We’ll get back to you soon.
+            </div>
+
+            <div id="form-error" class="form-message">
+                <div class="msg-icon">✗</div>
+                <strong>Something went wrong.</strong><br />
+                Please try again or email us at <a href="mailto:hello@sbfinance.me"
+                    style="color:inherit;text-decoration:underline;">hello@sbfinance.me</a>
+            </div>
+
+            <p
+                style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:20px;margin-bottom:0;">
+                No credit card &nbsp;·&nbsp; Free beta demo &nbsp;·&nbsp; Local-first workflow &nbsp;·&nbsp; CSV/XLSX
+                financial exports
+            </p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="logo">
+            <div class="logo-mark"><svg width="16" height="16">
+                    <use href="#ico-sb" />
+                </svg></div>
+            <span class="logo-text">SB<em>finance</em></span>
+        </div>
+        <p>Local-first AI financial analyst for private business data.</p>
+        <div style="display:flex;gap:24px;">
+            <a href="#privacy">Privacy</a>
+            <a href="#">Docs</a>
+            <a href="mailto:hello@sbfinance.me">Contact</a>
+            <a href="#cta">Request Demo</a>
+        </div>
+    </footer>
+
+    <script>
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+        document.querySelectorAll('.pipe-step').forEach((el, i) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(14px)';
+            el.style.transition = `opacity 0.4s ${i * 0.07}s ease, transform 0.4s ${i * 0.07}s ease, border-color .3s, background .3s`;
+        });
+        const pipeObs = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    document.querySelectorAll('.pipe-step').forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
+                    pipeObs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.2 });
+        const pf = document.querySelector('.pipeline-flow');
+        if (pf) pipeObs.observe(pf);
+
+        const riskObs = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    document.querySelectorAll('.risk-bar-fill').forEach(b => {
+                        const w = b.style.width; b.style.width = '0%';
+                        setTimeout(() => b.style.width = w, 150);
+                    });
+                    riskObs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.3 });
+        const rg = document.querySelector('.risk-grid');
+        if (rg) riskObs.observe(rg);
+
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('nav ul a:not(.nav-cta)');
+        window.addEventListener('scroll', () => {
+            let cur = '';
+            sections.forEach(s => { if (window.scrollY >= s.offsetTop - 140) cur = s.id; });
+            navLinks.forEach(a => { a.style.color = a.getAttribute('href') === '#' + cur ? 'var(--accent)' : ''; });
+        }, { passive: true });
+
+        // Web3Forms submission handler
+        const demoForm = document.getElementById('demo-form');
+        const submitBtn = document.getElementById('demo-submit');
+        const successMsg = document.getElementById('form-success');
+        const errorMsg = document.getElementById('form-error');
+
+        demoForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+            successMsg.className = 'form-message';
+            errorMsg.className = 'form-message';
+
+            try {
+                const formData = new FormData(demoForm);
+                const response = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    demoForm.style.display = 'none';
+                    successMsg.className = 'form-message success';
+                    demoForm.reset();
+                } else {
+                    errorMsg.className = 'form-message error';
+                }
+            } catch (err) {
+                errorMsg.className = 'form-message error';
+            } finally {
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+            }
+        });
+
+        // FAQ Accordion
+        const faqBtns = document.querySelectorAll('.faq-btn');
+        faqBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const expanded = btn.getAttribute('aria-expanded') === 'true';
+                const content = btn.nextElementSibling;
+
+                btn.setAttribute('aria-expanded', !expanded);
+                if (!expanded) {
+                    content.style.maxHeight = content.scrollHeight + 40 + 'px';
+                } else {
+                    content.style.maxHeight = null;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
