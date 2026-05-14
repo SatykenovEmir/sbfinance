@@ -2351,6 +2351,334 @@
             }
         }
 
+        /* ===== MOBILE COMPACT FIXES (≤600px) ===== */
+        @media (max-width: 600px) {
+            html, body {
+                width: 100%;
+                overflow-x: hidden;
+            }
+
+            section {
+                min-height: auto !important;
+                height: auto !important;
+            }
+
+            /* Hide decorative hero visual wrapper space */
+            .hero-visual {
+                display: none !important;
+                position: static !important;
+                width: 0 !important;
+                height: 0 !important;
+            }
+
+            /* Hero wrapper - collapse to content height */
+            .hero-wrapper {
+                overflow: visible !important;
+            }
+
+            /* Hero wrapper - remove overflow that creates phantom height */
+            #hero {
+                padding: 72px 14px 24px !important;
+                min-height: auto !important;
+                height: auto !important;
+            }
+
+            h1 {
+                font-size: clamp(28px, 8vw, 40px) !important;
+                line-height: 1.08 !important;
+                margin-bottom: 14px !important;
+            }
+
+
+
+            h2 {
+                font-size: clamp(22px, 6vw, 32px) !important;
+                margin-bottom: 10px !important;
+            }
+
+
+
+            .hero-tag {
+                font-size: 10px !important;
+                padding: 5px 10px !important;
+                margin-bottom: 14px !important;
+            }
+
+            .hero-sub {
+                font-size: 14px !important;
+                line-height: 1.55 !important;
+                margin-bottom: 14px !important;
+                max-width: 100% !important;
+            }
+
+            /* Fix inline-styled secondary hero paragraph */
+            #hero > p[style] {
+                font-size: 13px !important;
+                margin-bottom: 18px !important;
+                line-height: 1.5 !important;
+                max-width: 100% !important;
+            }
+
+            .hero-actions {
+                flex-direction: column !important;
+                gap: 10px !important;
+            }
+
+            .hero-actions a {
+                width: 100% !important;
+                justify-content: center !important;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                font-size: 13px !important;
+                padding: 12px 18px !important;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .hero-stats {
+                margin-top: 20px !important;
+                padding-top: 16px !important;
+                gap: 8px !important;
+            }
+
+            /* Trust chips in hero */
+            .hero-stats > div {
+                gap: 6px !important;
+            }
+
+            .hero-stats span {
+                font-size: 10px !important;
+                padding: 4px 10px !important;
+            }
+
+            .stat-num {
+                font-size: 24px !important;
+            }
+
+            .stat-label {
+                font-size: 10px !important;
+            }
+
+            /* Section sub text - reduce bottom margin */
+            .section-sub {
+                font-size: 13px !important;
+                margin-bottom: 24px !important;
+                max-width: 100% !important;
+                line-height: 1.55 !important;
+            }
+
+            .section-tag {
+                font-size: 9px !important;
+                margin-bottom: 10px !important;
+            }
+
+            /* Pipeline */
+            #pipeline {
+                padding: 40px 14px !important;
+            }
+
+            .pipeline-flow {
+                gap: 10px !important;
+            }
+
+            .pipe-step {
+                padding: 16px 14px !important;
+            }
+
+            /* Privacy */
+            #privacy {
+                padding: 40px 14px !important;
+            }
+
+            .privacy-inner {
+                padding: 24px 14px !important;
+                gap: 20px !important;
+            }
+
+            .privacy-inner h2 {
+                font-size: clamp(20px, 5vw, 30px) !important;
+            }
+
+
+            .privacy-inner > div > p[style] {
+                font-size: 13px !important;
+                line-height: 1.5 !important;
+            }
+
+            .privacy-badge {
+                font-size: 10px !important;
+                padding: 6px 10px !important;
+                margin-bottom: 14px !important;
+            }
+
+            .privacy-points {
+                gap: 12px !important;
+                margin-top: 14px !important;
+            }
+
+            /* Features */
+            #features {
+                padding: 40px 14px !important;
+            }
+
+            .feat-card {
+                padding: 18px 14px !important;
+            }
+
+            .feat-icon {
+                width: 34px !important;
+                height: 34px !important;
+                margin-bottom: 10px !important;
+            }
+
+            .feat-title {
+                font-size: 14px !important;
+                margin-bottom: 6px !important;
+            }
+
+            .feat-desc {
+                font-size: 12px !important;
+                line-height: 1.5 !important;
+            }
+
+            /* Chat Demo */
+            #chat-demo {
+                padding: 40px 14px !important;
+            }
+
+            .chat-messages {
+                min-height: auto !important;
+                padding: 14px 10px !important;
+                gap: 12px !important;
+            }
+
+            .msg {
+                font-size: 12px !important;
+                max-width: 94% !important;
+            }
+
+            .msg-user,
+            .msg-ai {
+                padding: 10px 12px !important;
+            }
+
+            /* Risk */
+            #risk {
+                padding: 40px 14px !important;
+            }
+
+            .risk-grid {
+                margin-top: 24px !important;
+                gap: 10px !important;
+            }
+
+            .risk-card {
+                padding: 14px 12px !important;
+            }
+
+            /* Who */
+            #who {
+                padding: 40px 14px !important;
+            }
+
+            .who-grid {
+                margin-top: 24px !important;
+                gap: 10px !important;
+            }
+
+            .who-card {
+                padding: 16px 12px !important;
+            }
+
+            /* Comparison */
+            #comparison {
+                padding: 40px 14px !important;
+            }
+
+            .comp-grid {
+                margin-top: 24px !important;
+                gap: 12px !important;
+            }
+
+            .comp-card {
+                padding: 16px 12px !important;
+            }
+
+            .comp-highlight {
+                padding: 18px 14px !important;
+                margin-top: 12px !important;
+            }
+
+            .comp-highlight h3 {
+                font-size: 16px !important;
+            }
+
+            .comp-highlight p {
+                font-size: 12px !important;
+                margin-bottom: 12px !important;
+            }
+
+            .comp-bullets {
+                grid-template-columns: 1fr !important;
+                gap: 6px !important;
+            }
+
+            .comp-bullets li {
+                font-size: 12px !important;
+            }
+
+            /* FAQ */
+            #faq {
+                padding: 40px 14px !important;
+            }
+
+            .faq-list {
+                margin-top: 24px !important;
+                gap: 8px !important;
+            }
+
+            .faq-btn {
+                padding: 12px !important;
+                font-size: 13px !important;
+            }
+
+            /* CTA */
+            #cta {
+                padding: 40px 14px 60px !important;
+            }
+
+            .cta-inner {
+                padding: 28px 14px !important;
+            }
+
+            .cta-inner > p {
+                font-size: 13px !important;
+                margin-bottom: 18px !important;
+            }
+
+            .cta-form-row {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* Footer */
+            footer {
+                padding: 16px 14px !important;
+                flex-direction: column !important;
+                gap: 10px !important;
+                text-align: center !important;
+            }
+
+            footer > div[style] {
+                flex-wrap: wrap !important;
+                justify-content: center !important;
+                gap: 12px !important;
+            }
+        }
+
+        /* ===== VERY SMALL SCREENS (≤380px) ===== */
+
         @media (max-width: 480px) {
             body {
                 font-size: 14px;
@@ -2737,12 +3065,16 @@
         }
 
         @media (max-width: 380px) {
+            #hero {
+                padding: 64px 10px 20px !important;
+            }
+
             h1 {
-                font-size: clamp(20px, 4vw, 28px);
+                font-size: clamp(22px, 7vw, 30px) !important;
             }
 
             h2 {
-                font-size: clamp(16px, 3vw, 22px);
+                font-size: clamp(18px, 5.5vw, 24px) !important;
             }
 
             .hero-tag {
@@ -2750,13 +3082,23 @@
             }
 
             .hero-sub {
-                font-size: 13px;
+                font-size: 13px !important;
+            }
+
+            #hero > p[style] {
+                font-size: 12px !important;
+                margin-bottom: 14px !important;
             }
 
             .btn-primary,
             .btn-secondary {
-                font-size: 11px;
-                padding: 8px 14px;
+                font-size: 12px !important;
+                padding: 10px 14px !important;
+            }
+
+            .hero-stats span {
+                font-size: 9px !important;
+                padding: 3px 8px !important;
             }
 
             .stat-num {
@@ -2764,23 +3106,38 @@
             }
 
             .feat-card {
-                padding: 12px 10px;
+                padding: 14px 10px !important;
             }
 
             .feat-desc {
-                font-size: 10px;
+                font-size: 11px !important;
             }
 
             .comp-highlight h3 {
-                font-size: 13px;
+                font-size: 14px !important;
             }
 
             .comp-highlight p {
-                font-size: 10px;
+                font-size: 11px !important;
             }
 
             .cta-inner {
-                padding: 20px 10px;
+                padding: 20px 10px !important;
+            }
+
+            #pipeline,
+            #privacy,
+            #features,
+            #chat-demo,
+            #risk,
+            #who,
+            #comparison,
+            #faq {
+                padding: 32px 10px !important;
+            }
+
+            #cta {
+                padding: 32px 10px 50px !important;
             }
         }
     </style>
@@ -2944,7 +3301,7 @@
     </nav>
 
     <!-- HERO -->
-    <div style="position:relative;overflow:hidden;">
+    <div style="position:relative;overflow:hidden;" class="hero-wrapper">
         <section id="hero">
             <div class="hero-tag">
                 <div class="pulse-dot"></div>
@@ -3933,8 +4290,8 @@
         });
 
         // Close mobile menu when a link is clicked
-        const navLinks = document.querySelectorAll('nav ul a');
-        navLinks.forEach(link => {
+        const navLinksAll = document.querySelectorAll('nav ul a');
+        navLinksAll.forEach(link => {
             link.addEventListener('click', () => {
                 navToggle.classList.remove('active');
                 navMenu.classList.remove('active');
