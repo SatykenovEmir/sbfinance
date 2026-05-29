@@ -10,6 +10,16 @@
     <meta property="og:title" content="SBFinance — AI Financial Analyst for Private Business Data" />
     <meta property="og:description"
         content="Analyze financial exports, detect anomalies, generate dashboards, and create executive reports without uploading sensitive data to the cloud." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="SBFinance — Local-first AI Financial Analyst" />
+    <meta name="twitter:description"
+        content="Analyze financial exports, detect anomalies, generate dashboards, and create executive reports without uploading sensitive data to the cloud." />
+    <meta name="robots" content="index,follow" />
+    <!-- TODO(erbol): Set canonical when final production domain is confirmed.
+         Example: <link rel="canonical" href="https://YOUR_DOMAIN/" /> -->
+    <!-- TODO(erbol): Add social preview image when available.
+         Recommended file: /assets/og/sbfinance-og.png (1200x630 PNG). -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
         href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
@@ -1407,6 +1417,114 @@
             margin: 0;
         }
 
+        /* DOWNLOADS */
+        #downloads {
+            padding: 100px clamp(24px, 6vw, 60px);
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .download-grid {
+            margin-top: 52px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+
+        .download-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .download-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 20px;
+            line-height: 1.3;
+        }
+
+        .download-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .download-note {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .download-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg3);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            text-decoration: none;
+            transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+
+        .download-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .download-btn.is-disabled {
+            color: var(--muted);
+            border: 1px dashed var(--border);
+            cursor: not-allowed;
+            pointer-events: none;
+            transform: none;
+        }
+
+        .download-btn.is-secondary {
+            color: var(--muted);
+            border-style: dashed;
+        }
+
+        .download-btn.is-secondary:hover {
+            color: var(--text);
+            border-color: var(--border-bright);
+        }
+
+        .download-footnote {
+            margin-top: 20px;
+            color: var(--muted);
+            font-size: 13px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .download-future-note {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
         /* CTA */
         #cta {
             padding: 80px 60px 120px;
@@ -1607,6 +1725,31 @@
         .form-message .msg-icon {
             font-size: 32px;
             margin-bottom: 8px;
+        }
+
+        .form-privacy-note {
+            margin-top: 14px;
+            margin-bottom: 0;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.65;
+            text-align: left;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-flow-note {
+            margin-top: -10px;
+            margin-bottom: 18px;
+            font-size: 14px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .form-privacy-note a {
+            color: var(--accent);
+            text-decoration: underline;
         }
 
         /* FOOTER */
@@ -3286,16 +3429,17 @@
                 </svg></div>
             <span class="logo-text">SB<em>finance</em></span>
         </div>
-        <button class="nav-toggle" aria-label="Toggle menu">
+        <button class="nav-toggle" aria-label="Toggle menu" aria-controls="nav-menu" aria-expanded="false">
             <span></span>
             <span></span>
             <span></span>
         </button>
-        <ul>
+        <ul id="nav-menu">
             <li><a href="#pipeline">How it works</a></li>
             <li><a href="#features">Features</a></li>
             <li><a href="#privacy">Privacy</a></li>
             <li><a href="#who">Use cases</a></li>
+            <li><a href="#downloads">Downloads</a></li>
             <li><a href="#cta" class="nav-cta">Request a Demo</a></li>
         </ul>
     </nav>
@@ -4092,6 +4236,43 @@
         </div>
     </section>
 
+    <!-- DOWNLOADS -->
+    <section id="downloads">
+        <div class="section-tag">desktop installers</div>
+        <h2>Download builds for your OS.</h2>
+        <p class="section-sub">Downloads are pulled from the latest GitHub release. If your OS package is not published yet, use the release page fallback.</p>
+
+        <div class="download-grid reveal">
+            <article class="download-card">
+                <h3>Windows</h3>
+                <p class="download-meta">format: .exe / .msi</p>
+                <p class="download-note" id="download-note-windows">Checking latest release assets…</p>
+                <div class="download-actions" id="download-actions-windows">
+                    <span class="download-btn is-disabled">Checking…</span>
+                </div>
+            </article>
+            <article class="download-card">
+                <h3>macOS</h3>
+                <p class="download-meta">format: .dmg / .pkg</p>
+                <p class="download-note" id="download-note-macos">Checking latest release assets…</p>
+                <div class="download-actions" id="download-actions-macos">
+                    <span class="download-btn is-disabled">Checking…</span>
+                </div>
+            </article>
+            <article class="download-card">
+                <h3>Linux</h3>
+                <p class="download-meta">format: .AppImage / .deb / .rpm</p>
+                <p class="download-note" id="download-note-linux">Checking latest release assets…</p>
+                <div class="download-actions" id="download-actions-linux">
+                    <span class="download-btn is-disabled">Checking…</span>
+                </div>
+            </article>
+        </div>
+
+        <p class="download-footnote" id="download-footnote">Loading release metadata…</p>
+        <p class="download-future-note" id="download-checksum-note">Checksum file will appear here when available.</p>
+    </section>
+
     <!-- CTA -->
     <section id="cta">
         <div class="cta-inner reveal">
@@ -4099,11 +4280,16 @@
             <h2>Want to test SBFinance on<br />your own financial workflow?</h2>
             <p>Request a private demo and see how SBFinance turns raw financial exports into dashboards, risk signals,
                 and executive reports.</p>
+            <p class="form-flow-note">We’ll review your request and contact you with demo access.</p>
 
+            <!-- Web3Forms is the current MVP intake for demo requests.
+                 Future intake should move to a backend endpoint: POST /api/demo/request.
+                 License generation/activation must remain server-side only. -->
             <form id="demo-form" class="cta-form" action="https://api.web3forms.com/submit" method="POST">
                 <input type="hidden" name="access_key" value="a4ab62bb-7dc4-49ea-b6fd-ee00dad74efa">
                 <input type="hidden" name="subject" value="New Demo Request — SBfinance">
                 <input type="hidden" name="from_name" value="SBfinance Landing">
+                <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off">
 
                 <div class="cta-form-row">
                     <div class="cta-field">
@@ -4148,8 +4334,8 @@
 
             <div id="form-success" class="form-message">
                 <div class="msg-icon">✓</div>
-                <strong>Demo request sent.</strong><br />
-                We’ll get back to you soon.
+                <strong>Demo request received.</strong><br />
+                We’ll review your request and contact you with demo access.
             </div>
 
             <div id="form-error" class="form-message">
@@ -4164,6 +4350,10 @@
                 No credit card &nbsp;·&nbsp; Free beta demo &nbsp;·&nbsp; Local-first workflow &nbsp;·&nbsp; CSV/XLSX
                 financial exports
             </p>
+            <p class="form-privacy-note">
+                We collect your name, company, work email, role, and workflow note to review demo requests and follow up with relevant onboarding.
+                See our <a href="privacy-policy.html">Privacy Policy</a>.
+            </p>
         </div>
     </section>
 
@@ -4177,8 +4367,10 @@
         </div>
         <p>Local-first AI financial analyst for private business data.</p>
         <div style="display:flex;gap:24px;">
-            <a href="#privacy">Privacy</a>
-            <a href="#">Docs</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+            <a href="terms.html">Terms</a>
+            <a href="refund-policy.html">Refund Policy</a>
+            <a href="#faq">FAQ</a>
             <a href="mailto:hello@sbfinance.me">Contact</a>
             <a href="#cta">Request Demo</a>
         </div>
@@ -4227,6 +4419,163 @@
             sections.forEach(s => { if (window.scrollY >= s.offsetTop - 140) cur = s.id; });
             navLinks.forEach(a => { a.style.color = a.getAttribute('href') === '#' + cur ? 'var(--accent)' : ''; });
         }, { passive: true });
+
+        // GitHub release downloads (static-site friendly).
+        const RELEASE_REPO = 'ErbolTakhirov/sbfinance_winner';
+        const RELEASE_API_URL = `https://api.github.com/repos/${RELEASE_REPO}/releases/latest`;
+        const RELEASE_FALLBACK_URL = `https://github.com/${RELEASE_REPO}/releases/latest`;
+        const PLATFORM_CONFIG = {
+            windows: {
+                noteId: 'download-note-windows',
+                actionsId: 'download-actions-windows',
+                matcher: /\.(exe|msi)$/i,
+                emptyText: 'Windows build is not attached in the latest release yet.'
+            },
+            macos: {
+                noteId: 'download-note-macos',
+                actionsId: 'download-actions-macos',
+                matcher: /\.(dmg|pkg|zip)$/i,
+                emptyText: 'macOS build is not attached in the latest release yet.'
+            },
+            linux: {
+                noteId: 'download-note-linux',
+                actionsId: 'download-actions-linux',
+                matcher: /\.(appimage|deb|rpm)$/i,
+                emptyText: 'Linux build is not attached in the latest release yet.'
+            }
+        };
+
+        function formatAssetLabel(assetName) {
+            const lower = assetName.toLowerCase();
+            if (lower.endsWith('.appimage')) return 'Download AppImage';
+            if (lower.endsWith('.deb')) return 'Download .deb';
+            if (lower.endsWith('.rpm')) return 'Download .rpm';
+            if (lower.endsWith('.msi')) return 'Download .msi';
+            if (lower.endsWith('.exe')) return 'Download .exe';
+            if (lower.endsWith('.dmg')) return 'Download .dmg';
+            if (lower.endsWith('.pkg')) return 'Download .pkg';
+            if (lower.endsWith('.zip')) return 'Download .zip';
+            return `Download ${assetName}`;
+        }
+
+        function sortAssetsByPriority(assets) {
+            const priority = ['.appimage', '.deb', '.rpm', '.msi', '.exe', '.dmg', '.pkg', '.zip'];
+            return [...assets].sort((a, b) => {
+                const ai = priority.findIndex(ext => a.name.toLowerCase().endsWith(ext));
+                const bi = priority.findIndex(ext => b.name.toLowerCase().endsWith(ext));
+                return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+            });
+        }
+
+        function createDownloadLink(label, href, secondary = false) {
+            const link = document.createElement('a');
+            link.className = `download-btn${secondary ? ' is-secondary' : ''}`;
+            link.href = href;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = label;
+            return link;
+        }
+
+        function createDisabledChip(label) {
+            const chip = document.createElement('span');
+            chip.className = 'download-btn is-disabled';
+            chip.textContent = label;
+            return chip;
+        }
+
+        function setDownloadFallback(message) {
+            Object.values(PLATFORM_CONFIG).forEach(config => {
+                const note = document.getElementById(config.noteId);
+                const actions = document.getElementById(config.actionsId);
+                if (!note || !actions) return;
+                note.textContent = message;
+                actions.innerHTML = '';
+                actions.appendChild(createDownloadLink('Open releases', RELEASE_FALLBACK_URL, true));
+            });
+
+            const footnote = document.getElementById('download-footnote');
+            const checksumNote = document.getElementById('download-checksum-note');
+            if (footnote) footnote.textContent = 'Could not load release metadata. Open GitHub releases manually.';
+            if (checksumNote) checksumNote.textContent = 'Checksum verification file is available in the release assets.';
+        }
+
+        function updatePlatformDownloads(platformKey, assets, releaseUrl, tagName) {
+            const config = PLATFORM_CONFIG[platformKey];
+            if (!config) return;
+
+            const note = document.getElementById(config.noteId);
+            const actions = document.getElementById(config.actionsId);
+            if (!note || !actions) return;
+
+            actions.innerHTML = '';
+            const sorted = sortAssetsByPriority(assets);
+
+            if (sorted.length === 0) {
+                note.textContent = config.emptyText;
+                actions.appendChild(createDisabledChip('Not published'));
+                actions.appendChild(createDownloadLink('Open releases', releaseUrl, true));
+                return;
+            }
+
+            note.textContent = `Latest build source: ${tagName}`;
+            sorted.forEach(asset => {
+                actions.appendChild(createDownloadLink(formatAssetLabel(asset.name), asset.browser_download_url));
+            });
+            actions.appendChild(createDownloadLink('Release notes', releaseUrl, true));
+        }
+
+        async function loadReleaseDownloads() {
+            try {
+                const response = await fetch(RELEASE_API_URL, {
+                    headers: { Accept: 'application/vnd.github+json' }
+                });
+                if (!response.ok) {
+                    throw new Error(`GitHub API returned ${response.status}`);
+                }
+
+                const release = await response.json();
+                const assets = Array.isArray(release.assets) ? release.assets : [];
+                const releaseUrl = release.html_url || RELEASE_FALLBACK_URL;
+                const tagName = release.tag_name || 'latest';
+
+                const releaseDate = release.published_at
+                    ? new Date(release.published_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+                    : 'unknown date';
+
+                const footnote = document.getElementById('download-footnote');
+                if (footnote) {
+                    footnote.textContent = `Latest public release: ${tagName} (${releaseDate}).`;
+                }
+
+                const checksumAsset = assets.find(asset => /sha256/i.test(asset.name) && /sum/i.test(asset.name));
+                const checksumNote = document.getElementById('download-checksum-note');
+                if (checksumNote) {
+                    if (checksumAsset) {
+                        checksumNote.textContent = 'Checksum file: ';
+                        const checksumLink = document.createElement('a');
+                        checksumLink.href = checksumAsset.browser_download_url;
+                        checksumLink.target = '_blank';
+                        checksumLink.rel = 'noopener noreferrer';
+                        checksumLink.style.color = 'var(--accent)';
+                        checksumLink.style.textDecoration = 'none';
+                        checksumLink.textContent = checksumAsset.name;
+                        checksumNote.appendChild(checksumLink);
+                    } else {
+                        checksumNote.textContent = 'Checksum file is not attached to the latest release yet.';
+                    }
+                }
+
+                Object.entries(PLATFORM_CONFIG).forEach(([platformKey, config]) => {
+                    const platformAssets = assets.filter(asset => config.matcher.test(asset.name));
+                    updatePlatformDownloads(platformKey, platformAssets, releaseUrl, tagName);
+                });
+            } catch (error) {
+                setDownloadFallback('Latest release metadata is temporarily unavailable.');
+            }
+        }
+
+        loadReleaseDownloads();
 
         // Web3Forms submission handler
         const demoForm = document.getElementById('demo-form');
@@ -4284,27 +4633,35 @@
         const navToggle = document.querySelector('.nav-toggle');
         const navMenu = document.querySelector('nav ul');
 
-        navToggle.addEventListener('click', () => {
-            navToggle.classList.toggle('active');
-            navMenu.classList.toggle('active');
-        });
+        if (navToggle && navMenu) {
+            navToggle.setAttribute('aria-controls', 'nav-menu');
+            navToggle.setAttribute('aria-expanded', 'false');
 
-        // Close mobile menu when a link is clicked
-        const navLinksAll = document.querySelectorAll('nav ul a');
-        navLinksAll.forEach(link => {
-            link.addEventListener('click', () => {
-                navToggle.classList.remove('active');
-                navMenu.classList.remove('active');
+            navToggle.addEventListener('click', () => {
+                const isOpen = navMenu.classList.toggle('active');
+                navToggle.classList.toggle('active', isOpen);
+                navToggle.setAttribute('aria-expanded', String(isOpen));
             });
-        });
 
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('nav')) {
-                navToggle.classList.remove('active');
-                navMenu.classList.remove('active');
-            }
-        });
+            // Close mobile menu when a link is clicked
+            const navLinksAll = document.querySelectorAll('nav ul a');
+            navLinksAll.forEach(link => {
+                link.addEventListener('click', () => {
+                    navToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    navToggle.setAttribute('aria-expanded', 'false');
+                });
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('nav')) {
+                    navToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                    navToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
     </script>
 </body>
 
