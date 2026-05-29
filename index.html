@@ -4447,14 +4447,20 @@
 
         function formatAssetLabel(assetName) {
             const lower = assetName.toLowerCase();
+            const archLabel = lower.includes('aarch64') || lower.includes('arm64')
+                ? ' (Apple Silicon)'
+                : lower.includes('x64') || lower.includes('x86_64')
+                    ? ' (Intel)'
+                    : '';
+
             if (lower.endsWith('.appimage')) return 'Download AppImage';
             if (lower.endsWith('.deb')) return 'Download .deb';
             if (lower.endsWith('.rpm')) return 'Download .rpm';
             if (lower.endsWith('.msi')) return 'Download .msi';
             if (lower.endsWith('.exe')) return 'Download .exe';
-            if (lower.endsWith('.dmg')) return 'Download .dmg';
-            if (lower.endsWith('.pkg')) return 'Download .pkg';
-            if (lower.endsWith('.zip')) return 'Download .zip';
+            if (lower.endsWith('.dmg')) return `Download .dmg${archLabel}`;
+            if (lower.endsWith('.pkg')) return `Download .pkg${archLabel}`;
+            if (lower.endsWith('.zip')) return `Download .zip${archLabel}`;
             return `Download ${assetName}`;
         }
 
