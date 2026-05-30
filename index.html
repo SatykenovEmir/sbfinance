@@ -4246,25 +4246,27 @@
             <article class="download-card">
                 <h3>Windows</h3>
                 <p class="download-meta">format: .exe / .msi</p>
-                <p class="download-note" id="download-note-windows">Checking latest release assets…</p>
+                <p class="download-note" id="download-note-windows">Loading latest Windows build links…</p>
                 <div class="download-actions" id="download-actions-windows">
-                    <span class="download-btn is-disabled">Checking…</span>
+                    <a class="download-btn" href="https://github.com/ErbolTakhirov/sbfinance_winner/releases/latest" target="_blank" rel="noopener noreferrer">Download for Windows</a>
+                    <a class="download-btn is-secondary" href="https://github.com/ErbolTakhirov/sbfinance_winner/releases/latest" target="_blank" rel="noopener noreferrer">Open releases</a>
                 </div>
             </article>
             <article class="download-card">
                 <h3>macOS</h3>
                 <p class="download-meta">format: .dmg / .pkg</p>
-                <p class="download-note" id="download-note-macos">Checking latest release assets…</p>
-                <div class="download-actions" id="download-actions-macos">
-                    <span class="download-btn is-disabled">Checking…</span>
+                <p class="download-note">macOS installer distribution is currently paused.</p>
+                <div class="download-actions">
+                    <span class="download-btn is-disabled">Temporarily unavailable</span>
                 </div>
             </article>
             <article class="download-card">
                 <h3>Linux</h3>
                 <p class="download-meta">format: .AppImage / .deb / .rpm</p>
-                <p class="download-note" id="download-note-linux">Checking latest release assets…</p>
+                <p class="download-note" id="download-note-linux">Loading latest Linux build links…</p>
                 <div class="download-actions" id="download-actions-linux">
-                    <span class="download-btn is-disabled">Checking…</span>
+                    <a class="download-btn" href="https://github.com/ErbolTakhirov/sbfinance_winner/releases/latest" target="_blank" rel="noopener noreferrer">Download for Linux</a>
+                    <a class="download-btn is-secondary" href="https://github.com/ErbolTakhirov/sbfinance_winner/releases/latest" target="_blank" rel="noopener noreferrer">Open releases</a>
                 </div>
             </article>
         </div>
@@ -4429,19 +4431,15 @@
                 noteId: 'download-note-windows',
                 actionsId: 'download-actions-windows',
                 matcher: /\.(exe|msi)$/i,
-                emptyText: 'Windows build is not attached in the latest release yet.'
-            },
-            macos: {
-                noteId: 'download-note-macos',
-                actionsId: 'download-actions-macos',
-                matcher: /\.(dmg|pkg|zip)$/i,
-                emptyText: 'macOS build is not attached in the latest release yet.'
+                emptyText: 'Windows build is not attached in the latest release yet.',
+                fallbackLabel: 'Download for Windows'
             },
             linux: {
                 noteId: 'download-note-linux',
                 actionsId: 'download-actions-linux',
                 matcher: /\.(appimage|deb|rpm)$/i,
-                emptyText: 'Linux build is not attached in the latest release yet.'
+                emptyText: 'Linux build is not attached in the latest release yet.',
+                fallbackLabel: 'Download for Linux'
             }
         };
 
@@ -4497,6 +4495,7 @@
                 if (!note || !actions) return;
                 note.textContent = message;
                 actions.innerHTML = '';
+                actions.appendChild(createDownloadLink(config.fallbackLabel || 'Download', RELEASE_FALLBACK_URL));
                 actions.appendChild(createDownloadLink('Open releases', RELEASE_FALLBACK_URL, true));
             });
 
