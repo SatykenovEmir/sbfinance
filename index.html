@@ -7,19 +7,34 @@
     <title>SBFinance — Local-first AI Financial Analyst</title>
     <meta name="description"
         content="SBFinance turns messy financial CSV/XLSX exports into cashflow insights, anomaly detection, dashboards, and executive PDF reports — locally and privately." />
-    <meta property="og:title" content="SBFinance — AI Financial Analyst for Private Business Data" />
+    <link rel="canonical" href="https://sbfinance.me/" />
+    <meta name="robots" content="index,follow" />
+
+    <!-- Favicons -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="SBFinance — Local-first AI Financial Analyst" />
     <meta property="og:description"
-        content="Analyze financial exports, detect anomalies, generate dashboards, and create executive reports without uploading sensitive data to the cloud." />
+        content="Turn messy CSV/XLSX exports into cashflow insights, anomaly detection, dashboards, and executive PDF reports — without uploading sensitive data to the cloud." />
     <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:url" content="https://sbfinance.me/" />
+    <meta property="og:site_name" content="SBFinance" />
+    <meta property="og:image" content="https://sbfinance.me/assets/og/sbfinance-og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="SBFinance — AI financial analyst for private business data" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="SBFinance — Local-first AI Financial Analyst" />
     <meta name="twitter:description"
-        content="Analyze financial exports, detect anomalies, generate dashboards, and create executive reports without uploading sensitive data to the cloud." />
-    <meta name="robots" content="index,follow" />
-    <!-- TODO(erbol): Set canonical when final production domain is confirmed.
-         Example: <link rel="canonical" href="https://YOUR_DOMAIN/" /> -->
-    <!-- TODO(erbol): Add social preview image when available.
-         Recommended file: /assets/og/sbfinance-og.png (1200x630 PNG). -->
+        content="Turn messy CSV/XLSX exports into cashflow insights, anomaly detection, dashboards, and executive PDF reports — without uploading sensitive data to the cloud." />
+    <meta name="twitter:image" content="https://sbfinance.me/assets/og/sbfinance-og.png" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
         href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
@@ -32,7 +47,8 @@
             --border: rgba(255, 255, 255, 0.07);
             --border-bright: rgba(120, 220, 200, 0.25);
             --text: #e2e2d8;
-            --muted: #6b6b78;
+            /* Raised from #6b6b78 (3.87:1) to meet WCAG AA 4.5:1 on dark backgrounds (7.3:1 on --bg, 6.8:1 on --bg3). */
+            --muted: #9a9aa8;
             --accent: #5dffd3;
             --accent2: #ff6b35;
             --accent3: #a78bfa;
@@ -45,6 +61,54 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        /* ACCESSIBILITY */
+        .skip-link {
+            position: absolute;
+            left: 16px;
+            top: -100px;
+            z-index: 9999;
+            background: var(--accent);
+            color: #05050a;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 12px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+
+        .skip-link:focus {
+            top: 16px;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+            border-radius: 4px;
+        }
+
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        textarea:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
         }
 
         html {
@@ -1209,6 +1273,82 @@
             font-size: 13px;
             color: var(--muted);
             line-height: 1.6;
+        }
+
+        /* TEAM */
+        #team {
+            padding: 100px 60px;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin-top: 48px;
+        }
+
+        .team-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 28px 26px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .team-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-bright);
+        }
+
+        .team-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: rgba(93, 255, 211, 0.1);
+            border: 1px solid var(--border-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 17px;
+            color: var(--accent);
+            margin-bottom: 18px;
+        }
+
+        .team-name {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .team-role {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 14px;
+        }
+
+        .team-bio {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        @media (max-width: 720px) {
+            #team {
+                padding: 64px 24px;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* COMPARISON */
@@ -3284,9 +3424,89 @@
             }
         }
     </style>
+
+    <!-- Structured data: SoftwareApplication / Organization -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "SBFinance",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Windows, Linux",
+      "url": "https://sbfinance.me/",
+      "image": "https://sbfinance.me/assets/og/sbfinance-og.png",
+      "description": "SBFinance is a local-first AI financial analyst that turns messy CSV/XLSX exports into cashflow insights, anomaly detection, dashboards, and executive PDF reports without uploading sensitive data to the cloud.",
+      "softwareVersion": "Private beta",
+      "publisher": {
+        "@type": "Organization",
+        "name": "SBFinance",
+        "url": "https://sbfinance.me/",
+        "logo": "https://sbfinance.me/assets/favicon-32x32.png",
+        "email": "hello@sbfinance.me"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "description": "Free private beta demo. Request access for evaluation."
+      }
+    }
+    </script>
+
+    <!-- Structured data: FAQ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What exactly does SBFinance do?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "SBFinance turns messy financial CSV/XLSX exports into cashflow insights, KPI summaries, anomaly detection, dashboards, and executive PDF reports, so teams can get a structured first-pass analysis much faster than working in spreadsheets manually."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does my financial data leave my machine?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "SBFinance is designed for local-first workflows, so sensitive financial exports do not need to be uploaded to cloud-first AI tools. If a deployment uses optional external AI services, that should be clearly configured and disclosed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What file formats does SBFinance support?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "SBFinance is focused on CSV and XLSX financial exports from accounting tools, bank statements, payment processors, CRM exports, internal spreadsheets, or client reports."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is SBFinance accounting, tax, or legal advice?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. SBFinance is a financial analysis and reporting assistant. It can help analyze data, flag patterns, and generate summaries, but it does not provide official accounting, tax, legal, or investment advice. Final decisions should be reviewed by qualified professionals."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does SBFinance cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "SBFinance is currently in private beta. You can request a free demo to evaluate it on your own financial workflow before any paid plans are offered."
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 
 <body>
+
+    <a class="skip-link" href="#main-content">Skip to main content</a>
 
     <!-- SVG SPRITE -->
     <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
@@ -3424,7 +3644,7 @@
     <!-- NAV -->
     <nav>
         <div class="logo">
-            <div class="logo-mark"><svg width="16" height="16">
+            <div class="logo-mark"><svg width="16" height="16" aria-hidden="true">
                     <use href="#ico-sb" />
                 </svg></div>
             <span class="logo-text">SB<em>finance</em></span>
@@ -3443,6 +3663,8 @@
             <li><a href="#cta" class="nav-cta">Request a Demo</a></li>
         </ul>
     </nav>
+
+    <main id="main-content">
 
     <!-- HERO -->
     <div style="position:relative;overflow:hidden;" class="hero-wrapper">
@@ -3463,14 +3685,14 @@
             </p>
             <div class="hero-actions">
                 <a href="#cta" class="btn-primary">
-                    <svg width="13" height="13">
+                    <svg width="13" height="13" aria-hidden="true">
                         <use href="#ico-play" />
                     </svg>
                     Request a Demo
                 </a>
-                <a href="#pipeline" class="btn-secondary">
+                <a href="sample-report.html" class="btn-secondary">
                     See Sample Report
-                    <svg width="14" height="14">
+                    <svg width="14" height="14" aria-hidden="true">
                         <use href="#ico-arrow" />
                     </svg>
                 </a>
@@ -3484,14 +3706,16 @@
                         style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);border:1px solid var(--border-bright);padding:6px 14px;border-radius:100px;">No
                         cloud upload</span>
                     <span
-                        style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);border:1px solid var(--border-bright);padding:6px 14px;border-radius:100px;">CSV/XLSX
-                        support</span>
+                        style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);border:1px solid var(--border-bright);padding:6px 14px;border-radius:100px;">Private
+                        beta</span>
+                    <span
+                        style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);border:1px solid var(--border-bright);padding:6px 14px;border-radius:100px;">CSV/XLSX</span>
                     <span
                         style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);border:1px solid var(--border-bright);padding:6px 14px;border-radius:100px;">PDF
-                        reports</span>
+                        report</span>
                     <span
-                        style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);border:1px solid var(--border-bright);padding:6px 14px;border-radius:100px;">Free
-                        beta demo</span>
+                        style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);border:1px solid var(--border-bright);padding:6px 14px;border-radius:100px;">License-ready
+                        desktop</span>
                 </div>
             </div>
         </section>
@@ -3541,7 +3765,7 @@
         <div class="pipeline-flow reveal">
             <div class="pipe-step">
                 <div class="pipe-num">01</div>
-                <div class="pipe-icon-wrap"><svg width="18" height="18">
+                <div class="pipe-icon-wrap"><svg width="18" height="18" aria-hidden="true">
                         <use href="#ico-upload" />
                     </svg></div>
                 <div class="pipe-name">Upload</div>
@@ -3550,7 +3774,7 @@
             </div>
             <div class="pipe-step">
                 <div class="pipe-num">02</div>
-                <div class="pipe-icon-wrap"><svg width="18" height="18">
+                <div class="pipe-icon-wrap"><svg width="18" height="18" aria-hidden="true">
                         <use href="#ico-code" />
                     </svg></div>
                 <div class="pipe-name">Map & Clean</div>
@@ -3559,7 +3783,7 @@
             </div>
             <div class="pipe-step">
                 <div class="pipe-num">03</div>
-                <div class="pipe-icon-wrap"><svg width="18" height="18">
+                <div class="pipe-icon-wrap"><svg width="18" height="18" aria-hidden="true">
                         <use href="#ico-bar" />
                     </svg></div>
                 <div class="pipe-name">Analyze</div>
@@ -3568,7 +3792,7 @@
             </div>
             <div class="pipe-step">
                 <div class="pipe-num">04</div>
-                <div class="pipe-icon-wrap"><svg width="18" height="18">
+                <div class="pipe-icon-wrap"><svg width="18" height="18" aria-hidden="true">
                         <use href="#ico-shield" />
                     </svg></div>
                 <div class="pipe-name">Detect Risks</div>
@@ -3577,7 +3801,7 @@
             </div>
             <div class="pipe-step">
                 <div class="pipe-num">05</div>
-                <div class="pipe-icon-wrap"><svg width="18" height="18">
+                <div class="pipe-icon-wrap"><svg width="18" height="18" aria-hidden="true">
                         <use href="#ico-monitor" />
                     </svg></div>
                 <div class="pipe-name">Dashboard</div>
@@ -3586,7 +3810,7 @@
             </div>
             <div class="pipe-step">
                 <div class="pipe-num">06</div>
-                <div class="pipe-icon-wrap"><svg width="18" height="18">
+                <div class="pipe-icon-wrap"><svg width="18" height="18" aria-hidden="true">
                         <use href="#ico-file" />
                     </svg></div>
                 <div class="pipe-name">Report & Ask</div>
@@ -3601,7 +3825,7 @@
         <div class="privacy-inner reveal">
             <div>
                 <div class="privacy-badge">
-                    <svg width="15" height="15">
+                    <svg width="15" height="15" aria-hidden="true">
                         <use href="#ico-lock" />
                     </svg>
                     Local-first architecture
@@ -3614,7 +3838,7 @@
                 </p>
                 <div class="privacy-points">
                     <div class="privacy-point">
-                        <div class="pp-icon"><svg width="18" height="18">
+                        <div class="pp-icon"><svg width="18" height="18" aria-hidden="true">
                                 <use href="#ico-monitor" />
                             </svg></div>
                         <div>
@@ -3623,7 +3847,7 @@
                         </div>
                     </div>
                     <div class="privacy-point">
-                        <div class="pp-icon"><svg width="18" height="18">
+                        <div class="pp-icon"><svg width="18" height="18" aria-hidden="true">
                                 <use href="#ico-nocloud" />
                             </svg></div>
                         <div>
@@ -3633,7 +3857,7 @@
                         </div>
                     </div>
                     <div class="privacy-point">
-                        <div class="pp-icon"><svg width="18" height="18">
+                        <div class="pp-icon"><svg width="18" height="18" aria-hidden="true">
                                 <use href="#ico-check" />
                             </svg></div>
                         <div>
@@ -3692,7 +3916,7 @@
         <p class="section-sub">SBFinance helps teams move from raw exports to decision-ready reports faster.</p>
         <div class="features-grid reveal">
             <div class="feat-card">
-                <div class="feat-icon"><svg width="20" height="20">
+                <div class="feat-icon"><svg width="20" height="20" aria-hidden="true">
                         <use href="#ico-trend" />
                     </svg></div>
                 <div class="feat-title">Cashflow & KPI Analysis</div>
@@ -3700,7 +3924,7 @@
                     and business health.</div>
             </div>
             <div class="feat-card">
-                <div class="feat-icon"><svg width="20" height="20">
+                <div class="feat-icon"><svg width="20" height="20" aria-hidden="true">
                         <use href="#ico-alert" />
                     </svg></div>
                 <div class="feat-title">Transaction Anomaly Detection</div>
@@ -3708,7 +3932,7 @@
                     recurring payments that deserve review.</div>
             </div>
             <div class="feat-card">
-                <div class="feat-icon"><svg width="20" height="20">
+                <div class="feat-icon"><svg width="20" height="20" aria-hidden="true">
                         <use href="#ico-bar" />
                     </svg></div>
                 <div class="feat-title">Auto-Generated Dashboards</div>
@@ -3716,7 +3940,7 @@
                     manually.</div>
             </div>
             <div class="feat-card">
-                <div class="feat-icon"><svg width="20" height="20">
+                <div class="feat-icon"><svg width="20" height="20" aria-hidden="true">
                         <use href="#ico-file" />
                     </svg></div>
                 <div class="feat-title">Executive PDF Reports</div>
@@ -3724,7 +3948,7 @@
                     reviews.</div>
             </div>
             <div class="feat-card">
-                <div class="feat-icon"><svg width="20" height="20">
+                <div class="feat-icon"><svg width="20" height="20" aria-hidden="true">
                         <use href="#ico-msg" />
                     </svg></div>
                 <div class="feat-title">Ask Your Data</div>
@@ -3732,7 +3956,7 @@
                     changed the most?” and get answers grounded in your file.</div>
             </div>
             <div class="feat-card">
-                <div class="feat-icon"><svg width="20" height="20">
+                <div class="feat-icon"><svg width="20" height="20" aria-hidden="true">
                         <use href="#ico-lock" />
                     </svg></div>
                 <div class="feat-title">Local-first Privacy</div>
@@ -3751,7 +3975,7 @@
         <div class="chat-layout reveal">
             <div class="chat-window">
                 <div class="chat-topbar">
-                    <div class="chat-avatar"><svg width="16" height="16">
+                    <div class="chat-avatar"><svg width="16" height="16" aria-hidden="true">
                             <use href="#ico-sparkle" />
                         </svg></div>
                     <div>
@@ -3762,7 +3986,7 @@
                 <div class="chat-messages">
                     <div class="msg msg-user">What caused the expense increase in April?</div>
                     <div class="msg msg-ai">
-                        <div class="msg-label"><svg width="11" height="11">
+                        <div class="msg-label"><svg width="11" height="11" aria-hidden="true">
                                 <use href="#ico-sparkle" />
                             </svg> SBFINANCE · grounded in your data</div>
                         Expenses increased by <span class="msg-highlight">18.7%</span> compared to March. The largest
@@ -3771,7 +3995,7 @@
                     </div>
                     <div class="msg msg-user">Are there any duplicate transactions?</div>
                     <div class="msg msg-ai">
-                        <div class="msg-label"><svg width="11" height="11">
+                        <div class="msg-label"><svg width="11" height="11" aria-hidden="true">
                                 <use href="#ico-sparkle" />
                             </svg> SBFINANCE · anomaly detection</div>
                         I found <span class="msg-highlight">12 possible duplicates</span> with matching date, amount,
@@ -3780,7 +4004,7 @@
                     </div>
                     <div class="msg msg-user">Create a summary for the founder.</div>
                     <div class="msg msg-ai">
-                        <div class="msg-label"><svg width="11" height="11">
+                        <div class="msg-label"><svg width="11" height="11" aria-hidden="true">
                                 <use href="#ico-sparkle" />
                             </svg> SBFINANCE · executive summary</div>
                         Net cashflow improved by <span class="msg-highlight">9.4%</span>, revenue grew by <span
@@ -3849,7 +4073,7 @@
         <div class="risk-grid reveal">
             <div class="risk-card">
                 <div class="risk-header">
-                    <div class="risk-title"><svg width="16" height="16">
+                    <div class="risk-title"><svg width="16" height="16" aria-hidden="true">
                             <use href="#ico-target" />
                         </svg> Duplicate Transactions</div>
                     <div class="risk-badge high">FOUND 12</div>
@@ -3863,7 +4087,7 @@
             </div>
             <div class="risk-card">
                 <div class="risk-header">
-                    <div class="risk-title"><svg width="16" height="16">
+                    <div class="risk-title"><svg width="16" height="16" aria-hidden="true">
                             <use href="#ico-alert" />
                         </svg> Unusual Expenses</div>
                     <div class="risk-badge med">7 FLAGGED</div>
@@ -3877,7 +4101,7 @@
             </div>
             <div class="risk-card">
                 <div class="risk-header">
-                    <div class="risk-title"><svg width="16" height="16">
+                    <div class="risk-title"><svg width="16" height="16" aria-hidden="true">
                             <use href="#ico-activity" />
                         </svg> Recurring Costs</div>
                     <div class="risk-badge low">18 DETECTED</div>
@@ -3891,7 +4115,7 @@
             </div>
             <div class="risk-card">
                 <div class="risk-header">
-                    <div class="risk-title"><svg width="16" height="16">
+                    <div class="risk-title"><svg width="16" height="16" aria-hidden="true">
                             <use href="#ico-trenddn" />
                         </svg> Category Spikes</div>
                     <div class="risk-badge med">MARKETING +42%</div>
@@ -3905,7 +4129,7 @@
             </div>
             <div class="risk-card">
                 <div class="risk-header">
-                    <div class="risk-title"><svg width="16" height="16">
+                    <div class="risk-title"><svg width="16" height="16" aria-hidden="true">
                             <use href="#ico-flame" />
                         </svg> Cashflow Pressure</div>
                     <div class="risk-badge med">WATCH</div>
@@ -3919,7 +4143,7 @@
             </div>
             <div class="risk-card">
                 <div class="risk-header">
-                    <div class="risk-title"><svg width="16" height="16">
+                    <div class="risk-title"><svg width="16" height="16" aria-hidden="true">
                             <use href="#ico-check" />
                         </svg> Data Quality</div>
                     <div class="risk-badge low">CLEAN</div>
@@ -3941,7 +4165,7 @@
         <h2>Built for teams that live<br />in financial exports.</h2>
         <div class="who-grid reveal">
             <div class="who-card">
-                <div class="who-icon-wrap"><svg width="20" height="20">
+                <div class="who-icon-wrap"><svg width="20" height="20" aria-hidden="true">
                         <use href="#ico-zap" />
                     </svg></div>
                 <div class="who-role">SMB Founders</div>
@@ -3949,7 +4173,7 @@
                     reports.</div>
             </div>
             <div class="who-card">
-                <div class="who-icon-wrap"><svg width="20" height="20">
+                <div class="who-icon-wrap"><svg width="20" height="20" aria-hidden="true">
                         <use href="#ico-trend" />
                     </svg></div>
                 <div class="who-role">Finance Managers</div>
@@ -3957,7 +4181,7 @@
                     summaries faster.</div>
             </div>
             <div class="who-card">
-                <div class="who-icon-wrap"><svg width="20" height="20">
+                <div class="who-icon-wrap"><svg width="20" height="20" aria-hidden="true">
                         <use href="#ico-file" />
                     </svg></div>
                 <div class="who-role">Accounting Firms</div>
@@ -3965,7 +4189,7 @@
                 </div>
             </div>
             <div class="who-card">
-                <div class="who-icon-wrap"><svg width="20" height="20">
+                <div class="who-icon-wrap"><svg width="20" height="20" aria-hidden="true">
                         <use href="#ico-activity" />
                     </svg></div>
                 <div class="who-role">Outsourced Finance Teams</div>
@@ -3973,7 +4197,7 @@
                     workflow every month.</div>
             </div>
             <div class="who-card">
-                <div class="who-icon-wrap"><svg width="20" height="20">
+                <div class="who-icon-wrap"><svg width="20" height="20" aria-hidden="true">
                         <use href="#ico-shield" />
                     </svg></div>
                 <div class="who-role">Fintech & Lending Teams</div>
@@ -4075,6 +4299,31 @@
                 </ul>
             </div>
         </div>
+    </section>
+
+    <!-- TEAM -->
+    <section id="team">
+        <div class="section-tag">who's building this</div>
+        <h2>A small team focused<br />on private financial data.</h2>
+        <p class="section-sub">SBFinance is an early-stage, founder-led product currently in private beta. We work directly with early users to shape the tool around real financial workflows.</p>
+
+        <div class="team-grid reveal">
+            <article class="team-card">
+                <div class="team-avatar" aria-hidden="true">SB</div>
+                <div class="team-name">Founder &amp; product</div>
+                <div class="team-role">Product · Engineering</div>
+                <p class="team-bio">Leads product direction and builds the local-first analysis engine. Focused on turning messy financial exports into clear, reviewable insights without sending sensitive data to the cloud.</p>
+            </article>
+            <article class="team-card">
+                <div class="team-avatar" aria-hidden="true">SB</div>
+                <div class="team-name">Early users &amp; advisors</div>
+                <div class="team-role">Finance · Accounting feedback</div>
+                <p class="team-bio">A small group of early users from finance and accounting backgrounds help test workflows and prioritize features. We're actively expanding this group through the private beta.</p>
+            </article>
+        </div>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-top:24px;">
+            Want to talk to the team directly? <a href="mailto:hello@sbfinance.me" style="color:var(--accent);text-decoration:underline;">hello@sbfinance.me</a>
+        </p>
     </section>
 
     <!-- FAQ -->
@@ -4282,16 +4531,31 @@
             <h2>Want to test SBFinance on<br />your own financial workflow?</h2>
             <p>Request a private demo and see how SBFinance turns raw financial exports into dashboards, risk signals,
                 and executive reports.</p>
-            <p class="form-flow-note">We’ll review your request and contact you with demo access.</p>
+            <p class="form-flow-note">We’ll review your request and typically reply within 1–2 business days with demo access. This form is for demo requests only — please do not upload or paste sensitive financial files, statements, or account numbers here.</p>
 
             <!-- Web3Forms is the current MVP intake for demo requests.
                  Future intake should move to a backend endpoint: POST /api/demo/request.
-                 License generation/activation must remain server-side only. -->
+                 License generation/activation must remain server-side only.
+
+                 ── ANTI-SPAM / ABUSE HARDENING (enable in the Web3Forms dashboard, no keys in HTML) ──
+                 1. Domain allowlist: in the Web3Forms dashboard for this access key, restrict
+                    "Allowed Domains" to sbfinance.me (and www.sbfinance.me) so the key cannot be
+                    reused from other origins.
+                 2. CAPTCHA: enable hCaptcha or Cloudflare Turnstile on the access key, then add the
+                    widget to this form. Example (do NOT commit a real sitekey here):
+                      <div class="h-captcha" data-captcha="true"></div>
+                      <script src="https://web3forms.com/client/script.js" async defer></script>
+                    or for Turnstile:
+                      <div class="cf-turnstile" data-sitekey="YOUR_TURNSTILE_SITEKEY"></div>
+                      <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+                 3. The hidden "botcheck" checkbox below is a honeypot — Web3Forms silently rejects
+                    submissions where it is checked. Keep it present and visually hidden. -->
             <form id="demo-form" class="cta-form" action="https://api.web3forms.com/submit" method="POST">
                 <input type="hidden" name="access_key" value="a4ab62bb-7dc4-49ea-b6fd-ee00dad74efa">
                 <input type="hidden" name="subject" value="New Demo Request — SBfinance">
                 <input type="hidden" name="from_name" value="SBfinance Landing">
-                <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off">
+                <!-- Honeypot: real users never see or check this; bots that auto-fill it are rejected. -->
+                <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off" aria-hidden="true">
 
                 <div class="cta-form-row">
                     <div class="cta-field">
@@ -4326,7 +4590,7 @@
 
                 <button type="submit" class="cta-submit" id="demo-submit">
                     <span class="btn-text">Request Demo
-                        <svg width="14" height="14" style="vertical-align:middle;margin-left:4px;">
+                        <svg width="14" height="14" style="vertical-align:middle;margin-left:4px;" aria-hidden="true">
                             <use href="#ico-arrow" />
                         </svg>
                     </span>
@@ -4359,10 +4623,12 @@
         </div>
     </section>
 
+    </main>
+
     <!-- FOOTER -->
     <footer>
         <div class="logo">
-            <div class="logo-mark"><svg width="16" height="16">
+            <div class="logo-mark"><svg width="16" height="16" aria-hidden="true">
                     <use href="#ico-sb" />
                 </svg></div>
             <span class="logo-text">SB<em>finance</em></span>

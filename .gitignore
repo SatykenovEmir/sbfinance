@@ -1,0 +1,8 @@
+# Personal / legal documents and pitch decks.
+# These are kept locally but NOT published to the public GitHub Pages site
+# (sbfinance.me): none of them are referenced by any page, and they contain
+# personal/business material that should not be exposed at a public URL.
+# Remove a line below if you deliberately want to publish that file.
+*.pptx
+*.docx
+*.pdf

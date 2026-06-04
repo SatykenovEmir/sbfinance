@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SBFinance — Sample Financial Report (Illustrative Demo)</title>
+    <meta name="description"
+        content="An illustrative example of an SBFinance financial analysis report: KPIs, expense drivers, anomaly flags, and an AI-CFO style narrative. Demo data only." />
+    <link rel="canonical" href="https://sbfinance.me/sample-report.html" />
+    <meta name="robots" content="index,follow" />
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+
+    <meta property="og:title" content="SBFinance — Sample Financial Report (Illustrative)" />
+    <meta property="og:description"
+        content="See how SBFinance turns a financial export into KPIs, expense drivers, anomaly flags, and a plain-English narrative. Illustrative demo data." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sbfinance.me/sample-report.html" />
+    <meta property="og:image" content="https://sbfinance.me/assets/og/sbfinance-og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --bg: #05050a;
+            --bg2: #0b0b14;
+            --bg3: #10101c;
+            --border: rgba(255, 255, 255, 0.07);
+            --border-bright: rgba(120, 220, 200, 0.25);
+            --text: #e2e2d8;
+            --muted: #9a9aa8;
+            --accent: #5dffd3;
+            --accent2: #ff6b35;
+            --accent3: #a78bfa;
+            --glow: rgba(93, 255, 211, 0.15);
+            --pos: #5dffd3;
+            --neg: #ff6b6b;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .skip-link {
+            position: absolute;
+            left: 16px;
+            top: -100px;
+            z-index: 9999;
+            background: var(--accent);
+            color: #05050a;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 12px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: top 0.2s ease;
+        }
+
+        .skip-link:focus {
+            top: 16px;
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(93, 255, 211, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(93, 255, 211, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 36px;
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 20px;
+            letter-spacing: 0.04em;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--text);
+            text-decoration: none;
+        }
+
+        .logo-mark {
+            width: 28px;
+            height: 28px;
+            background: var(--accent);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+            color: #05050a;
+        }
+
+        .logo em {
+            color: var(--accent);
+            font-style: normal;
+        }
+
+        .back-link {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--muted);
+            text-decoration: none;
+            border: 1px solid var(--border);
+            padding: 9px 16px;
+            border-radius: 6px;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .back-link:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .demo-banner {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 107, 53, 0.08);
+            border: 1px solid rgba(255, 107, 53, 0.35);
+            border-radius: 10px;
+            padding: 14px 18px;
+            margin-bottom: 36px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: #ffb59a;
+        }
+
+        .demo-banner .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--accent2);
+            flex-shrink: 0;
+        }
+
+        .eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 14px;
+        }
+
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(30px, 5vw, 46px);
+            line-height: 1.05;
+            letter-spacing: -0.01em;
+            margin-bottom: 12px;
+        }
+
+        .report-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 44px;
+        }
+
+        h2 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 22px;
+            margin: 52px 0 18px;
+            letter-spacing: -0.01em;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .kpi {
+            background: linear-gradient(160deg, var(--bg2), var(--bg3));
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 22px 20px;
+        }
+
+        .kpi-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .kpi-value {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 28px;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .kpi-delta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        .pos {
+            color: var(--pos);
+        }
+
+        .neg {
+            color: var(--neg);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: linear-gradient(160deg, var(--bg2), var(--bg3));
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            font-size: 14px;
+        }
+
+        caption {
+            caption-side: top;
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--muted);
+            padding-bottom: 10px;
+        }
+
+        th,
+        td {
+            padding: 13px 18px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        td.num,
+        th.num {
+            text-align: right;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .narrative {
+            background: linear-gradient(160deg, var(--bg2), var(--bg3));
+            border: 1px solid var(--border-bright);
+            border-radius: 14px;
+            padding: 28px 28px;
+        }
+
+        .narrative .who {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .narrative .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            background: var(--accent);
+            color: #05050a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        .narrative .who-name {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .narrative .who-sub {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .narrative p {
+            margin-bottom: 14px;
+            color: var(--text);
+        }
+
+        .narrative p:last-child {
+            margin-bottom: 0;
+        }
+
+        .narrative strong {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .flags {
+            list-style: none;
+            display: grid;
+            gap: 12px;
+        }
+
+        .flag {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            background: linear-gradient(160deg, var(--bg2), var(--bg3));
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 18px;
+        }
+
+        .flag .tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 4px 9px;
+            border-radius: 100px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .tag.high {
+            background: rgba(255, 107, 107, 0.12);
+            color: #ff9b9b;
+            border: 1px solid rgba(255, 107, 107, 0.35);
+        }
+
+        .tag.med {
+            background: rgba(255, 176, 87, 0.12);
+            color: #ffc98a;
+            border: 1px solid rgba(255, 176, 87, 0.35);
+        }
+
+        .tag.low {
+            background: rgba(93, 255, 211, 0.1);
+            color: var(--accent);
+            border: 1px solid var(--border-bright);
+        }
+
+        .flag-body strong {
+            display: block;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .flag-body span {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .cta-row {
+            margin-top: 56px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent);
+            color: #05050a;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            padding: 14px 28px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 40px var(--glow);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            text-decoration: none;
+            border: 1px solid var(--border);
+            padding: 14px 22px;
+            border-radius: 6px;
+            transition: border-color 0.2s, color 0.2s;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .footnote {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        @media (max-width: 720px) {
+            .kpi-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.001ms !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a class="skip-link" href="#report">Skip to report</a>
+
+    <div class="wrap">
+        <div class="topbar">
+            <a class="logo" href="/">
+                <span class="logo-mark" aria-hidden="true">SB</span>
+                <span>SB<em>finance</em></span>
+            </a>
+            <a class="back-link" href="/">← Back to home</a>
+        </div>
+
+        <div class="demo-banner" role="note">
+            <span class="dot" aria-hidden="true"></span>
+            <span>Illustrative demo data — figures below are fictional and for product illustration only.</span>
+        </div>
+
+        <main id="report">
+            <p class="eyebrow">Sample executive report · generated by SBFinance</p>
+            <h1>Monthly Financial Summary</h1>
+            <p class="report-meta">Acme Trading LLC (sample) &nbsp;·&nbsp; Period: March 2026 &nbsp;·&nbsp; Source: transactions_export.xlsx (illustrative)</p>
+
+            <h2>Key metrics</h2>
+            <div class="kpi-grid">
+                <div class="kpi">
+                    <div class="kpi-label">Revenue</div>
+                    <div class="kpi-value">$248,500</div>
+                    <div class="kpi-delta pos">▲ 8.4% vs Feb</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-label">Expenses</div>
+                    <div class="kpi-value">$201,300</div>
+                    <div class="kpi-delta neg">▲ 14.1% vs Feb</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-label">Net profit</div>
+                    <div class="kpi-value">$47,200</div>
+                    <div class="kpi-delta neg">▼ 11.6% vs Feb</div>
+                </div>
+                <div class="kpi">
+                    <div class="kpi-label">Net margin</div>
+                    <div class="kpi-value">19.0%</div>
+                    <div class="kpi-delta neg">▼ 4.2 pts vs Feb</div>
+                </div>
+            </div>
+
+            <h2>Top expense drivers</h2>
+            <table>
+                <caption>Largest expense categories this period, with month-over-month change.</caption>
+                <thead>
+                    <tr>
+                        <th scope="col">Category</th>
+                        <th class="num" scope="col">Amount</th>
+                        <th class="num" scope="col">% of expenses</th>
+                        <th class="num" scope="col">MoM change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cost of goods sold</td>
+                        <td class="num">$96,400</td>
+                        <td class="num">47.9%</td>
+                        <td class="num pos">+6.2%</td>
+                    </tr>
+                    <tr>
+                        <td>Payroll &amp; contractors</td>
+                        <td class="num">$54,800</td>
+                        <td class="num">27.2%</td>
+                        <td class="num pos">+3.1%</td>
+                    </tr>
+                    <tr>
+                        <td>Marketing &amp; ads</td>
+                        <td class="num">$21,600</td>
+                        <td class="num">10.7%</td>
+                        <td class="num neg">+62.4%</td>
+                    </tr>
+                    <tr>
+                        <td>Software &amp; subscriptions</td>
+                        <td class="num">$12,900</td>
+                        <td class="num">6.4%</td>
+                        <td class="num neg">+28.0%</td>
+                    </tr>
+                    <tr>
+                        <td>Logistics &amp; shipping</td>
+                        <td class="num">$9,100</td>
+                        <td class="num">4.5%</td>
+                        <td class="num pos">+1.8%</td>
+                    </tr>
+                    <tr>
+                        <td>Office &amp; other</td>
+                        <td class="num">$6,500</td>
+                        <td class="num">3.2%</td>
+                        <td class="num pos">-2.4%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h2>Items flagged for review</h2>
+            <ul class="flags">
+                <li class="flag">
+                    <span class="tag high">High</span>
+                    <div class="flag-body">
+                        <strong>Marketing spend up 62% with flat attributed revenue</strong>
+                        <span>Ad spend rose to $21,600 while revenue attributed to campaigns stayed roughly level. Worth reviewing channel ROI before scaling further.</span>
+                    </div>
+                </li>
+                <li class="flag">
+                    <span class="tag med">Medium</span>
+                    <div class="flag-body">
+                        <strong>Possible duplicate vendor payment</strong>
+                        <span>Two payments of $4,250 to the same vendor were recorded two days apart with identical references. Recommend confirming this was not a double charge.</span>
+                    </div>
+                </li>
+                <li class="flag">
+                    <span class="tag med">Medium</span>
+                    <div class="flag-body">
+                        <strong>New recurring subscriptions detected</strong>
+                        <span>Software costs grew 28% as three new monthly subscriptions appeared this period. Confirm these are intentional and still in use.</span>
+                    </div>
+                </li>
+                <li class="flag">
+                    <span class="tag low">Low</span>
+                    <div class="flag-body">
+                        <strong>12 transactions missing a category</strong>
+                        <span>$3,180 across 12 rows could not be auto-categorized due to blank category fields in the export. Categorizing these improves report accuracy.</span>
+                    </div>
+                </li>
+            </ul>
+
+            <h2>AI-CFO narrative</h2>
+            <div class="narrative">
+                <div class="who">
+                    <div class="avatar" aria-hidden="true">AI</div>
+                    <div>
+                        <div class="who-name">SBFinance — AI CFO summary</div>
+                        <div class="who-sub">Plain-English, grounded in the uploaded data</div>
+                    </div>
+                </div>
+                <p>Revenue grew a healthy <strong>8.4%</strong> month over month, but expenses grew faster at <strong>14.1%</strong>, so net profit fell to <strong>$47,200</strong> and net margin compressed by about 4 points to <strong>19.0%</strong>. The business is still profitable, but the gap between revenue and expense growth is the main thing to watch.</p>
+                <p>The biggest swing came from <strong>marketing</strong>, which jumped 62% without a matching lift in attributed revenue. Software subscriptions also rose 28% as new recurring tools were added. Together these two categories explain most of the margin decline this period.</p>
+                <p>Before next month, I'd suggest three actions: review marketing channel returns and pause low-performing spend, confirm the possible duplicate vendor payment, and audit the new subscriptions. Resolving the flagged items would recover an estimated <strong>$8,000–$12,000</strong> and bring margin back toward February levels.</p>
+                <p style="font-size:13px;color:var(--muted);">This summary is generated from the data above and is for analysis support only — not accounting, tax, or investment advice. Final decisions should be reviewed by a qualified professional.</p>
+            </div>
+
+            <div class="cta-row">
+                <a class="btn-primary" href="/#cta">Request a demo on your own data</a>
+                <a class="btn-secondary" href="/">Back to homepage</a>
+            </div>
+
+            <p class="footnote">
+                Illustrative demo data only. All company names, figures, and transactions on this page are fictional and exist solely to demonstrate the shape of an SBFinance report.<br />
+                SBFinance is a financial analysis and reporting assistant. It does not provide official accounting, tax, legal, or investment advice.
+            </p>
+        </main>
+    </div>
+</body>
+
+</html>
