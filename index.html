@@ -4497,8 +4497,8 @@
                 <p class="download-meta">format: .exe / .msi</p>
                 <p class="download-note" id="download-note-windows">Loading latest Windows build links…</p>
                 <div class="download-actions" id="download-actions-windows">
-                    <a class="download-btn" href="https://github.com/ErbolTakhirov/sbfinance_winner/releases/latest" target="_blank" rel="noopener noreferrer">Download for Windows</a>
-                    <a class="download-btn is-secondary" href="https://github.com/ErbolTakhirov/sbfinance_winner/releases/latest" target="_blank" rel="noopener noreferrer">Open releases</a>
+                    <a class="download-btn" href="https://github.com/SatykenovEmir/sbfinance/releases/latest/download/SBFinance_windows_x64_setup.exe" rel="noopener noreferrer">Download for Windows</a>
+                    <a class="download-btn is-secondary" href="https://github.com/SatykenovEmir/sbfinance/releases/latest" target="_blank" rel="noopener noreferrer">Open releases</a>
                 </div>
             </article>
             <article class="download-card">
@@ -4514,8 +4514,8 @@
                 <p class="download-meta">format: .AppImage / .deb / .rpm</p>
                 <p class="download-note" id="download-note-linux">Loading latest Linux build links…</p>
                 <div class="download-actions" id="download-actions-linux">
-                    <a class="download-btn" href="https://github.com/ErbolTakhirov/sbfinance_winner/releases/latest" target="_blank" rel="noopener noreferrer">Download for Linux</a>
-                    <a class="download-btn is-secondary" href="https://github.com/ErbolTakhirov/sbfinance_winner/releases/latest" target="_blank" rel="noopener noreferrer">Open releases</a>
+                    <a class="download-btn" href="https://github.com/SatykenovEmir/sbfinance/releases/latest" target="_blank" rel="noopener noreferrer">Download for Linux</a>
+                    <a class="download-btn is-secondary" href="https://github.com/SatykenovEmir/sbfinance/releases/latest" target="_blank" rel="noopener noreferrer">Open releases</a>
                 </div>
             </article>
         </div>
@@ -4689,14 +4689,21 @@
         }, { passive: true });
 
         // GitHub release downloads (static-site friendly).
-        const RELEASE_REPO = 'ErbolTakhirov/sbfinance_winner';
+        const RELEASE_REPO = 'SatykenovEmir/sbfinance';
         const RELEASE_API_URL = `https://api.github.com/repos/${RELEASE_REPO}/releases/latest`;
         const RELEASE_FALLBACK_URL = `https://github.com/${RELEASE_REPO}/releases/latest`;
+        // Stable "latest release" asset URL — GitHub redirects this straight to the
+        // newest matching asset and the browser downloads it (no release-page detour).
+        const WINDOWS_DIRECT_URL = `https://github.com/${RELEASE_REPO}/releases/latest/download/SBFinance_windows_x64_setup.exe`;
         const PLATFORM_CONFIG = {
             windows: {
                 noteId: 'download-note-windows',
                 actionsId: 'download-actions-windows',
                 matcher: /\.(exe|msi)$/i,
+                // Never offer the embedded backend sidecar (sbfinance-backend-*.exe)
+                // as an installer — it is not the app.
+                exclude: /backend/i,
+                directUrl: WINDOWS_DIRECT_URL,
                 emptyText: 'Windows build is not attached in the latest release yet.',
                 fallbackLabel: 'Download for Windows'
             },
@@ -4704,6 +4711,7 @@
                 noteId: 'download-note-linux',
                 actionsId: 'download-actions-linux',
                 matcher: /\.(appimage|deb|rpm)$/i,
+                exclude: /backend/i,
                 emptyText: 'Linux build is not attached in the latest release yet.',
                 fallbackLabel: 'Download for Linux'
             }
@@ -4761,7 +4769,9 @@
                 if (!note || !actions) return;
                 note.textContent = message;
                 actions.innerHTML = '';
-                actions.appendChild(createDownloadLink(config.fallbackLabel || 'Download', RELEASE_FALLBACK_URL));
+                // Prefer a direct asset download even when the API is unavailable;
+                // only fall back to the release page when there is no stable URL.
+                actions.appendChild(createDownloadLink(config.fallbackLabel || 'Download', config.directUrl || RELEASE_FALLBACK_URL));
                 actions.appendChild(createDownloadLink('Open releases', RELEASE_FALLBACK_URL, true));
             });
 
@@ -4790,8 +4800,14 @@
             }
 
             note.textContent = `Latest build source: ${tagName}`;
+            // Collapse duplicate formats (the release ships both a stable-named and a
+            // version-named installer of each type) so each format shows once.
+            const seenLabels = new Set();
             sorted.forEach(asset => {
-                actions.appendChild(createDownloadLink(formatAssetLabel(asset.name), asset.browser_download_url));
+                const label = formatAssetLabel(asset.name);
+                if (seenLabels.has(label)) return;
+                seenLabels.add(label);
+                actions.appendChild(createDownloadLink(label, asset.browser_download_url));
             });
             actions.appendChild(createDownloadLink('Release notes', releaseUrl, true));
         }
@@ -4838,7 +4854,9 @@
                 }
 
                 Object.entries(PLATFORM_CONFIG).forEach(([platformKey, config]) => {
-                    const platformAssets = assets.filter(asset => config.matcher.test(asset.name));
+                    const platformAssets = assets.filter(asset =>
+                        config.matcher.test(asset.name) &&
+                        !(config.exclude && config.exclude.test(asset.name)));
                     updatePlatformDownloads(platformKey, platformAssets, releaseUrl, tagName);
                 });
             } catch (error) {
