@@ -1,0 +1,29 @@
+{
+  "name": "SBFinance — Local-First AI-CFO for Small Businesses",
+  "short_name": "SBFinance",
+  "description": "Local-first AI-CFO for small businesses: cash-gap forecasts, financial leak detection, dashboards and executive reports from CSV/XLSX, computed locally with deterministic math.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "lang": "en",
+  "background_color": "#05050a",
+  "theme_color": "#05050a",
+  "icons": [
+    {
+      "src": "/assets/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

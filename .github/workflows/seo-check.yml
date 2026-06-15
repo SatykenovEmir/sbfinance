@@ -1,0 +1,28 @@
+name: SEO checks
+
+# Lightweight, zero-dependency SEO sanity checks for the static landing site.
+# Runs independently of the deploy workflow, so a red check never blocks a deploy
+# — it just surfaces SEO regressions (missing title, broken JSON-LD, FAQ schema
+# drifting from visible content, un-deployed assets) on push and PR.
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  seo-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run SEO checks
+        run: node scripts/seo-check.mjs

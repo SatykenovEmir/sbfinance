@@ -4,11 +4,13 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SBFinance — AI-CFO for Small Businesses</title>
+    <title>SBFinance — Local-First AI-CFO for Small Businesses</title>
     <meta name="description"
-        content="SBFinance finds financial leaks, predicts your cash-gap date, and simulates business decisions using your real uploaded data — computed locally with deterministic math, not an AI guess." />
+        content="Local-first AI-CFO for small businesses: turn CSV/XLSX financial exports into a dated cash-gap forecast, financial leak detection, dashboards and executive reports — computed locally with deterministic math, not an AI guess." />
     <link rel="canonical" href="https://sbfinance.me/" />
-    <meta name="robots" content="index,follow" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="theme-color" content="#05050a" />
+    <meta name="color-scheme" content="dark" />
 
     <!-- Favicons -->
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -17,25 +19,31 @@
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="SBFinance — AI-CFO for Small Businesses" />
+    <meta property="og:title" content="SBFinance — Local-First AI-CFO for Small Businesses" />
     <meta property="og:description"
-        content="Find financial leaks before they become cash gaps. SBFinance predicts your cash-gap date and simulates business decisions from your real numbers — locally and privately." />
+        content="The local-first AI-CFO that finds cash gaps before they hit. SBFinance predicts your cash-gap date, finds financial leaks, and simulates business decisions from your real numbers — locally and privately." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://sbfinance.me/" />
     <meta property="og:site_name" content="SBFinance" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:image" content="https://sbfinance.me/assets/og/sbfinance-og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="SBFinance — AI-CFO for small businesses" />
+    <meta property="og:image:alt" content="SBFinance — local-first AI-CFO for small businesses" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="SBFinance — AI-CFO for Small Businesses" />
+    <meta name="twitter:title" content="SBFinance — Local-First AI-CFO for Small Businesses" />
     <meta name="twitter:description"
-        content="Find financial leaks before they become cash gaps. SBFinance predicts your cash-gap date and simulates business decisions from your real numbers — locally and privately." />
+        content="The local-first AI-CFO that finds cash gaps before they hit. SBFinance predicts your cash-gap date, finds financial leaks, and simulates decisions from your real numbers — locally and privately." />
     <meta name="twitter:image" content="https://sbfinance.me/assets/og/sbfinance-og.png" />
+    <meta name="twitter:image:alt" content="SBFinance — local-first AI-CFO for small businesses" />
+
+    <!-- Web app manifest -->
+    <link rel="manifest" href="/site.webmanifest" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
         href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap"
         rel="stylesheet" />
@@ -3425,35 +3433,46 @@
         }
     </style>
 
-    <!-- Structured data: SoftwareApplication / Organization -->
+    <!-- Structured data: Organization / WebSite / SoftwareApplication -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "SBFinance",
-      "applicationCategory": "BusinessApplication",
-      "operatingSystem": "Windows, Linux",
-      "url": "https://sbfinance.me/",
-      "image": "https://sbfinance.me/assets/og/sbfinance-og.png",
-      "description": "SBFinance is a local-first AI-CFO for small businesses: it finds financial leaks, predicts the cash-gap date, and simulates business decisions from uploaded CSV/XLSX data — computed locally with deterministic math, without uploading sensitive data to the cloud.",
-      "softwareVersion": "Private beta",
-      "publisher": {
-        "@type": "Organization",
-        "name": "SBFinance",
-        "url": "https://sbfinance.me/",
-        "logo": "https://sbfinance.me/assets/favicon-32x32.png",
-        "email": "hello@sbfinance.me"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD",
-        "description": "Free private beta demo. Request access for evaluation."
-      }
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://sbfinance.me/#organization",
+          "name": "SBFinance",
+          "url": "https://sbfinance.me/",
+          "logo": "https://sbfinance.me/assets/apple-touch-icon.png",
+          "email": "hello@sbfinance.me",
+          "description": "SBFinance is a local-first AI-CFO for small businesses that turns CSV/XLSX financial exports into cash-gap forecasts, financial leak detection, dashboards and executive reports, computed locally with deterministic math."
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://sbfinance.me/#website",
+          "name": "SBFinance",
+          "url": "https://sbfinance.me/",
+          "inLanguage": "en",
+          "publisher": { "@id": "https://sbfinance.me/#organization" }
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://sbfinance.me/#software",
+          "name": "SBFinance",
+          "applicationCategory": "FinanceApplication",
+          "applicationSubCategory": "BusinessApplication",
+          "operatingSystem": "Windows, Linux",
+          "url": "https://sbfinance.me/",
+          "image": "https://sbfinance.me/assets/og/sbfinance-og.png",
+          "description": "SBFinance is a local-first AI-CFO for small businesses: it finds financial leaks, predicts the cash-gap date, and simulates business decisions from uploaded CSV/XLSX data — computed locally with deterministic math, without uploading sensitive data to the cloud.",
+          "softwareVersion": "Private beta",
+          "publisher": { "@id": "https://sbfinance.me/#organization" }
+        }
+      ]
     }
     </script>
 
-    <!-- Structured data: FAQ -->
+    <!-- Structured data: FAQ (mirrors the visible FAQ section below) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -3464,7 +3483,31 @@
           "name": "What exactly does SBFinance do?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "SBFinance is an AI-CFO for small businesses: upload financial CSV/XLSX exports and it finds financial leaks, predicts the cash-gap date from your ledger, explains why profit is not becoming cash, and simulates decisions like hiring or marketing spend. All analysis is deterministic math run locally; the AI only explains the results."
+            "text": "SBFinance is an AI-CFO for small businesses. You upload your financial CSV/XLSX exports, and it finds financial leaks (duplicate payments, runaway recurring costs), predicts when a cash gap may hit — with a concrete date computed from your ledger — explains why profit isn't becoming cash, and simulates decisions like hiring or marketing spend before you commit. All analysis is deterministic math run locally; the AI only explains the results."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who is SBFinance built for?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "SBFinance is built for SMB founders, finance managers, accounting firms, outsourced finance teams, and fintech/lending teams. It is especially useful for teams that regularly work with transaction exports, bank statements, client spreadsheets, accounting reports, or revenue/expense data."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is SBFinance different from Excel or Google Sheets?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Excel is flexible, but most financial reporting still requires manual cleaning, formulas, checks, charts, and written explanations. SBFinance helps automate the repetitive parts: mapping columns, cleaning exports, calculating KPIs, detecting anomalies, generating dashboards, and creating executive summaries."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is SBFinance different from ChatGPT?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Generic AI tools are useful for explanation, but they are not built specifically for financial export analysis. SBFinance is designed around structured financial workflows: it reads CSV/XLSX files, analyzes transactions, detects duplicates and unusual expenses, builds dashboards, and then generates summaries grounded in the uploaded data."
           }
         },
         {
@@ -3480,7 +3523,63 @@
           "name": "What file formats does SBFinance support?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "SBFinance is focused on CSV and XLSX financial exports from accounting tools, bank statements, payment processors, CRM exports, internal spreadsheets, or client reports."
+            "text": "SBFinance is focused on CSV and XLSX financial exports. These can come from accounting tools, bank statements, payment processors, CRM exports, internal spreadsheets, or client reports."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What kind of problems can SBFinance detect?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "SBFinance can help flag duplicate transactions, unusual expenses, recurring costs, category spikes, missing or inconsistent data, and periods where expenses grow faster than revenue. It is designed to highlight items that deserve human review, not to make final financial decisions automatically."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does SBFinance replace accountants or finance teams?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. SBFinance is not a replacement for accountants, CFOs, or financial judgment. It reduces repetitive spreadsheet work and gives teams a faster first-pass analysis. Humans still review the results, make decisions, and apply accounting, tax, or business context."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can accounting firms use SBFinance with client data?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, that is one of the strongest use cases. Accounting and outsourced finance teams can use SBFinance to analyze client exports, detect issues, generate dashboards, and prepare cleaner client-facing reports faster. The local-first approach is especially useful when client data is sensitive."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can SBFinance generate reports for clients or founders?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. SBFinance is designed to generate executive-style summaries and PDF reports from uploaded financial data. Reports should explain key KPIs, cashflow movement, revenue and expense changes, anomalies, and recommended review areas in plain English."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is SBFinance only for large companies?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. SBFinance is especially useful for small and mid-sized businesses that have real financial data but do not have a large analytics team. It is also useful for accounting firms and finance teams that manage reporting for multiple clients."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What happens during the demo?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "In the demo, we show how SBFinance takes a sample CSV/XLSX financial export and turns it into KPIs, anomaly flags, dashboards, plain-English insights, and a report. We can also discuss how the workflow would fit your company, finance team, or accounting firm."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can SBFinance work with messy data?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, that is one of the main reasons it exists. SBFinance is designed for real-world exports where columns may be inconsistent, categories may be messy, and reports may require cleanup before analysis."
           }
         },
         {
@@ -3493,10 +3592,10 @@
         },
         {
           "@type": "Question",
-          "name": "How much does SBFinance cost?",
+          "name": "How do I request access?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "SBFinance is currently in private beta. You can request a free demo to evaluate it on your own financial workflow before any paid plans are offered."
+            "text": "Click “Request a Demo” and leave your work email, company, role, and a short note about the financial workflow you want to improve. We will follow up with a private demo."
           }
         }
       ]
@@ -3671,11 +3770,11 @@
         <section id="hero">
             <div class="hero-tag">
                 <div class="pulse-dot"></div>
-                AI-CFO for small businesses &nbsp;·&nbsp; Private business data &nbsp;·&nbsp; 2026
+                Local-first AI-CFO for small businesses &nbsp;·&nbsp; Private financial data &nbsp;·&nbsp; 2026
             </div>
-            <h1>Find financial leaks<br />before they become<br /><em>cash gaps</em>.</h1>
+            <h1>The local-first AI-CFO<br />that finds <em>cash gaps</em><br />before they hit.</h1>
             <p class="hero-sub">
-                Upload your financial data. SBfinance shows where money is leaking, predicts
+                Upload your CSV/XLSX financial exports. SBFinance shows where money is leaking, predicts
                 your cash-gap date, and simulates business decisions using your real numbers —
                 computed locally with deterministic math, not an AI guess.
             </p>
@@ -3926,7 +4025,7 @@
                         <use href="#ico-trend" />
                     </svg></div>
                 <div class="feat-title">Cash-Gap Date Prediction</div>
-                <div class="feat-desc">SBfinance projects your balance forward and shows the estimated date you run out
+                <div class="feat-desc">SBFinance projects your balance forward and shows the estimated date you run out
                     of cash — computed from your own ledger with deterministic math, with the evidence shown.</div>
             </div>
             <div class="feat-card">
@@ -3950,7 +4049,7 @@
                         <use href="#ico-file" />
                     </svg></div>
                 <div class="feat-title">Decision Simulator</div>
-                <div class="feat-desc">“Can I hire for $700/month?” “What if revenue drops 15%?” SBfinance runs the
+                <div class="feat-desc">“Can I hire for $700/month?” “What if revenue drops 15%?” SBFinance runs the
                     scenario on your real averages and shows runway impact, risk change, and break-even.</div>
             </div>
             <div class="feat-card">
@@ -4558,8 +4657,8 @@
                     submissions where it is checked. Keep it present and visually hidden. -->
             <form id="demo-form" class="cta-form" action="https://api.web3forms.com/submit" method="POST">
                 <input type="hidden" name="access_key" value="a4ab62bb-7dc4-49ea-b6fd-ee00dad74efa">
-                <input type="hidden" name="subject" value="New Demo Request — SBfinance">
-                <input type="hidden" name="from_name" value="SBfinance Landing">
+                <input type="hidden" name="subject" value="New Demo Request — SBFinance">
+                <input type="hidden" name="from_name" value="SBFinance Landing">
                 <!-- Honeypot: real users never see or check this; bots that auto-fill it are rejected. -->
                 <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" autocomplete="off" aria-hidden="true">
 
