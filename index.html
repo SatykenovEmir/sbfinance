@@ -4590,11 +4590,57 @@
         </div>
     </section>
 
+    <!-- HOW TO USE / GET STARTED -->
+    <section id="how-to-use">
+        <div class="section-tag">how to start</div>
+        <h2>Up and running in<br />four simple steps.</h2>
+        <p class="section-sub">Download the desktop app, request access, and get a free 30-day demo license key by
+            email. Everything runs locally on your machine.</p>
+        <div class="pipeline-flow reveal">
+            <div class="pipe-step">
+                <div class="pipe-num">01</div>
+                <div class="pipe-icon-wrap"><svg width="18" height="18" aria-hidden="true">
+                        <use href="#ico-monitor" />
+                    </svg></div>
+                <div class="pipe-name">Download the app</div>
+                <div class="pipe-desc">Grab the SBFinance desktop installer for your OS from the
+                    <a href="#downloads">downloads section</a> below (Windows, macOS, or Linux).</div>
+            </div>
+            <div class="pipe-step">
+                <div class="pipe-num">02</div>
+                <div class="pipe-icon-wrap"><svg width="18" height="18" aria-hidden="true">
+                        <use href="#ico-send" />
+                    </svg></div>
+                <div class="pipe-name">Fill the short form</div>
+                <div class="pipe-desc">Tell us your work email, company, and role in the quick
+                    <a href="#cta">request form</a>. It takes under a minute.</div>
+            </div>
+            <div class="pipe-step">
+                <div class="pipe-num">03</div>
+                <div class="pipe-icon-wrap"><svg width="18" height="18" aria-hidden="true">
+                        <use href="#ico-lock" />
+                    </svg></div>
+                <div class="pipe-name">Get your demo key</div>
+                <div class="pipe-desc">We email you a free <strong>30-day demo license key</strong> to unlock the
+                    full app — no payment required.</div>
+            </div>
+            <div class="pipe-step">
+                <div class="pipe-num">04</div>
+                <div class="pipe-icon-wrap"><svg width="18" height="18" aria-hidden="true">
+                        <use href="#ico-play" />
+                    </svg></div>
+                <div class="pipe-name">Activate &amp; use</div>
+                <div class="pipe-desc">Open the app, paste the key on the License screen, and analyze your finances
+                    locally for 30 days.</div>
+            </div>
+        </div>
+    </section>
+
     <!-- DOWNLOADS -->
     <section id="downloads">
         <div class="section-tag">desktop installers</div>
         <h2>Download builds for your OS.</h2>
-        <p class="section-sub">Current build: <strong>v0.1.4</strong> (private beta). Downloads are pulled from the latest GitHub release. If your OS package is not published yet, use the release page fallback.</p>
+        <p class="section-sub">Current build: <strong>v0.1.5</strong> (private beta). Downloads are pulled from the latest GitHub release. If your OS package is not published yet, use the release page fallback.</p>
 
         <div class="download-grid reveal">
             <article class="download-card">
@@ -4602,8 +4648,8 @@
                 <p class="download-meta">format: .exe / .msi</p>
                 <p class="download-note" id="download-note-windows">Loading latest Windows build links…</p>
                 <div class="download-actions" id="download-actions-windows">
-                    <a class="download-btn" href="https://github.com/SatykenovEmir/sbfinance/releases/latest/download/SBFinance_windows_x64_setup.exe" rel="noopener noreferrer">Download for Windows</a>
-                    <a class="download-btn is-secondary" href="https://github.com/SatykenovEmir/sbfinance/releases/latest" target="_blank" rel="noopener noreferrer">Open releases</a>
+                    <a class="download-btn" href="https://github.com/ErbolTakhirov/sbfinance_winner/releases/latest/download/SBFinance_windows_x64_setup.exe" rel="noopener noreferrer">Download for Windows</a>
+                    <a class="download-btn is-secondary" href="https://github.com/ErbolTakhirov/sbfinance_winner/releases/latest" target="_blank" rel="noopener noreferrer">Open releases</a>
                 </div>
             </article>
             <article class="download-card">
@@ -4619,8 +4665,8 @@
                 <p class="download-meta">format: .AppImage / .deb / .rpm</p>
                 <p class="download-note" id="download-note-linux">Loading latest Linux build links…</p>
                 <div class="download-actions" id="download-actions-linux">
-                    <a class="download-btn" href="https://github.com/SatykenovEmir/sbfinance/releases/latest" target="_blank" rel="noopener noreferrer">Download for Linux</a>
-                    <a class="download-btn is-secondary" href="https://github.com/SatykenovEmir/sbfinance/releases/latest" target="_blank" rel="noopener noreferrer">Open releases</a>
+                    <a class="download-btn" href="https://github.com/ErbolTakhirov/sbfinance_winner/releases/latest" target="_blank" rel="noopener noreferrer">Download for Linux</a>
+                    <a class="download-btn is-secondary" href="https://github.com/ErbolTakhirov/sbfinance_winner/releases/latest" target="_blank" rel="noopener noreferrer">Open releases</a>
                 </div>
             </article>
         </div>
@@ -4794,7 +4840,7 @@
         }, { passive: true });
 
         // GitHub release downloads (static-site friendly).
-        const RELEASE_REPO = 'SatykenovEmir/sbfinance';
+        const RELEASE_REPO = 'ErbolTakhirov/sbfinance_winner';
         const RELEASE_API_URL = `https://api.github.com/repos/${RELEASE_REPO}/releases/latest`;
         const RELEASE_FALLBACK_URL = `https://github.com/${RELEASE_REPO}/releases/latest`;
         // Stable "latest release" asset URL — GitHub redirects this straight to the
