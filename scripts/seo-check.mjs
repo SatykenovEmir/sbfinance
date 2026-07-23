@@ -151,7 +151,7 @@ if (existsSync(join(ROOT, 'site.webmanifest'))) {
 
 // --- secondary pages --------------------------------------------------------
 console.log('\nsecondary pages');
-for (const page of ['privacy-policy.html', 'terms.html', 'refund-policy.html', 'sample-report.html']) {
+for (const page of ['privacy-policy.html', 'terms.html', 'refund-policy.html', 'sample-report.html', 'protection-gap.html']) {
   const p = read(page);
   check(/<title>[\s\S]*?<\/title>/i.test(p), `${page}: has <title>`);
   check(/<meta\s+name=["']description["']/i.test(p), `${page}: has meta description`);
