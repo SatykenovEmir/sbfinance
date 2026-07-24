@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sample SME Risk &amp; Protection Readiness Report (Synthetic) · SBFinance</title>
+    <meta name="description"
+        content="A redacted, synthetic example of the SBFinance SME Risk & Protection Readiness Report: risk register, coverage-gap matrix, evidence citations, cash-flow impact and assumptions. Illustrative decision-support, not a coverage determination." />
+    <link rel="canonical" href="https://sbfinance.me/sample-protection-report" />
+    <meta name="robots" content="index,follow" />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <meta property="og:title" content="Sample SME Risk & Protection Readiness Report (Synthetic) · SBFinance" />
+    <meta property="og:description" content="A redacted, synthetic example of the protection-gap readiness report SBFinance generates locally for an SME to take to a broker." />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://sbfinance.me/sample-protection-report" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root { --bg: #05050a; --ink: #14141c; --muted: #5b5b6b; --line: #e6e6ee; --accent: #0a9e82; --warn: #b5820a; --bad: #c0392b; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #0b0b14; color: #e8e8f0; font-family: 'DM Sans', system-ui, sans-serif; line-height: 1.6; }
+        .topbar { background: rgba(5,5,10,0.9); border-bottom: 1px solid rgba(255,255,255,0.08); position: sticky; top: 0; }
+        .topbar .wrap { max-width: 900px; margin: 0 auto; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .brand { font-family: 'Syne', sans-serif; font-weight: 800; color: #fff; }
+        .brand span { color: #5dffd3; }
+        .topbar a { color: #9a9ab0; font-size: 14px; text-decoration: none; }
+        .page { max-width: 900px; margin: 24px auto; padding: 0 20px 60px; }
+        .paper { background: #fff; color: var(--ink); border-radius: 12px; padding: 40px 44px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
+        .paper h1, .paper h2, .paper h3 { font-family: 'Syne', sans-serif; color: var(--ink); }
+        .paper h1 { font-size: 26px; }
+        .paper h2 { font-size: 18px; margin: 26px 0 8px; border-bottom: 2px solid var(--line); padding-bottom: 4px; }
+        .meta { color: var(--muted); font-size: 13px; margin-top: 6px; }
+        .synthetic { display: inline-block; background: #eef6ff; color: #2b6cb0; border: 1px solid #b9d6f2; border-radius: 6px; font-size: 12px; padding: 3px 8px; margin: 10px 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+        th, td { text-align: left; padding: 7px 9px; border-bottom: 1px solid var(--line); vertical-align: top; }
+        th { color: var(--muted); text-transform: uppercase; font-size: 11px; letter-spacing: 0.03em; }
+        .scrollx { overflow-x: auto; }
+        .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+        .pill { font-size: 11px; padding: 2px 7px; border-radius: 5px; border: 1px solid var(--line); white-space: nowrap; }
+        .pill.bad { color: var(--bad); border-color: #efc3bd; background: #fdf1ef; }
+        .pill.warn { color: var(--warn); border-color: #eddfb3; background: #fdf8ec; }
+        .pill.good { color: var(--accent); border-color: #b6e4da; background: #eefaf6; }
+        .note { background: #fdf8ec; border: 1px solid #eddfb3; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #7a5c12; margin-top: 12px; }
+        .evidence { color: var(--muted); font-size: 12px; }
+        ul { margin: 8px 0 0 18px; font-size: 13px; }
+        .redact { background: #14141c; color: #14141c; border-radius: 3px; padding: 0 8px; user-select: none; }
+        footer { color: #9a9ab0; font-size: 12px; text-align: center; padding: 20px; }
+    </style>
+</head>
+
+<body>
+    <div class="topbar">
+        <div class="wrap">
+            <a class="brand" href="/">SB<span>finance</span></a>
+            <a href="/protection-gap">← Protection Gap</a>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="paper">
+            <h1>SME Risk &amp; Protection Readiness Report</h1>
+            <div class="meta">Generated locally by SBFinance · Deterministic engine (calculation_version protection-v2) · Currency: SGD</div>
+            <div class="synthetic">SYNTHETIC EXAMPLE — all figures and the policy are illustrative. Not a real business or policy.</div>
+
+            <h2>1. Business summary</h2>
+            <p>Marina Digital Services Pte Ltd (Synthetic) — Singapore-based digital / managed-IT services SME, 24
+                employees, two sites. Policy number <span class="redact">••••4417</span> (masked). Period 2026-01-01 to 2026-12-31.</p>
+
+            <h2>2. Overall protection readiness</h2>
+            <p><strong>62.8 / 100 — moderate.</strong> Components: financial resilience 100 (weight 0.25), policy
+                completeness 35 (0.20), coverage adequacy 30.8 (0.35), data confidence 100 (0.20). Missing-data penalty 0.</p>
+
+            <h2>3. Financial facts (from the SME's own export)</h2>
+            <div class="scrollx"><table>
+                <tbody>
+                <tr><td>Revenue (6 months)</td><td class="num">SGD 900,000</td><td>Profit margin</td><td class="num">20%</td></tr>
+                <tr><td>Available cash</td><td class="num">SGD 120,000</td><td>Net cash change (6m)</td><td class="num">−SGD 60,000</td></tr>
+                <tr><td>Runway</td><td class="num">12 months</td><td>Cash-gap date (baseline)</td><td class="num">2027-06-30</td></tr>
+                <tr><td>Top supplier share of spend</td><td class="num">45%</td><td>As-of date</td><td class="num">2026-06-30</td></tr>
+                </tbody>
+            </table></div>
+
+            <h2>4. Coverage-gap register</h2>
+            <div class="scrollx"><table>
+                <thead><tr><th>Risk family</th><th>Status</th><th>Modelled impact</th><th>Limit / sub-limit</th><th>Covered</th><th>Uncovered</th></tr></thead>
+                <tbody>
+                    <tr><td>Cyber</td><td><span class="pill bad">No matching coverage</span></td><td class="num">SGD 44,444</td><td class="num">—</td><td class="num">SGD 0</td><td class="num">SGD 44,444</td></tr>
+                    <tr><td>Supply-chain</td><td><span class="pill bad">No matching coverage</span></td><td class="num">SGD 48,944</td><td class="num">—</td><td class="num">SGD 0</td><td class="num">SGD 48,944</td></tr>
+                    <tr><td>Business interruption</td><td><span class="pill warn">Possible partial gap</span></td><td class="num">SGD 54,444</td><td class="num">SGD 25,000 (sub-limit)</td><td class="num">SGD 24,000</td><td class="num">SGD 30,444</td></tr>
+                    <tr><td>Asset / property</td><td><span class="pill warn">Possible partial gap</span></td><td class="num">SGD 250,000</td><td class="num">SGD 200,000</td><td class="num">SGD 197,500</td><td class="num">SGD 52,500</td></tr>
+                </tbody>
+            </table></div>
+
+            <h2>5. Policy evidence</h2>
+            <div class="scrollx"><table>
+                <thead><tr><th>Family</th><th>Field</th><th>Value</th><th>Source</th></tr></thead>
+                <tbody>
+                    <tr><td>Property</td><td>Limit of Indemnity</td><td class="num">SGD 200,000</td><td class="evidence">p.1 — "Limit of Indemnity: SGD 200,000"</td></tr>
+                    <tr><td>Property</td><td>Deductible</td><td class="num">SGD 2,500</td><td class="evidence">p.1 — "Deductible: SGD 2,500"</td></tr>
+                    <tr><td>Business interruption</td><td>Sub-limit</td><td class="num">SGD 25,000</td><td class="evidence">p.1 — "Sub-limit: SGD 25,000"</td></tr>
+                    <tr><td>Business interruption</td><td>Indemnity period</td><td class="num">90 days</td><td class="evidence">p.1 — "Indemnity Period: 3 months"</td></tr>
+                    <tr><td>Cyber</td><td>Coverage present</td><td>No (inferred)</td><td class="evidence">No cyber section found in the wording</td></tr>
+                </tbody>
+            </table></div>
+
+            <h2>6. Cash-flow impact of the headline uncovered event</h2>
+            <p>With a 10-day disruption and a 30% revenue decline through recovery, the modelled ongoing runway falls from
+                12 months to about 6.3 months and the cash-gap date moves from 2027-06-30 to 2026-12-30. A larger, uncovered
+                supply-chain or asset event compresses this further.</p>
+
+            <h2>7. Assumptions &amp; limitations</h2>
+            <ul>
+                <li>Daily fixed-cost burden = average monthly expenses ÷ 30 (treats all opex as continuing — conservative).</li>
+                <li>Contribution margin taken from profit margin (floor), else a 35% default.</li>
+                <li>Interruption length and revenue decline are user-selected scenarios, not forecasts or probabilities.</li>
+                <li>Extraction is from a text-based PDF only; a scanned policy would be marked unsupported.</li>
+                <li>Indicative decision-support — not a coverage determination.</li>
+            </ul>
+
+            <div class="note">This report is illustrative decision-support generated from synthetic data. Actual coverage
+                depends on the full policy wording, endorsements, exclusions and the insurer's decision. Verify every figure
+                with a licensed broker or insurer. SBFinance is not a broker, underwriter or claims handler and implies no
+                affiliation with any insurer or programme.</div>
+
+            <p style="margin-top:18px;font-size:13px"><a href="/protection-gap/demo">→ Explore this interactively in the browser demo</a></p>
+        </div>
+    </div>
+
+    <footer>SBFinance — local-first financial &amp; insurance-risk intelligence for SMEs. All demo data is synthetic.</footer>
+</body>
+
+</html>

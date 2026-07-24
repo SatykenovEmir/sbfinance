@@ -149,21 +149,57 @@ if (existsSync(join(ROOT, 'site.webmanifest'))) {
   }
 }
 
-// --- secondary pages --------------------------------------------------------
+function canonicalOk(p, url) {
+  const esc = url.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
+  return new RegExp(`<link\\s+rel=["']canonical["']\\s+href=["']${esc}["']`, 'i').test(p);
+}
+
+// --- secondary pages (full pages keep their own .html canonical) ------------
 console.log('\nsecondary pages');
-for (const page of ['privacy-policy.html', 'terms.html', 'refund-policy.html', 'sample-report.html', 'protection-gap.html']) {
+for (const [page, canonical] of [
+  ['privacy-policy.html', `${SITE_ORIGIN}/privacy-policy.html`],
+  ['terms.html', `${SITE_ORIGIN}/terms.html`],
+  ['refund-policy.html', `${SITE_ORIGIN}/refund-policy.html`],
+  ['sample-report.html', `${SITE_ORIGIN}/sample-report.html`],
+]) {
   const p = read(page);
   check(/<title>[\s\S]*?<\/title>/i.test(p), `${page}: has <title>`);
   check(/<meta\s+name=["']description["']/i.test(p), `${page}: has meta description`);
-  check(new RegExp(`<link\\s+rel=["']canonical["']\\s+href=["']${SITE_ORIGIN}/${page}["']`, 'i').test(p),
-    `${page}: canonical is correct`);
+  check(canonicalOk(p, canonical), `${page}: canonical is correct`);
+}
+
+// --- clean-route pages (directory-index; extensionless canonical) -----------
+console.log('\nclean routes');
+for (const [file, canonical] of [
+  ['protection-gap/index.html', `${SITE_ORIGIN}/protection-gap`],
+  ['protection-gap/demo/index.html', `${SITE_ORIGIN}/protection-gap/demo`],
+  ['sample-protection-report/index.html', `${SITE_ORIGIN}/sample-protection-report`],
+]) {
+  check(existsSync(join(ROOT, file)), `${file} exists`);
+  const p = read(file);
+  check(/<title>[\s\S]*?<\/title>/i.test(p), `${file}: has <title>`);
+  check(/<meta\s+name=["']description["']/i.test(p), `${file}: has meta description`);
+  check(canonicalOk(p, canonical), `${file}: canonical is ${canonical}`);
+}
+check(existsSync(join(ROOT, 'protection-gap/demo/data/protection-demo-fixture.json')),
+  'browser-demo fixture JSON exists');
+
+// --- redirect stubs (old / clean URLs → destination) ------------------------
+console.log('\nredirect stubs');
+for (const stub of ['protection-gap.html', 'privacy/index.html', 'terms/index.html']) {
+  const p = read(stub);
+  check(/<title>[\s\S]*?<\/title>/i.test(p), `${stub}: has <title>`);
+  check(/http-equiv=["']refresh["']/i.test(p), `${stub}: is a redirect`);
 }
 
 // --- deploy allowlist guard -------------------------------------------------
 console.log('\ndeploy workflow');
 const wf = read('.github/workflows/deploy-pages.yml');
-for (const f of ['index.html', 'robots.txt', 'sitemap.xml', 'site.webmanifest', 'CNAME']) {
+for (const f of ['index.html', 'robots.txt', 'sitemap.xml', 'site.webmanifest', 'CNAME', 'protection-gap.html']) {
   check(wf.includes(f), `deploy workflow copies ${f}`);
+}
+for (const d of ['protection-gap', 'sample-protection-report', 'privacy', 'terms']) {
+  check(wf.includes(d), `deploy workflow copies ${d}/ directory`);
 }
 
 // --- summary ----------------------------------------------------------------

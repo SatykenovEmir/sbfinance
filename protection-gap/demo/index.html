@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Protection Gap — Interactive Browser Demo (Synthetic) · SBFinance</title>
+    <meta name="description"
+        content="An interactive, no-install browser demo of the SBFinance SME Risk & Protection Copilot. Explore a synthetic Singapore SME's cyber, supply-chain, asset and business-interruption exposure, coverage gaps and cash-flow impact — every number computed by the same deterministic engine as the desktop app. Illustrative decision-support, not a coverage determination." />
+    <link rel="canonical" href="https://sbfinance.me/protection-gap/demo" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta name="theme-color" content="#05050a" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <meta property="og:title" content="Protection Gap — Interactive Browser Demo (Synthetic) · SBFinance" />
+    <meta property="og:description"
+        content="Explore a synthetic SME's protection gaps and cash-flow impact in your browser — deterministic, evidence-linked, no install. Illustrative decision-support only." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sbfinance.me/protection-gap/demo" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --bg: #05050a; --bg2: #0b0b14; --bg3: #10101c;
+            --text: #e8e8f0; --muted: #9a9ab0; --line: rgba(255, 255, 255, 0.08);
+            --accent: #5dffd3; --warn: #f5c451; --bad: #ff8a8a; --card: #0e0e18;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text); font-family: 'DM Sans', system-ui, sans-serif; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        a { color: var(--accent); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .wrap { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        header { position: sticky; top: 0; z-index: 20; background: rgba(5, 5, 10, 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+        .nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
+        .brand { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; color: #fff; }
+        .brand span { color: var(--accent); }
+        .nav a.back { font-size: 14px; color: var(--muted); }
+        h1, h2, h3 { font-family: 'Syne', sans-serif; color: #fff; line-height: 1.2; }
+        h1 { font-size: clamp(26px, 4vw, 40px); font-weight: 800; letter-spacing: -0.02em; }
+        h2 { font-size: clamp(20px, 2.5vw, 26px); font-weight: 700; margin-bottom: 8px; }
+        h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; color: #fff; }
+        section { padding: 34px 0; border-bottom: 1px solid var(--line); }
+        .tag { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(93, 255, 211, 0.3); border-radius: 999px; padding: 4px 12px; margin-bottom: 14px; }
+        .sub { color: var(--muted); font-size: 16px; max-width: 760px; }
+        .synthetic { display: inline-block; font-size: 12px; color: #8fd3f5; border: 1px solid rgba(93, 176, 245, 0.3); background: rgba(93, 176, 245, 0.08); border-radius: 8px; padding: 4px 10px; }
+        .grid { display: grid; gap: 14px; }
+        .g2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+        .g3 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+        .g4 { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+        .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+        .card p { color: var(--muted); font-size: 14px; }
+        .stat { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+        .stat .k { font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+        .stat .v { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; color: #fff; margin-top: 4px; }
+        .stat .v.small { font-size: 16px; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 10px; }
+        .scrollx { overflow-x: auto; }
+        th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; vertical-align: top; }
+        th { color: var(--muted); font-weight: 500; font-size: 12px; text-transform: uppercase; }
+        .num { font-variant-numeric: tabular-nums; }
+        .pill { font-size: 11px; padding: 2px 8px; border-radius: 6px; border: 1px solid var(--line); white-space: nowrap; }
+        .pill.bad { color: var(--bad); border-color: rgba(255, 138, 138, 0.4); background: rgba(255, 138, 138, 0.08); }
+        .pill.warn { color: var(--warn); border-color: rgba(245, 196, 81, 0.4); background: rgba(245, 196, 81, 0.08); }
+        .pill.good { color: var(--accent); border-color: rgba(93, 255, 211, 0.4); background: rgba(93, 255, 211, 0.08); }
+        .pill.info { color: #8fd3f5; border-color: rgba(93, 176, 245, 0.4); background: rgba(93, 176, 245, 0.08); }
+        .disclaimer { background: rgba(245, 196, 81, 0.08); border: 1px solid rgba(245, 196, 81, 0.25); border-radius: 12px; padding: 12px 14px; color: #f0e0b0; font-size: 13px; }
+        .evidence { color: var(--muted); font-size: 12px; font-family: 'JetBrains Mono', monospace; white-space: normal; }
+        .controls { background: var(--bg2); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+        .slider-row { margin: 14px 0; }
+        .slider-row label { display: flex; justify-content: space-between; font-size: 14px; color: var(--text); margin-bottom: 6px; }
+        .slider-row label b { color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+        input[type=range] { width: 100%; accent-color: var(--accent); }
+        .btn { display: inline-block; padding: 10px 18px; border-radius: 10px; font-weight: 600; font-size: 14px; cursor: pointer; border: 1px solid var(--line); background: var(--card); color: var(--text); }
+        .btn-primary { background: var(--accent); color: #05050a; border-color: var(--accent); }
+        .muted { color: var(--muted); }
+        .report { background: #fff; color: #14141c; border-radius: 12px; padding: 22px 24px; font-size: 13px; }
+        .report h3, .report h4 { color: #14141c; font-family: 'Syne', sans-serif; }
+        .report table th { color: #555; }
+        .report table td, .report table th { border-color: #e6e6ee; white-space: normal; }
+        .hidden { display: none; }
+        footer { padding: 34px 0; color: var(--muted); font-size: 13px; }
+        .err { background: rgba(255,138,138,0.08); border: 1px solid rgba(255,138,138,0.3); border-radius: 12px; padding: 16px; color: #ffbcbc; }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="wrap nav">
+            <a class="brand" href="/">SB<span>finance</span></a>
+            <a class="back" href="/protection-gap">← Protection Gap overview</a>
+        </div>
+    </header>
+
+    <main class="wrap">
+        <section style="border:none">
+            <div class="tag">interactive browser demo</div>
+            <h1>See an SME's protection gap — live, in your browser</h1>
+            <p class="sub">No install, no account, no upload. Every figure below is precomputed by the
+                <strong>same deterministic engine</strong> that runs inside the SBFinance desktop app, over a
+                clearly-labelled synthetic Singapore SME. Move the sliders to change the disruption scenario and watch the
+                loss, coverage, uncovered amount, runway and cash-gap date recompute.</p>
+            <p style="margin-top:12px"><span class="synthetic" id="synthetic-banner">Synthetic data · illustrative only</span></p>
+        </section>
+
+        <div id="loading" class="wrap" style="padding:40px 0">Loading the deterministic demo data…</div>
+        <div id="error" class="err hidden" style="margin:24px 0"></div>
+
+        <div id="app" class="hidden">
+            <!-- SME profile -->
+            <section>
+                <div class="tag">step 1 · the business</div>
+                <h2 id="sme-name"></h2>
+                <p class="sub" id="sme-desc"></p>
+                <div class="grid g4" style="margin-top:14px">
+                    <div class="stat"><div class="k">Country</div><div class="v small" id="sme-country"></div></div>
+                    <div class="stat"><div class="k">Currency</div><div class="v small" id="sme-currency"></div></div>
+                    <div class="stat"><div class="k">Employees</div><div class="v small" id="sme-emp"></div></div>
+                    <div class="stat"><div class="k">Sites</div><div class="v small" id="sme-sites"></div></div>
+                </div>
+            </section>
+
+            <!-- Financial facts -->
+            <section>
+                <div class="tag">step 2 · the numbers (from the financial export)</div>
+                <h2>Verified financial facts</h2>
+                <div class="grid g4" style="margin-top:6px">
+                    <div class="stat"><div class="k">Revenue (6m)</div><div class="v" id="fin-rev"></div></div>
+                    <div class="stat"><div class="k">Profit margin</div><div class="v" id="fin-margin"></div></div>
+                    <div class="stat"><div class="k">Available cash</div><div class="v" id="fin-cash"></div></div>
+                    <div class="stat"><div class="k">Runway</div><div class="v" id="fin-runway"></div></div>
+                    <div class="stat"><div class="k">Cash-gap date</div><div class="v small" id="fin-gap"></div></div>
+                    <div class="stat"><div class="k">Top supplier share</div><div class="v" id="fin-supplier"></div></div>
+                </div>
+            </section>
+
+            <!-- Policy facts + evidence -->
+            <section>
+                <div class="tag">step 3 · the policy (extracted from the PDF, with evidence)</div>
+                <h2>Policy facts &amp; page evidence</h2>
+                <p class="sub">Limits, sub-limits and deductibles are read straight from a synthetic SGD policy — each
+                    with the page it came from. Cyber and supply-chain sections are deliberately absent, producing honest
+                    "no matching coverage" results.</p>
+                <div class="scrollx">
+                    <table id="policy-table">
+                        <thead><tr><th>Coverage family</th><th>Field</th><th>Value</th><th>Evidence</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Scenario controls -->
+            <section>
+                <div class="tag">step 4 · run the assessment · change the scenario</div>
+                <h2>What would a disruption cost — and what's uncovered?</h2>
+                <div class="grid g2" style="margin-top:12px">
+                    <div class="controls">
+                        <div class="slider-row">
+                            <label>Disruption length <b id="lbl-days">10 days</b></label>
+                            <input type="range" id="slider-days" min="0" max="7" step="1" value="2" />
+                        </div>
+                        <div class="slider-row">
+                            <label>Revenue decline through recovery <b id="lbl-decline">0%</b></label>
+                            <input type="range" id="slider-decline" min="0" max="5" step="1" value="0" />
+                        </div>
+                        <p class="muted" style="font-size:13px">Each combination was pre-evaluated by the real engine.
+                            No JavaScript re-implements the maths — the page only looks the result up.</p>
+                        <div style="margin-top:10px">
+                            <button class="btn" id="btn-report" type="button">Preview the report</button>
+                        </div>
+                    </div>
+                    <div class="grid g2" style="align-content:start">
+                        <div class="stat"><div class="k">Headline uncovered</div><div class="v" id="out-uncovered"></div></div>
+                        <div class="stat"><div class="k">Total uncovered (all families)</div><div class="v" id="out-total"></div></div>
+                        <div class="stat"><div class="k">Runway before → after event</div><div class="v small" id="out-runway"></div></div>
+                        <div class="stat"><div class="k">Cash-gap date (with decline)</div><div class="v small" id="out-gap"></div></div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top:22px">Coverage gap matrix</h3>
+                <div class="scrollx">
+                    <table id="gap-table">
+                        <thead><tr><th>Risk</th><th>Status</th><th>Modelled impact</th><th>Limit / sub-limit</th><th>Covered</th><th>Uncovered</th></tr></thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <p class="disclaimer" style="margin-top:14px">Indicative only. Actual coverage depends on the full policy
+                    wording, endorsements, exclusions and the insurer's decision. Under ambiguity a range is shown, never a
+                    false precise number. This is not a coverage determination.</p>
+            </section>
+
+            <!-- Report preview -->
+            <section id="report-section" class="hidden">
+                <div class="tag">step 5 · the hand-off</div>
+                <h2>Readiness report preview</h2>
+                <p class="sub">The desktop app generates a full local PDF <em>SME Risk &amp; Protection Readiness Report</em>
+                    for the owner to take to a broker. Below is a redacted, synthetic preview.</p>
+                <div class="report" id="report-body" style="margin-top:12px"></div>
+            </section>
+
+            <!-- Growth review -->
+            <section>
+                <div class="tag">step 6 · protection as you grow</div>
+                <h2>What happens when the business doubles?</h2>
+                <p class="sub" id="growth-intro"></p>
+                <div class="scrollx"><table id="growth-table">
+                    <thead><tr><th>Risk family</th><th>Exposure before</th><th>Exposure after</th><th>Change</th><th>Limit still adequate?</th></tr></thead>
+                    <tbody></tbody>
+                </table></div>
+                <p class="disclaimer" style="margin-top:12px" id="growth-note"></p>
+            </section>
+
+            <!-- Provenance -->
+            <section style="border:none">
+                <h2>Provenance</h2>
+                <p class="sub" id="provenance"></p>
+                <div class="disclaimer" style="margin-top:12px" id="global-disclaimer"></div>
+                <div style="margin-top:16px">
+                    <a class="btn btn-primary" href="/protection-gap">← Back to the overview</a>
+                    <a class="btn" href="/#downloads">Get the local-first desktop app</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="wrap">
+            SBFinance — local-first financial &amp; insurance-risk intelligence for SMEs.
+            <a href="/">Home</a> · <a href="/protection-gap">Protection Gap</a> · <a href="/privacy">Privacy</a> ·
+            <a href="/terms">Terms</a><br>
+            All demo data is synthetic. No affiliation with any insurer or programme is implied.
+        </div>
+    </footer>
+
+    <script>
+        (function () {
+            "use strict";
+            var DATA = null;
+
+            function fmt(ccy, v) {
+                if (v === null || v === undefined) return "—";
+                var n = Number(v);
+                if (!isFinite(n)) return "—";
+                return (ccy ? ccy + " " : "") + n.toLocaleString("en-SG", { maximumFractionDigits: 0 });
+            }
+            function el(id) { return document.getElementById(id); }
+            function statusPill(status) {
+                var map = {
+                    "no_matching_coverage": ["bad", "No matching coverage"],
+                    "possible_partial_gap": ["warn", "Possible partial gap"],
+                    "covered_subject_to_verification": ["good", "Covered — verify"],
+                    "unable_to_determine": ["info", "Unable to determine"],
+                    "currency_mismatch": ["info", "Currency mismatch — rate needed"],
+                    "more_information_required": ["info", "More info required"]
+                };
+                var m = map[status] || ["info", status];
+                return '<span class="pill ' + m[0] + '">' + m[1] + '</span>';
+            }
+
+            function fail(msg) {
+                el("loading").classList.add("hidden");
+                var e = el("error");
+                e.classList.remove("hidden");
+                e.textContent = msg;
+            }
+
+            function renderStatic() {
+                var ccy = DATA.sme.currency;
+                el("sme-name").textContent = DATA.sme.name;
+                el("sme-desc").textContent = DATA.sme.description;
+                el("sme-country").textContent = DATA.sme.country;
+                el("sme-currency").textContent = ccy;
+                el("sme-emp").textContent = DATA.sme.employees;
+                el("sme-sites").textContent = DATA.sme.locations.length;
+
+                var f = DATA.financial_facts;
+                el("fin-rev").textContent = fmt(ccy, f.revenue_6m);
+                el("fin-margin").textContent = f.profit_margin_pct + "%";
+                el("fin-cash").textContent = fmt(ccy, f.current_cash);
+                el("fin-runway").textContent = (f.runway_months == null ? "—" : f.runway_months + " mo");
+                el("fin-gap").textContent = f.cash_gap_date || "—";
+                el("fin-supplier").textContent = (f.top_supplier_share_pct || 0) + "%";
+
+                // Policy facts (stated only, with evidence)
+                var body = el("policy-table").querySelector("tbody");
+                DATA.policy.facts.filter(function (x) { return !x.is_inferred && x.field_key !== "coverage_present"; })
+                    .forEach(function (x) {
+                        var tr = document.createElement("tr");
+                        var val = x.field_key === "indemnity_period_days" ? (x.normalized_value + " days") : fmt(ccy, x.normalized_value);
+                        tr.innerHTML = "<td>" + x.category.replace(/_/g, " ") + "</td><td>" + x.field_key.replace(/_/g, " ") +
+                            "</td><td class='num'>" + val + "</td><td class='evidence'>p." + (x.source_page || "?") +
+                            " · " + (x.source_snippet || "").slice(0, 60) + "</td>";
+                        body.appendChild(tr);
+                    });
+
+                // Growth review
+                var g = DATA.growth_review;
+                el("growth-intro").textContent = "Same SME, revenue doubled and a larger asset base. The engine re-runs and flags whether the existing limits still fit. " + (g.reassessment_recommended ? "A fresh review is recommended." : "No material change.");
+                var gb = el("growth-table").querySelector("tbody");
+                g.families.forEach(function (fam) {
+                    var adequate = fam.limit_still_adequate === null ? "—" : (fam.limit_still_adequate ? "Yes" : "No — shortfall " + fmt(ccy, fam.limit_shortfall));
+                    var pct = fam.pct_change === null ? "—" : (fam.pct_change > 0 ? "+" : "") + fam.pct_change + "%";
+                    var tr = document.createElement("tr");
+                    tr.innerHTML = "<td>" + fam.family.replace(/_/g, " ") + "</td><td class='num'>" + fmt(ccy, fam.exposure_before) +
+                        "</td><td class='num'>" + fmt(ccy, fam.exposure_after) + "</td><td class='num'>" + pct + "</td><td>" + adequate + "</td>";
+                    gb.appendChild(tr);
+                });
+                el("growth-note").textContent = g.recommendation + " " + g.disclaimer;
+
+                el("provenance").textContent = "Engine: " + DATA.meta.engine + " · calculation_version " +
+                    DATA.meta.calculation_version + " · build " + DATA.meta.commit + ". Every figure on this page was produced by that engine — the browser only reads the result.";
+                el("global-disclaimer").textContent = DATA.meta.disclaimer;
+            }
+
+            function currentCell() {
+                var di = Number(el("slider-days").value);
+                var ri = Number(el("slider-decline").value);
+                var days = DATA.scenario_grid.downtime_days[di];
+                var decline = DATA.scenario_grid.revenue_decline_pct[ri];
+                el("lbl-days").textContent = days + " days";
+                el("lbl-decline").textContent = decline + "%";
+                return { days: days, decline: decline, cell: DATA.scenario_grid.cells[days + "|" + decline] };
+            }
+
+            function renderScenario() {
+                var ccy = DATA.sme.currency;
+                var s = currentCell();
+                var c = s.cell;
+                el("out-uncovered").textContent = fmt(ccy, c.headline_uncovered) + (c.headline_family ? " (" + c.headline_family.replace(/_/g, " ") + ")" : "");
+                el("out-total").textContent = fmt(ccy, c.total_uncovered);
+                var rb = c.runway_before_months == null ? "—" : c.runway_before_months + " mo";
+                var ra = c.runway_after_months == null ? "—" : c.runway_after_months + " mo";
+                el("out-runway").textContent = rb + " → " + ra;
+                el("out-gap").textContent = (c.cash_gap_date_before || "—") + " → " + (c.cash_gap_date_after || "—");
+
+                // Coverage matrix from base assessment, but recompute uncovered from grid for the moved families
+                var body = el("gap-table").querySelector("tbody");
+                body.innerHTML = "";
+                DATA.base_assessment.risk_categories.forEach(function (r) {
+                    var limit = r.policy_limit != null ? fmt(ccy, r.policy_limit) : (r.sub_limit != null ? fmt(ccy, r.sub_limit) + " (sub-limit)" : "—");
+                    var uncovered = r.uncovered_range ? (fmt(ccy, r.uncovered_range[0]) + "–" + fmt(ccy, r.uncovered_range[1])) : fmt(ccy, r.estimated_uncovered);
+                    var tr = document.createElement("tr");
+                    tr.innerHTML = "<td>" + r.family.replace(/_/g, " ") + "</td><td>" + statusPill(r.status) +
+                        "</td><td class='num'>" + fmt(ccy, r.gross_impact) + "</td><td class='num'>" + limit +
+                        "</td><td class='num'>" + fmt(ccy, r.covered_amount) + "</td><td class='num'>" + uncovered + "</td>";
+                    body.appendChild(tr);
+                });
+            }
+
+            function renderReport() {
+                var ccy = DATA.sme.currency;
+                var s = currentCell();
+                var b = DATA.base_assessment;
+                var rows = b.risk_categories.map(function (r) {
+                    return "<tr><td>" + r.family.replace(/_/g, " ") + "</td><td>" + (r.status || "").replace(/_/g, " ") +
+                        "</td><td>" + fmt(ccy, r.gross_impact) + "</td><td>" + fmt(ccy, r.estimated_uncovered) + "</td></tr>";
+                }).join("");
+                el("report-body").innerHTML =
+                    "<h3>SME Risk &amp; Protection Readiness Report (synthetic preview)</h3>" +
+                    "<p><strong>" + DATA.sme.name + "</strong> · " + DATA.sme.country + " · " + ccy + "</p>" +
+                    "<p>Overall protection readiness: <strong>" + (b.overall_score == null ? "—" : b.overall_score) + "/100 (" + (b.score_band || "") + ")</strong></p>" +
+                    "<h4>Coverage-gap register</h4>" +
+                    "<table><thead><tr><th>Risk</th><th>Status</th><th>Modelled impact</th><th>Uncovered</th></tr></thead><tbody>" + rows + "</tbody></table>" +
+                    "<p style='margin-top:10px'><em>Assumptions:</em> conservative fixed-cost proxy; contribution margin from profit margin; interruption length is a user-selected scenario. Every figure is indicative decision-support, not a coverage determination — verify with a licensed broker or insurer.</p>";
+                el("report-section").classList.remove("hidden");
+                el("report-section").scrollIntoView({ behavior: "smooth" });
+            }
+
+            function boot(data) {
+                DATA = data;
+                el("slider-days").max = String(DATA.scenario_grid.downtime_days.length - 1);
+                el("slider-decline").max = String(DATA.scenario_grid.revenue_decline_pct.length - 1);
+                renderStatic();
+                renderScenario();
+                el("slider-days").addEventListener("input", renderScenario);
+                el("slider-decline").addEventListener("input", renderScenario);
+                el("btn-report").addEventListener("click", renderReport);
+                el("loading").classList.add("hidden");
+                el("app").classList.remove("hidden");
+            }
+
+            fetch("/protection-gap/demo/data/protection-demo-fixture.json", { cache: "no-cache" })
+                .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+                .then(boot)
+                .catch(function (e) {
+                    fail("Could not load the demo data (" + e.message + "). If you opened this file directly from disk, " +
+                        "serve it over HTTP (e.g. `python -m http.server`) — the demo fetches a local JSON fixture.");
+                });
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1091 @@
+{
+  "base_assessment": {
+    "cash_flow_impact": {
+      "headline": {
+        "as_of_date": "2026-06-30",
+        "cash_after_event": 67500.0,
+        "cash_gap_date_after": "2027-01-30",
+        "cash_gap_date_before": "2027-06-30",
+        "current_cash": 120000.0,
+        "headline_family": "property",
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 0.0,
+        "runway_after_months": 6.75,
+        "runway_before_months": 12.0,
+        "would_exhaust_cash": false
+      },
+      "per_family": [
+        {
+          "cash_after_event": 75555.56,
+          "family": "cyber",
+          "runway_after_months": 7.56,
+          "uncovered": 44444.44
+        },
+        {
+          "cash_after_event": 71055.56,
+          "family": "supply_chain",
+          "runway_after_months": 7.11,
+          "uncovered": 48944.44
+        },
+        {
+          "cash_after_event": 67500.0,
+          "family": "property",
+          "runway_after_months": 6.75,
+          "uncovered": 52500.0
+        },
+        {
+          "cash_after_event": 89555.56,
+          "family": "business_interruption",
+          "runway_after_months": 8.96,
+          "uncovered": 30444.44
+        }
+      ]
+    },
+    "overall_score": 62.8,
+    "risk_categories": [
+      {
+        "confidence": "low",
+        "covered_amount": 0.0,
+        "deductible": null,
+        "estimated_uncovered": 44444.44,
+        "evidence": [
+          {
+            "field": "coverage_present",
+            "is_inferred": true,
+            "page": null,
+            "snippet": "No matching coverage section found in the extracted text."
+          }
+        ],
+        "family": "cyber",
+        "gross_impact": 44444.44,
+        "policy_limit": null,
+        "scenario": "10-day cyber outage affecting 100% of operations",
+        "status": "no_matching_coverage",
+        "sub_limit": null,
+        "uncovered_range": null
+      },
+      {
+        "confidence": "low",
+        "covered_amount": 0.0,
+        "deductible": null,
+        "estimated_uncovered": 48944.44,
+        "evidence": [
+          {
+            "field": "coverage_present",
+            "is_inferred": true,
+            "page": null,
+            "snippet": "No matching coverage section found in the extracted text."
+          }
+        ],
+        "family": "supply_chain",
+        "gross_impact": 48944.44,
+        "policy_limit": null,
+        "scenario": "10-day interruption of a key supplier (~45% dependence)",
+        "status": "no_matching_coverage",
+        "sub_limit": null,
+        "uncovered_range": null
+      },
+      {
+        "confidence": "medium",
+        "covered_amount": 197500.0,
+        "deductible": 2500.0,
+        "estimated_uncovered": 52500.0,
+        "evidence": [
+          {
+            "field": "coverage_present",
+            "is_inferred": false,
+            "page": 1,
+            "snippet": "SECTION 1 — Property All Risks"
+          },
+          {
+            "field": "limit",
+            "is_inferred": false,
+            "page": 1,
+            "snippet": "Limit of Indemnity: SGD 200,000"
+          },
+          {
+            "field": "deductible",
+            "is_inferred": false,
+            "page": 1,
+            "snippet": "Deductible: SGD 2,500"
+          }
+        ],
+        "family": "property",
+        "gross_impact": 250000.0,
+        "policy_limit": 200000.0,
+        "scenario": "Loss of 100% of stated major assets",
+        "status": "possible_partial_gap",
+        "sub_limit": null,
+        "uncovered_range": null
+      },
+      {
+        "confidence": "medium",
+        "covered_amount": 24000.0,
+        "deductible": 1000.0,
+        "estimated_uncovered": 30444.44,
+        "evidence": [
+          {
+            "field": "coverage_present",
+            "is_inferred": false,
+            "page": 1,
+            "snippet": "SECTION 2 — Business Interruption"
+          },
+          {
+            "field": "sub_limit",
+            "is_inferred": false,
+            "page": 1,
+            "snippet": "Sub-limit: SGD 25,000"
+          },
+          {
+            "field": "indemnity_period_days",
+            "is_inferred": false,
+            "page": 1,
+            "snippet": "Indemnity Period: 3 months"
+          },
+          {
+            "field": "deductible",
+            "is_inferred": false,
+            "page": 1,
+            "snippet": "Deductible: SGD 1,000"
+          }
+        ],
+        "family": "business_interruption",
+        "gross_impact": 54444.44,
+        "policy_limit": null,
+        "scenario": "10-day full business interruption",
+        "status": "possible_partial_gap",
+        "sub_limit": 25000.0,
+        "uncovered_range": null
+      }
+    ],
+    "score_band": "moderate",
+    "score_components": {
+      "band": "moderate",
+      "components": [
+        {
+          "explanation": "Based on ~12.0 months of cash runway (12+ months = full marks).",
+          "inputs": {
+            "runway_months": 12.0
+          },
+          "key": "financial_resilience",
+          "score": 100.0,
+          "weight": 0.25
+        },
+        {
+          "explanation": "2/4 key coverage families identified; 0/7 core policy fields extracted.",
+          "inputs": {
+            "families_present": 2,
+            "families_total": 4,
+            "header_fields_present": 0,
+            "header_fields_total": 7
+          },
+          "key": "policy_completeness",
+          "score": 35.0,
+          "weight": 0.2
+        },
+        {
+          "explanation": "~31% of modelled risk (averaged across 4 risk families, each weighted equally) is potentially covered; 0 family/families could not be determined.",
+          "inputs": {
+            "assessed_families": 4,
+            "avg_coverage_ratio": 0.308,
+            "undetermined": 0
+          },
+          "key": "coverage_adequacy",
+          "score": 30.8,
+          "weight": 0.35
+        },
+        {
+          "explanation": "Reflects 0 missing financial input(s).",
+          "inputs": {
+            "financial_missing": 0,
+            "has_policy": true,
+            "policy_extraction_confidence": null
+          },
+          "key": "data_confidence",
+          "score": 100.0,
+          "weight": 0.2
+        }
+      ],
+      "dimensions": {
+        "coverage_adequacy": 30.8,
+        "coverage_completeness": 32.9,
+        "data_confidence": 100.0,
+        "financial_resilience": 100.0
+      },
+      "explanation": "Overall readiness = weighted average of financial resilience (25%), policy completeness (20%), coverage adequacy (35%) and data confidence (20%), minus a missing-data penalty. Indicative only.",
+      "family_exposure": {
+        "business_interruption": {
+          "estimated_uncovered": 30444.44,
+          "gross_impact": 54444.44,
+          "risk_level": "low",
+          "status": "possible_partial_gap"
+        },
+        "cyber": {
+          "estimated_uncovered": 44444.44,
+          "gross_impact": 44444.44,
+          "risk_level": "low",
+          "status": "no_matching_coverage"
+        },
+        "property": {
+          "estimated_uncovered": 52500.0,
+          "gross_impact": 250000.0,
+          "risk_level": "medium",
+          "status": "possible_partial_gap"
+        },
+        "supply_chain": {
+          "estimated_uncovered": 48944.44,
+          "gross_impact": 48944.44,
+          "risk_level": "medium",
+          "status": "no_matching_coverage"
+        }
+      },
+      "missing_data_penalty": 0.0,
+      "overall_readiness": 62.8,
+      "version": "protection-score-v1",
+      "weighted_before_penalty": 62.8
+    }
+  },
+  "financial_facts": {
+    "as_of_date": "2026-06-30",
+    "cash_gap_date": "2027-06-30",
+    "currency": "SGD",
+    "current_cash": 120000.0,
+    "expenses_6m": 800000.0,
+    "monthly": [
+      {
+        "expenses": 132000,
+        "month": "2026-01",
+        "net": 18000,
+        "revenue": 150000
+      },
+      {
+        "expenses": 131000,
+        "month": "2026-02",
+        "net": 17000,
+        "revenue": 148000
+      },
+      {
+        "expenses": 134000,
+        "month": "2026-03",
+        "net": 18000,
+        "revenue": 152000
+      },
+      {
+        "expenses": 133000,
+        "month": "2026-04",
+        "net": 17000,
+        "revenue": 150000
+      },
+      {
+        "expenses": 132000,
+        "month": "2026-05",
+        "net": 19000,
+        "revenue": 151000
+      },
+      {
+        "expenses": 138000,
+        "month": "2026-06",
+        "net": 11000,
+        "revenue": 149000
+      }
+    ],
+    "net_cash_change_6m": -60000.0,
+    "period": "2026-01-01 to 2026-06-30",
+    "profit_margin_pct": 20.0,
+    "revenue_6m": 900000.0,
+    "runway_months": 12.0,
+    "top_supplier_share_pct": 45.0
+  },
+  "growth_review": {
+    "calculation_version": "protection-v2",
+    "changed_inputs": {
+      "annual_revenue": "SGD 1.8M → SGD 3.6M",
+      "major_asset_value": "SGD 250,000 → SGD 500,000"
+    },
+    "disclaimer": "This is a point-in-time comparison of two scenarios, not continuous monitoring. Figures are indicative decision-support, not a coverage determination.",
+    "families": [
+      {
+        "exposure_after": 108888.89,
+        "exposure_before": 54444.44,
+        "family": "business_interruption",
+        "limit_shortfall": null,
+        "limit_still_adequate": null,
+        "material_growth": true,
+        "pct_change": 100.0,
+        "policy_limit": null
+      },
+      {
+        "exposure_after": 88888.89,
+        "exposure_before": 44444.44,
+        "family": "cyber",
+        "limit_shortfall": null,
+        "limit_still_adequate": null,
+        "material_growth": true,
+        "pct_change": 100.0,
+        "policy_limit": null
+      },
+      {
+        "exposure_after": 500000.0,
+        "exposure_before": 250000.0,
+        "family": "property",
+        "limit_shortfall": 300000.0,
+        "limit_still_adequate": false,
+        "material_growth": true,
+        "pct_change": 100.0,
+        "policy_limit": 200000.0
+      },
+      {
+        "exposure_after": 93388.89,
+        "exposure_before": 48944.44,
+        "family": "supply_chain",
+        "limit_shortfall": null,
+        "limit_still_adequate": null,
+        "material_growth": true,
+        "pct_change": 90.81,
+        "policy_limit": null
+      }
+    ],
+    "headline_uncovered_after": 302500.0,
+    "headline_uncovered_before": 52500.0,
+    "reasons": [
+      "business_interruption: exposure grew 100% — review whether the limit still fits.",
+      "cyber: exposure grew 100% — review whether the limit still fits.",
+      "property: updated exposure 500,000 now exceeds the policy limit 200,000 (shortfall 300,000).",
+      "supply_chain: exposure grew 91% — review whether the limit still fits."
+    ],
+    "reassessment_recommended": true,
+    "recommendation": "Reassess whenever financial, operational or policy data changes."
+  },
+  "meta": {
+    "calculation_version": "protection-v2",
+    "commit": "67aa6d09",
+    "disclaimer": "All data is synthetic and clearly labelled. This is illustrative decision-support, not a coverage determination. Figures are indicative and require human verification with a licensed broker or insurer.",
+    "engine": "sbfinance protection deterministic engine (same library as desktop app)",
+    "synthetic": true
+  },
+  "policy": {
+    "extraction_status": "ready",
+    "facts": [
+      {
+        "category": "property",
+        "confidence": 0.85,
+        "field_key": "coverage_present",
+        "is_inferred": false,
+        "normalized_value": true,
+        "raw_statement": "SECTION 1 — Property All Risks",
+        "source_page": 1,
+        "source_snippet": "SECTION 1 — Property All Risks",
+        "status": "extracted"
+      },
+      {
+        "category": "property",
+        "confidence": 0.8,
+        "field_key": "limit",
+        "is_inferred": false,
+        "normalized_value": 200000.0,
+        "raw_statement": "Limit of Indemnity: SGD 200,000",
+        "source_page": 1,
+        "source_snippet": "Limit of Indemnity: SGD 200,000",
+        "status": "extracted"
+      },
+      {
+        "category": "property",
+        "confidence": 0.8,
+        "field_key": "deductible",
+        "is_inferred": false,
+        "normalized_value": 2500.0,
+        "raw_statement": "Deductible: SGD 2,500",
+        "source_page": 1,
+        "source_snippet": "Deductible: SGD 2,500",
+        "status": "extracted"
+      },
+      {
+        "category": "business_interruption",
+        "confidence": 0.85,
+        "field_key": "coverage_present",
+        "is_inferred": false,
+        "normalized_value": true,
+        "raw_statement": "SECTION 2 — Business Interruption",
+        "source_page": 1,
+        "source_snippet": "SECTION 2 — Business Interruption",
+        "status": "extracted"
+      },
+      {
+        "category": "business_interruption",
+        "confidence": 0.8,
+        "field_key": "sub_limit",
+        "is_inferred": false,
+        "normalized_value": 25000.0,
+        "raw_statement": "Sub-limit: SGD 25,000",
+        "source_page": 1,
+        "source_snippet": "Sub-limit: SGD 25,000",
+        "status": "extracted"
+      },
+      {
+        "category": "business_interruption",
+        "confidence": 0.7,
+        "field_key": "indemnity_period_days",
+        "is_inferred": false,
+        "normalized_value": 90,
+        "raw_statement": "Indemnity Period: 3 months",
+        "source_page": 1,
+        "source_snippet": "Indemnity Period: 3 months",
+        "status": "extracted"
+      },
+      {
+        "category": "business_interruption",
+        "confidence": 0.8,
+        "field_key": "deductible",
+        "is_inferred": false,
+        "normalized_value": 1000.0,
+        "raw_statement": "Deductible: SGD 1,000",
+        "source_page": 1,
+        "source_snippet": "Deductible: SGD 1,000",
+        "status": "extracted"
+      },
+      {
+        "category": "cyber",
+        "confidence": 0.4,
+        "field_key": "coverage_present",
+        "is_inferred": true,
+        "normalized_value": false,
+        "raw_statement": "",
+        "source_page": null,
+        "source_snippet": "No matching coverage section found in the extracted text.",
+        "status": "extracted"
+      },
+      {
+        "category": "supply_chain",
+        "confidence": 0.4,
+        "field_key": "coverage_present",
+        "is_inferred": true,
+        "normalized_value": false,
+        "raw_statement": "",
+        "source_page": null,
+        "source_snippet": "No matching coverage section found in the extracted text.",
+        "status": "extracted"
+      }
+    ],
+    "header": {
+      "currency": "SGD",
+      "insured_entity": "Marina Digital Services Pte Ltd (Synthetic)",
+      "insurer_name": "Helvetia Illustrative Insurance (SEA) Pte Ltd",
+      "period_end": "2026-12-31",
+      "period_start": "2026-01-01",
+      "policy_type": "SME Commercial Package Policy"
+    },
+    "masked_policy_number": "ILLUS-SG-2026-118820",
+    "page_count": 1
+  },
+  "scenario_grid": {
+    "cells": {
+      "0|0": {
+        "cash_gap_date_after": "2027-01-30",
+        "cash_gap_date_before": "2027-06-30",
+        "headline_covered": 197500.0,
+        "headline_family": "property",
+        "headline_gross": 250000.0,
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 0.0,
+        "runway_after_months": 6.75,
+        "runway_before_months": 12.0,
+        "total_uncovered": 52500.0
+      },
+      "0|10": {
+        "cash_gap_date_after": "2026-11-30",
+        "cash_gap_date_before": "2027-03-30",
+        "headline_covered": 197500.0,
+        "headline_family": "property",
+        "headline_gross": 250000.0,
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 10.0,
+        "runway_after_months": 5.19,
+        "runway_before_months": 9.23,
+        "total_uncovered": 52500.0
+      },
+      "0|20": {
+        "cash_gap_date_after": "2026-10-30",
+        "cash_gap_date_before": "2027-02-28",
+        "headline_covered": 197500.0,
+        "headline_family": "property",
+        "headline_gross": 250000.0,
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 20.0,
+        "runway_after_months": 4.22,
+        "runway_before_months": 7.5,
+        "total_uncovered": 52500.0
+      },
+      "0|30": {
+        "cash_gap_date_after": "2026-10-30",
+        "cash_gap_date_before": "2026-12-30",
+        "headline_covered": 197500.0,
+        "headline_family": "property",
+        "headline_gross": 250000.0,
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 30.0,
+        "runway_after_months": 3.56,
+        "runway_before_months": 6.32,
+        "total_uncovered": 52500.0
+      },
+      "0|40": {
+        "cash_gap_date_after": "2026-09-30",
+        "cash_gap_date_before": "2026-11-30",
+        "headline_covered": 197500.0,
+        "headline_family": "property",
+        "headline_gross": 250000.0,
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 40.0,
+        "runway_after_months": 3.07,
+        "runway_before_months": 5.45,
+        "total_uncovered": 52500.0
+      },
+      "0|50": {
+        "cash_gap_date_after": "2026-09-30",
+        "cash_gap_date_before": "2026-11-30",
+        "headline_covered": 197500.0,
+        "headline_family": "property",
+        "headline_gross": 250000.0,
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 50.0,
+        "runway_after_months": 2.7,
+        "runway_before_months": 4.8,
+        "total_uncovered": 52500.0
+      },
+      "10|0": {
+        "cash_gap_date_after": "2027-01-30",
+        "cash_gap_date_before": "2027-06-30",
+        "headline_covered": 197500.0,
+        "headline_family": "property",
+        "headline_gross": 250000.0,
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 0.0,
+        "runway_after_months": 6.75,
+        "runway_before_months": 12.0,
+        "total_uncovered": 176333.32
+      },
+      "10|10": {
+        "cash_gap_date_after": "2026-11-30",
+        "cash_gap_date_before": "2027-03-30",
+        "headline_covered": 197500.0,
+        "headline_family": "property",
+        "headline_gross": 250000.0,
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 10.0,
+        "runway_after_months": 5.19,
+        "runway_before_months": 9.23,
+        "total_uncovered": 177333.32
+      },
+      "10|20": {
+        "cash_gap_date_after": "2026-10-30",
+        "cash_gap_date_before": "2027-02-28",
+        "headline_covered": 197500.0,
+        "headline_family": "property",
+        "headline_gross": 250000.0,
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 20.0,
+        "runway_after_months": 4.22,
+        "runway_before_months": 7.5,
+        "total_uncovered": 178333.32
+      },
+      "10|30": {
+        "cash_gap_date_after": "2026-10-30",
+        "cash_gap_date_before": "2026-12-30",
+        "headline_covered": 197500.0,
+        "headline_family": "property",
+        "headline_gross": 250000.0,
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 30.0,
+        "runway_after_months": 3.56,
+        "runway_before_months": 6.32,
+        "total_uncovered": 179333.32
+      },
+      "10|40": {
+        "cash_gap_date_after": "2026-09-30",
+        "cash_gap_date_before": "2026-11-30",
+        "headline_covered": 197500.0,
+        "headline_family": "property",
+        "headline_gross": 250000.0,
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 40.0,
+        "runway_after_months": 3.07,
+        "runway_before_months": 5.45,
+        "total_uncovered": 180333.32
+      },
+      "10|50": {
+        "cash_gap_date_after": "2026-09-30",
+        "cash_gap_date_before": "2026-11-30",
+        "headline_covered": 197500.0,
+        "headline_family": "property",
+        "headline_gross": 250000.0,
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 50.0,
+        "runway_after_months": 2.7,
+        "runway_before_months": 4.8,
+        "total_uncovered": 181333.32
+      },
+      "15|0": {
+        "cash_gap_date_after": "2026-11-30",
+        "cash_gap_date_before": "2027-06-30",
+        "headline_covered": 0.0,
+        "headline_family": "supply_chain",
+        "headline_gross": 73416.67,
+        "headline_uncovered": 73416.67,
+        "revenue_decline_pct": 0.0,
+        "runway_after_months": 4.66,
+        "runway_before_months": 12.0,
+        "total_uncovered": 250250.01
+      },
+      "15|10": {
+        "cash_gap_date_after": "2026-10-30",
+        "cash_gap_date_before": "2027-03-30",
+        "headline_covered": 0.0,
+        "headline_family": "supply_chain",
+        "headline_gross": 73416.67,
+        "headline_uncovered": 73416.67,
+        "revenue_decline_pct": 10.0,
+        "runway_after_months": 3.58,
+        "runway_before_months": 9.23,
+        "total_uncovered": 251750.01
+      },
+      "15|20": {
+        "cash_gap_date_after": "2026-09-30",
+        "cash_gap_date_before": "2027-02-28",
+        "headline_covered": 0.0,
+        "headline_family": "supply_chain",
+        "headline_gross": 73416.67,
+        "headline_uncovered": 73416.67,
+        "revenue_decline_pct": 20.0,
+        "runway_after_months": 2.91,
+        "runway_before_months": 7.5,
+        "total_uncovered": 253250.01
+      },
+      "15|30": {
+        "cash_gap_date_after": "2026-08-30",
+        "cash_gap_date_before": "2026-12-30",
+        "headline_covered": 0.0,
+        "headline_family": "supply_chain",
+        "headline_gross": 73416.67,
+        "headline_uncovered": 73416.67,
+        "revenue_decline_pct": 30.0,
+        "runway_after_months": 2.45,
+        "runway_before_months": 6.32,
+        "total_uncovered": 254750.01
+      },
+      "15|40": {
+        "cash_gap_date_after": "2026-08-30",
+        "cash_gap_date_before": "2026-11-30",
+        "headline_covered": 0.0,
+        "headline_family": "supply_chain",
+        "headline_gross": 73416.67,
+        "headline_uncovered": 73416.67,
+        "revenue_decline_pct": 40.0,
+        "runway_after_months": 2.12,
+        "runway_before_months": 5.45,
+        "total_uncovered": 256250.01
+      },
+      "15|50": {
+        "cash_gap_date_after": "2026-08-30",
+        "cash_gap_date_before": "2026-11-30",
+        "headline_covered": 0.0,
+        "headline_family": "supply_chain",
+        "headline_gross": 73416.67,
+        "headline_uncovered": 73416.67,
+        "revenue_decline_pct": 50.0,
+        "runway_after_months": 1.86,
+        "runway_before_months": 4.8,
+        "total_uncovered": 257750.01
+      },
+      "20|0": {
+        "cash_gap_date_after": "2026-08-30",
+        "cash_gap_date_before": "2027-06-30",
+        "headline_covered": 0.0,
+        "headline_family": "supply_chain",
+        "headline_gross": 97888.89,
+        "headline_uncovered": 97888.89,
+        "revenue_decline_pct": 0.0,
+        "runway_after_months": 2.21,
+        "runway_before_months": 12.0,
+        "total_uncovered": 324166.67
+      },
+      "20|10": {
+        "cash_gap_date_after": "2026-08-30",
+        "cash_gap_date_before": "2027-03-30",
+        "headline_covered": 0.0,
+        "headline_family": "supply_chain",
+        "headline_gross": 97888.89,
+        "headline_uncovered": 97888.89,
+        "revenue_decline_pct": 10.0,
+        "runway_after_months": 1.7,
+        "runway_before_months": 9.23,
+        "total_uncovered": 326166.67
+      },
+      "20|20": {
+        "cash_gap_date_after": "2026-07-30",
+        "cash_gap_date_before": "2027-02-28",
+        "headline_covered": 0.0,
+        "headline_family": "supply_chain",
+        "headline_gross": 97888.89,
+        "headline_uncovered": 97888.89,
+        "revenue_decline_pct": 20.0,
+        "runway_after_months": 1.38,
+        "runway_before_months": 7.5,
+        "total_uncovered": 328166.67
+      },
+      "20|30": {
+        "cash_gap_date_after": "2026-07-30",
+        "cash_gap_date_before": "2026-12-30",
+        "headline_covered": 0.0,
+        "headline_family": "supply_chain",
+        "headline_gross": 97888.89,
+        "headline_uncovered": 97888.89,
+        "revenue_decline_pct": 30.0,
+        "runway_after_months": 1.16,
+        "runway_before_months": 6.32,
+        "total_uncovered": 330166.67
+      },
+      "20|40": {
+        "cash_gap_date_after": "2026-07-30",
+        "cash_gap_date_before": "2026-11-30",
+        "headline_covered": 0.0,
+        "headline_family": "supply_chain",
+        "headline_gross": 97888.89,
+        "headline_uncovered": 97888.89,
+        "revenue_decline_pct": 40.0,
+        "runway_after_months": 1.0,
+        "runway_before_months": 5.45,
+        "total_uncovered": 332166.67
+      },
+      "20|50": {
+        "cash_gap_date_after": "2026-07-30",
+        "cash_gap_date_before": "2026-11-30",
+        "headline_covered": 0.0,
+        "headline_family": "supply_chain",
+        "headline_gross": 97888.89,
+        "headline_uncovered": 97888.89,
+        "revenue_decline_pct": 50.0,
+        "runway_after_months": 0.88,
+        "runway_before_months": 4.8,
+        "total_uncovered": 334166.67
+      },
+      "30|0": {
+        "cash_gap_date_after": "2026-06-30",
+        "cash_gap_date_before": "2027-06-30",
+        "headline_covered": 0.0,
+        "headline_family": "supply_chain",
+        "headline_gross": 146833.33,
+        "headline_uncovered": 146833.33,
+        "revenue_decline_pct": 0.0,
+        "runway_after_months": 0.0,
+        "runway_before_months": 12.0,
+        "total_uncovered": 471999.99
+      },
+      "30|10": {
+        "cash_gap_date_after": "2026-06-30",
+        "cash_gap_date_before": "2027-03-30",
+        "headline_covered": 0.0,
+        "headline_family": "supply_chain",
+        "headline_gross": 146833.33,
+        "headline_uncovered": 146833.33,
+        "revenue_decline_pct": 10.0,
+        "runway_after_months": 0.0,
+        "runway_before_months": 9.23,
+        "total_uncovered": 474999.99
+      },
+      "30|20": {
+        "cash_gap_date_after": "2026-06-30",
+        "cash_gap_date_before": "2027-02-28",
+        "headline_covered": 0.0,
+        "headline_family": "supply_chain",
+        "headline_gross": 146833.33,
+        "headline_uncovered": 146833.33,
+        "revenue_decline_pct": 20.0,
+        "runway_after_months": 0.0,
+        "runway_before_months": 7.5,
+        "total_uncovered": 477999.99
+      },
+      "30|30": {
+        "cash_gap_date_after": "2026-06-30",
+        "cash_gap_date_before": "2026-12-30",
+        "headline_covered": 24000.0,
+        "headline_family": "business_interruption",
+        "headline_gross": 172333.33,
+        "headline_uncovered": 148333.33,
+        "revenue_decline_pct": 30.0,
+        "runway_after_months": 0.0,
+        "runway_before_months": 6.32,
+        "total_uncovered": 480999.99
+      },
+      "30|40": {
+        "cash_gap_date_after": "2026-06-30",
+        "cash_gap_date_before": "2026-11-30",
+        "headline_covered": 24000.0,
+        "headline_family": "business_interruption",
+        "headline_gross": 175333.33,
+        "headline_uncovered": 151333.33,
+        "revenue_decline_pct": 40.0,
+        "runway_after_months": 0.0,
+        "runway_before_months": 5.45,
+        "total_uncovered": 483999.99
+      },
+      "30|50": {
+        "cash_gap_date_after": "2026-06-30",
+        "cash_gap_date_before": "2026-11-30",
+        "headline_covered": 24000.0,
+        "headline_family": "business_interruption",
+        "headline_gross": 178333.33,
+        "headline_uncovered": 154333.33,
+        "revenue_decline_pct": 50.0,
+        "runway_after_months": 0.0,
+        "runway_before_months": 4.8,
+        "total_uncovered": 486999.99
+      },
+      "45|0": {
+        "cash_gap_date_after": "2026-06-30",
+        "cash_gap_date_before": "2027-06-30",
+        "headline_covered": 24000.0,
+        "headline_family": "business_interruption",
+        "headline_gross": 245000.0,
+        "headline_uncovered": 221000.0,
+        "revenue_decline_pct": 0.0,
+        "runway_after_months": 0.0,
+        "runway_before_months": 12.0,
+        "total_uncovered": 693750.0
+      },
+      "45|10": {
+        "cash_gap_date_after": "2026-06-30",
+        "cash_gap_date_before": "2027-03-30",
+        "headline_covered": 24000.0,
+        "headline_family": "business_interruption",
+        "headline_gross": 249500.0,
+        "headline_uncovered": 225500.0,
+        "revenue_decline_pct": 10.0,
+        "runway_after_months": 0.0,
+        "runway_before_months": 9.23,
+        "total_uncovered": 698250.0
+      },
+      "45|20": {
+        "cash_gap_date_after": "2026-06-30",
+        "cash_gap_date_before": "2027-02-28",
+        "headline_covered": 24000.0,
+        "headline_family": "business_interruption",
+        "headline_gross": 254000.0,
+        "headline_uncovered": 230000.0,
+        "revenue_decline_pct": 20.0,
+        "runway_after_months": 0.0,
+        "runway_before_months": 7.5,
+        "total_uncovered": 702750.0
+      },
+      "45|30": {
+        "cash_gap_date_after": "2026-06-30",
+        "cash_gap_date_before": "2026-12-30",
+        "headline_covered": 24000.0,
+        "headline_family": "business_interruption",
+        "headline_gross": 258500.0,
+        "headline_uncovered": 234500.0,
+        "revenue_decline_pct": 30.0,
+        "runway_after_months": 0.0,
+        "runway_before_months": 6.32,
+        "total_uncovered": 707250.0
+      },
+      "45|40": {
+        "cash_gap_date_after": "2026-06-30",
+        "cash_gap_date_before": "2026-11-30",
+        "headline_covered": 24000.0,
+        "headline_family": "business_interruption",
+        "headline_gross": 263000.0,
+        "headline_uncovered": 239000.0,
+        "revenue_decline_pct": 40.0,
+        "runway_after_months": 0.0,
+        "runway_before_months": 5.45,
+        "total_uncovered": 711750.0
+      },
+      "45|50": {
+        "cash_gap_date_after": "2026-06-30",
+        "cash_gap_date_before": "2026-11-30",
+        "headline_covered": 24000.0,
+        "headline_family": "business_interruption",
+        "headline_gross": 267500.0,
+        "headline_uncovered": 243500.0,
+        "revenue_decline_pct": 50.0,
+        "runway_after_months": 0.0,
+        "runway_before_months": 4.8,
+        "total_uncovered": 716250.0
+      },
+      "5|0": {
+        "cash_gap_date_after": "2027-01-30",
+        "cash_gap_date_before": "2027-06-30",
+        "headline_covered": 197500.0,
+        "headline_family": "property",
+        "headline_gross": 250000.0,
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 0.0,
+        "runway_after_months": 6.75,
+        "runway_before_months": 12.0,
+        "total_uncovered": 102416.66
+      },
+      "5|10": {
+        "cash_gap_date_after": "2026-11-30",
+        "cash_gap_date_before": "2027-03-30",
+        "headline_covered": 197500.0,
+        "headline_family": "property",
+        "headline_gross": 250000.0,
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 10.0,
+        "runway_after_months": 5.19,
+        "runway_before_months": 9.23,
+        "total_uncovered": 102916.66
+      },
+      "5|20": {
+        "cash_gap_date_after": "2026-10-30",
+        "cash_gap_date_before": "2027-02-28",
+        "headline_covered": 197500.0,
+        "headline_family": "property",
+        "headline_gross": 250000.0,
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 20.0,
+        "runway_after_months": 4.22,
+        "runway_before_months": 7.5,
+        "total_uncovered": 103416.66
+      },
+      "5|30": {
+        "cash_gap_date_after": "2026-10-30",
+        "cash_gap_date_before": "2026-12-30",
+        "headline_covered": 197500.0,
+        "headline_family": "property",
+        "headline_gross": 250000.0,
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 30.0,
+        "runway_after_months": 3.56,
+        "runway_before_months": 6.32,
+        "total_uncovered": 103916.66
+      },
+      "5|40": {
+        "cash_gap_date_after": "2026-09-30",
+        "cash_gap_date_before": "2026-11-30",
+        "headline_covered": 197500.0,
+        "headline_family": "property",
+        "headline_gross": 250000.0,
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 40.0,
+        "runway_after_months": 3.07,
+        "runway_before_months": 5.45,
+        "total_uncovered": 104416.66
+      },
+      "5|50": {
+        "cash_gap_date_after": "2026-09-30",
+        "cash_gap_date_before": "2026-11-30",
+        "headline_covered": 197500.0,
+        "headline_family": "property",
+        "headline_gross": 250000.0,
+        "headline_uncovered": 52500.0,
+        "revenue_decline_pct": 50.0,
+        "runway_after_months": 2.7,
+        "runway_before_months": 4.8,
+        "total_uncovered": 104916.66
+      },
+      "60|0": {
+        "cash_gap_date_after": "2026-06-30",
+        "cash_gap_date_before": "2027-06-30",
+        "headline_covered": 24000.0,
+        "headline_family": "business_interruption",
+        "headline_gross": 326666.67,
+        "headline_uncovered": 302666.67,
+        "revenue_decline_pct": 0.0,
+        "runway_after_months": 0.0,
+        "runway_before_months": 12.0,
+        "total_uncovered": 915500.01
+      },
+      "60|10": {
+        "cash_gap_date_after": "2026-06-30",
+        "cash_gap_date_before": "2027-03-30",
+        "headline_covered": 24000.0,
+        "headline_family": "business_interruption",
+        "headline_gross": 332666.67,
+        "headline_uncovered": 308666.67,
+        "revenue_decline_pct": 10.0,
+        "runway_after_months": 0.0,
+        "runway_before_months": 9.23,
+        "total_uncovered": 921500.01
+      },
+      "60|20": {
+        "cash_gap_date_after": "2026-06-30",
+        "cash_gap_date_before": "2027-02-28",
+        "headline_covered": 24000.0,
+        "headline_family": "business_interruption",
+        "headline_gross": 338666.67,
+        "headline_uncovered": 314666.67,
+        "revenue_decline_pct": 20.0,
+        "runway_after_months": 0.0,
+        "runway_before_months": 7.5,
+        "total_uncovered": 927500.01
+      },
+      "60|30": {
+        "cash_gap_date_after": "2026-06-30",
+        "cash_gap_date_before": "2026-12-30",
+        "headline_covered": 24000.0,
+        "headline_family": "business_interruption",
+        "headline_gross": 344666.67,
+        "headline_uncovered": 320666.67,
+        "revenue_decline_pct": 30.0,
+        "runway_after_months": 0.0,
+        "runway_before_months": 6.32,
+        "total_uncovered": 933500.01
+      },
+      "60|40": {
+        "cash_gap_date_after": "2026-06-30",
+        "cash_gap_date_before": "2026-11-30",
+        "headline_covered": 24000.0,
+        "headline_family": "business_interruption",
+        "headline_gross": 350666.67,
+        "headline_uncovered": 326666.67,
+        "revenue_decline_pct": 40.0,
+        "runway_after_months": 0.0,
+        "runway_before_months": 5.45,
+        "total_uncovered": 939500.01
+      },
+      "60|50": {
+        "cash_gap_date_after": "2026-06-30",
+        "cash_gap_date_before": "2026-11-30",
+        "headline_covered": 24000.0,
+        "headline_family": "business_interruption",
+        "headline_gross": 356666.67,
+        "headline_uncovered": 332666.67,
+        "revenue_decline_pct": 50.0,
+        "runway_after_months": 0.0,
+        "runway_before_months": 4.8,
+        "total_uncovered": 945500.01
+      }
+    },
+    "downtime_days": [
+      0,
+      5,
+      10,
+      15,
+      20,
+      30,
+      45,
+      60
+    ],
+    "revenue_decline_pct": [
+      0,
+      10,
+      20,
+      30,
+      40,
+      50
+    ]
+  },
+  "sme": {
+    "country": "Singapore",
+    "currency": "SGD",
+    "description": "A synthetic Singapore-based digital-services SME with high cloud dependency, one dominant hosting supplier, and physical equipment at two sites. Used to illustrate cyber, supply-chain and business-interruption protection gaps.",
+    "employees": 24,
+    "locations": [
+      "Singapore (HQ)",
+      "Johor Bahru (ops)"
+    ],
+    "name": "Marina Digital Services Pte Ltd (Synthetic)",
+    "sector": "Digital / managed IT services for regional SMEs",
+    "synthetic": true
+  }
+}

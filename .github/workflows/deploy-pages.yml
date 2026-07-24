@@ -37,7 +37,7 @@ jobs:
               cp "$file" site/"$file"
             fi
           done
-          for dir in assets public images img css js fonts; do
+          for dir in assets public images img css js fonts protection-gap sample-protection-report privacy terms; do
             if [ -d "$dir" ]; then
               cp -R "$dir" site/"$dir"
             fi

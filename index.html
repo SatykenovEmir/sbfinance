@@ -3758,7 +3758,7 @@
         <ul id="nav-menu">
             <li><a href="#pipeline">How it works</a></li>
             <li><a href="#features">Features</a></li>
-            <li><a href="/protection-gap.html">Protection Gap</a></li>
+            <li><a href="/protection-gap">Protection Gap</a></li>
             <li><a href="#privacy">Privacy</a></li>
             <li><a href="#who">Use cases</a></li>
             <li><a href="#downloads">Downloads</a></li>
@@ -4649,8 +4649,8 @@
             all computed locally with deterministic math and evidence from the policy wording. Indicative
             decision-support, not a coverage determination.</p>
         <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
-            <a href="/protection-gap.html" class="btn-primary">Explore the Protection Gap page</a>
-            <a href="/protection-gap.html#demo" class="btn-secondary">Run the Protection Gap demo</a>
+            <a href="/protection-gap" class="btn-primary">Explore the Protection Gap page</a>
+            <a href="/protection-gap/demo" class="btn-secondary">Run the Protection Gap demo</a>
         </div>
     </section>
 
@@ -4658,7 +4658,7 @@
     <section id="downloads">
         <div class="section-tag">desktop installers</div>
         <h2>Download builds for your OS.</h2>
-        <p class="section-sub">Current build: <strong>v0.1.5</strong> (private beta). Downloads are pulled from the latest GitHub release. If your OS package is not published yet, use the release page fallback.</p>
+        <p class="section-sub">Current build: <strong id="current-build-version">the latest public release</strong> (private beta). The version above and all downloads are pulled live from the latest GitHub release. If your OS package is not published yet, use the release page fallback.</p>
 
         <div class="download-grid reveal">
             <article class="download-card">
@@ -5004,6 +5004,13 @@
                 const footnote = document.getElementById('download-footnote');
                 if (footnote) {
                     footnote.textContent = `Latest public release: ${tagName} (${releaseDate}).`;
+                }
+
+                // Keep the visible "current build" version consistent with the actual
+                // latest release, so the landing page can never show a stale version.
+                const versionLabel = document.getElementById('current-build-version');
+                if (versionLabel) {
+                    versionLabel.textContent = tagName;
                 }
 
                 const checksumAsset = assets.find(asset => /sha256/i.test(asset.name) && /sum/i.test(asset.name));
