@@ -32,7 +32,7 @@ jobs:
         run: |
           mkdir -p site
           cp index.html site/index.html
-          for file in sample-report.html protection-gap.html terms.html privacy-policy.html refund-policy.html CNAME robots.txt sitemap.xml site.webmanifest favicon.ico; do
+          for file in sample-report.html terms.html privacy-policy.html refund-policy.html CNAME robots.txt sitemap.xml site.webmanifest favicon.ico; do
             if [ -f "$file" ]; then
               cp "$file" site/"$file"
             fi

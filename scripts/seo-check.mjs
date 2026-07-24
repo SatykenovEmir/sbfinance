@@ -186,7 +186,7 @@ check(existsSync(join(ROOT, 'protection-gap/demo/data/protection-demo-fixture.js
 
 // --- redirect stubs (old / clean URLs → destination) ------------------------
 console.log('\nredirect stubs');
-for (const stub of ['protection-gap.html', 'privacy/index.html', 'terms/index.html']) {
+for (const stub of ['privacy/index.html', 'terms/index.html']) {
   const p = read(stub);
   check(/<title>[\s\S]*?<\/title>/i.test(p), `${stub}: has <title>`);
   check(/http-equiv=["']refresh["']/i.test(p), `${stub}: is a redirect`);
@@ -195,7 +195,7 @@ for (const stub of ['protection-gap.html', 'privacy/index.html', 'terms/index.ht
 // --- deploy allowlist guard -------------------------------------------------
 console.log('\ndeploy workflow');
 const wf = read('.github/workflows/deploy-pages.yml');
-for (const f of ['index.html', 'robots.txt', 'sitemap.xml', 'site.webmanifest', 'CNAME', 'protection-gap.html']) {
+for (const f of ['index.html', 'robots.txt', 'sitemap.xml', 'site.webmanifest', 'CNAME']) {
   check(wf.includes(f), `deploy workflow copies ${f}`);
 }
 for (const d of ['protection-gap', 'sample-protection-report', 'privacy', 'terms']) {
