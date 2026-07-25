@@ -2,49 +2,49 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://sbfinance.me/</loc>
-    <lastmod>2026-07-24</lastmod>
+    <lastmod>2026-07-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://sbfinance.me/protection-gap</loc>
-    <lastmod>2026-07-24</lastmod>
+    <loc>https://sbfinance.me/protection-gap/</loc>
+    <lastmod>2026-07-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://sbfinance.me/protection-gap/demo</loc>
-    <lastmod>2026-07-24</lastmod>
+    <loc>https://sbfinance.me/protection-gap/demo/</loc>
+    <lastmod>2026-07-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://sbfinance.me/sample-protection-report</loc>
-    <lastmod>2026-07-24</lastmod>
+    <loc>https://sbfinance.me/sample-protection-report/</loc>
+    <lastmod>2026-07-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://sbfinance.me/sample-report.html</loc>
-    <lastmod>2026-06-05</lastmod>
+    <lastmod>2026-07-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://sbfinance.me/privacy-policy.html</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-07-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://sbfinance.me/terms.html</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-07-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://sbfinance.me/refund-policy.html</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-07-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

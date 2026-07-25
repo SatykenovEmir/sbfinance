@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">SBFinance financial risk and protection intelligence</title>
+  <desc id="desc">Social card describing local-first financial risk and protection intelligence for SMEs.</desc>
+  <defs>
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M60 0H0V60" fill="none" stroke="#57f1c7" stroke-opacity="0.055"/>
+    </pattern>
+    <radialGradient id="glow" cx="100%" cy="0%" r="90%">
+      <stop offset="0" stop-color="#57f1c7" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#57f1c7" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#070b0d"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect x="72" y="58" width="54" height="54" rx="13" fill="#57f1c7"/>
+  <text x="99" y="92" fill="#070b0d" font-family="Arial, sans-serif" font-size="19" font-weight="700" text-anchor="middle">SB</text>
+  <text x="145" y="95" fill="#edf2ec" font-family="Arial, sans-serif" font-size="34" font-weight="700">SB<tspan fill="#57f1c7">finance</tspan></text>
+  <text x="74" y="183" fill="#57f1c7" font-family="monospace" font-size="19" letter-spacing="2">LOCAL-FIRST / SME RISK / PROTECTION</text>
+  <text x="72" y="277" fill="#edf2ec" font-family="Arial, sans-serif" font-size="65" font-weight="700">Know your cash-flow risks</text>
+  <text x="72" y="355" fill="#edf2ec" font-family="Arial, sans-serif" font-size="65" font-weight="700">and <tspan fill="#57f1c7">protection gaps</tspan></text>
+  <text x="72" y="433" fill="#edf2ec" font-family="Arial, sans-serif" font-size="65" font-weight="700">before a loss hits.</text>
+  <text x="74" y="493" fill="#a6b1ae" font-family="Arial, sans-serif" font-size="24">Financial exports + policy facts + transparent scenarios</text>
+  <g transform="translate(72 538)" font-family="monospace" font-size="15" fill="#b9c9c4">
+    <rect width="191" height="40" rx="20" fill="#10191d" stroke="#57f1c7" stroke-opacity="0.35"/>
+    <text x="18" y="26">EVIDENCE-LINKED</text>
+    <rect x="205" width="207" height="40" rx="20" fill="#10191d" stroke="#57f1c7" stroke-opacity="0.35"/>
+    <text x="223" y="26">DETERMINISTIC MATH</text>
+    <rect x="426" width="191" height="40" rx="20" fill="#10191d" stroke="#57f1c7" stroke-opacity="0.35"/>
+    <text x="444" y="26">LOCAL-FIRST DATA</text>
+  </g>
+</svg>

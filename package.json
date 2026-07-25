@@ -1,0 +1,15 @@
+{
+  "name": "sbfinance-landing",
+  "private": true,
+  "scripts": {
+    "check": "node scripts/seo-check.mjs && node scripts/link-check.mjs",
+    "check:dependencies": "env -u npm_config_allow_scripts npm audit --audit-level=high",
+    "check:secrets": "node scripts/secret-check.mjs",
+    "test:e2e": "playwright test",
+    "test": "npm run check && npm run check:secrets && npm run check:dependencies && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.12.1",
+    "@playwright/test": "1.62.0"
+  }
+}

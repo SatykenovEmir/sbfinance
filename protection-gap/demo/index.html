@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Protection Gap — Interactive Browser Demo (Synthetic) · SBFinance</title>
     <meta name="description"
-        content="An interactive, no-install browser demo of the SBFinance SME Risk & Protection Copilot. Explore a synthetic Singapore SME's cyber, supply-chain, asset and business-interruption exposure, coverage gaps and cash-flow impact — every number computed by the same deterministic engine as the desktop app. Illustrative decision-support, not a coverage determination." />
-    <link rel="canonical" href="https://sbfinance.me/protection-gap/demo" />
+        content="An interactive, no-install browser demo of the SBFinance SME Risk & Protection Copilot. Explore a precomputed synthetic Singapore SME fixture covering cyber, supply-chain, asset and business-interruption exposure and cash-flow impact. Illustrative decision-support, not a coverage determination." />
+    <link rel="canonical" href="https://sbfinance.me/protection-gap/demo/" />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <meta name="theme-color" content="#05050a" />
     <meta name="color-scheme" content="dark" />
@@ -16,7 +16,7 @@
     <meta property="og:description"
         content="Explore a synthetic SME's protection gaps and cash-flow impact in your browser — deterministic, evidence-linked, no install. Illustrative decision-support only." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://sbfinance.me/protection-gap/demo" />
+    <meta property="og:url" content="https://sbfinance.me/protection-gap/demo/" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -82,6 +82,7 @@
         .report table td, .report table th { border-color: #e6e6ee; white-space: normal; }
         .hidden { display: none; }
         footer { padding: 34px 0; color: var(--muted); font-size: 13px; }
+        footer a { text-decoration: underline; text-underline-offset: 3px; }
         .err { background: rgba(255,138,138,0.08); border: 1px solid rgba(255,138,138,0.3); border-radius: 12px; padding: 16px; color: #ffbcbc; }
     </style>
 </head>
@@ -90,7 +91,7 @@
     <header>
         <div class="wrap nav">
             <a class="brand" href="/">SB<span>finance</span></a>
-            <a class="back" href="/protection-gap">← Protection Gap overview</a>
+            <a class="back" href="/protection-gap/">← Protection Gap overview</a>
         </div>
     </header>
 
@@ -98,10 +99,10 @@
         <section style="border:none">
             <div class="tag">interactive browser demo</div>
             <h1>See an SME's protection gap — live, in your browser</h1>
-            <p class="sub">No install, no account, no upload. Every figure below is precomputed by the
-                <strong>same deterministic engine</strong> that runs inside the SBFinance desktop app, over a
-                clearly-labelled synthetic Singapore SME. Move the sliders to change the disruption scenario and watch the
-                loss, coverage, uncovered amount, runway and cash-gap date recompute.</p>
+            <p class="sub">No install, no account and no financial or policy file upload. Every figure below comes from a
+                precomputed, clearly labelled synthetic Singapore SME fixture. Move the sliders to select another stored
+                scenario headline and see its modelled impact, arithmetic cross-scenario sum, runway and cash-gap date. The
+                baseline risk-family matrix is labelled separately.</p>
             <p style="margin-top:12px"><span class="synthetic" id="synthetic-banner">Synthetic data · illustrative only</span></p>
         </section>
 
@@ -125,10 +126,13 @@
             <!-- Financial facts -->
             <section>
                 <div class="tag">step 2 · the numbers (from the financial export)</div>
-                <h2>Verified financial facts</h2>
+                <h2>Synthetic fixture financial inputs</h2>
+                <p class="sub">This public fixture does not include the source export or a complete reconciliation from
+                    operating result to cash movement. Treat these values as prototype inputs, not independently verified
+                    customer facts.</p>
                 <div class="grid g4" style="margin-top:6px">
                     <div class="stat"><div class="k">Revenue (6m)</div><div class="v" id="fin-rev"></div></div>
-                    <div class="stat"><div class="k">Profit margin</div><div class="v" id="fin-margin"></div></div>
+                    <div class="stat"><div class="k">Scenario contribution margin</div><div class="v" id="fin-margin"></div></div>
                     <div class="stat"><div class="k">Available cash</div><div class="v" id="fin-cash"></div></div>
                     <div class="stat"><div class="k">Runway</div><div class="v" id="fin-runway"></div></div>
                     <div class="stat"><div class="k">Cash-gap date</div><div class="v small" id="fin-gap"></div></div>
@@ -140,10 +144,10 @@
             <section>
                 <div class="tag">step 3 · the policy (extracted from the PDF, with evidence)</div>
                 <h2>Policy facts &amp; page evidence</h2>
-                <p class="sub">Limits, sub-limits and deductibles are read straight from a synthetic SGD policy — each
-                    with the page it came from. Cyber and supply-chain sections are deliberately absent, producing honest
-                    "no matching coverage" results.</p>
-                <div class="scrollx">
+                <p class="sub">The fixture contains synthetic limit, deductible, page and snippet fields. The source policy
+                    and extractor are not included here, so these references illustrate the evidence contract rather than
+                    independently proving extraction accuracy. Missing cyber and supply-chain text requires policy review.</p>
+                <div class="scrollx" role="region" aria-label="Synthetic policy facts" tabindex="0">
                     <table id="policy-table">
                         <thead><tr><th>Coverage family</th><th>Field</th><th>Value</th><th>Evidence</th></tr></thead>
                         <tbody></tbody>
@@ -154,49 +158,51 @@
             <!-- Scenario controls -->
             <section>
                 <div class="tag">step 4 · run the assessment · change the scenario</div>
-                <h2>What would a disruption cost — and what's uncovered?</h2>
+                <h2>What could a disruption cost under stated payout assumptions?</h2>
                 <div class="grid g2" style="margin-top:12px">
                     <div class="controls">
                         <div class="slider-row">
-                            <label>Disruption length <b id="lbl-days">10 days</b></label>
+                            <label for="slider-days">Disruption length <b id="lbl-days">10 days</b></label>
                             <input type="range" id="slider-days" min="0" max="7" step="1" value="2" />
                         </div>
                         <div class="slider-row">
-                            <label>Revenue decline through recovery <b id="lbl-decline">0%</b></label>
+                            <label for="slider-decline">Revenue decline through recovery <b id="lbl-decline">0%</b></label>
                             <input type="range" id="slider-decline" min="0" max="5" step="1" value="0" />
                         </div>
-                        <p class="muted" style="font-size:13px">Each combination was pre-evaluated by the real engine.
-                            No JavaScript re-implements the maths — the page only looks the result up.</p>
+                        <p class="muted" style="font-size:13px">Each combination is stored in the versioned synthetic
+                            fixture. No JavaScript re-implements the loss maths. Scenario-impact fields assume zero payout
+                            when no matching policy text was found; that assumption is not a coverage finding.</p>
                         <div style="margin-top:10px">
                             <button class="btn" id="btn-report" type="button">Preview the report</button>
                         </div>
                     </div>
                     <div class="grid g2" style="align-content:start">
-                        <div class="stat"><div class="k">Headline uncovered</div><div class="v" id="out-uncovered"></div></div>
-                        <div class="stat"><div class="k">Total uncovered (all families)</div><div class="v" id="out-total"></div></div>
+                        <div class="stat"><div class="k">Headline impact under stated payout assumption</div><div class="v" id="out-uncovered"></div></div>
+                        <div class="stat"><div class="k">Arithmetic sum under stated payout assumptions</div><div class="v" id="out-total"></div></div>
                         <div class="stat"><div class="k">Runway before → after event</div><div class="v small" id="out-runway"></div></div>
                         <div class="stat"><div class="k">Cash-gap date (with decline)</div><div class="v small" id="out-gap"></div></div>
                     </div>
                 </div>
 
-                <h3 style="margin-top:22px">Coverage gap matrix</h3>
-                <div class="scrollx">
+                <h3 style="margin-top:22px">Baseline coverage gap matrix (fixed 10-day / 0% fixture assessment)</h3>
+                <div class="scrollx" role="region" aria-label="Baseline synthetic coverage gap matrix" tabindex="0">
                     <table id="gap-table">
                         <thead><tr><th>Risk</th><th>Status</th><th>Modelled impact</th><th>Limit / sub-limit</th><th>Covered</th><th>Uncovered</th></tr></thead>
                         <tbody></tbody>
                     </table>
                 </div>
-                <p class="disclaimer" style="margin-top:14px">Indicative only. Actual coverage depends on the full policy
-                    wording, endorsements, exclusions and the insurer's decision. Under ambiguity a range is shown, never a
-                    false precise number. This is not a coverage determination.</p>
+                <p class="disclaimer" style="margin-top:14px">No matching text is not a finding of zero coverage. The
+                    arithmetic sum combines separate illustrative scenarios; it is not a single event, expected loss or
+                    annual aggregate. Actual coverage depends on the full policy wording, endorsements, exclusions and the
+                    insurer's decision. This is not a coverage determination.</p>
             </section>
 
             <!-- Report preview -->
             <section id="report-section" class="hidden">
                 <div class="tag">step 5 · the hand-off</div>
                 <h2>Readiness report preview</h2>
-                <p class="sub">The desktop app generates a full local PDF <em>SME Risk &amp; Protection Readiness Report</em>
-                    for the owner to take to a broker. Below is a redacted, synthetic preview.</p>
+                <p class="sub">A proposed pilot output is a local PDF <em>SME Risk &amp; Protection Readiness Report</em>
+                    for the owner to review with a broker. Below is a synthetic preview.</p>
                 <div class="report" id="report-body" style="margin-top:12px"></div>
             </section>
 
@@ -205,8 +211,8 @@
                 <div class="tag">step 6 · protection as you grow</div>
                 <h2>What happens when the business doubles?</h2>
                 <p class="sub" id="growth-intro"></p>
-                <div class="scrollx"><table id="growth-table">
-                    <thead><tr><th>Risk family</th><th>Exposure before</th><th>Exposure after</th><th>Change</th><th>Limit still adequate?</th></tr></thead>
+                <div class="scrollx" role="region" aria-label="Synthetic growth comparison" tabindex="0"><table id="growth-table">
+                    <thead><tr><th>Risk family</th><th>Exposure before</th><th>Exposure after</th><th>Change</th><th>Numeric limit comparison</th></tr></thead>
                     <tbody></tbody>
                 </table></div>
                 <p class="disclaimer" style="margin-top:12px" id="growth-note"></p>
@@ -218,7 +224,7 @@
                 <p class="sub" id="provenance"></p>
                 <div class="disclaimer" style="margin-top:12px" id="global-disclaimer"></div>
                 <div style="margin-top:16px">
-                    <a class="btn btn-primary" href="/protection-gap">← Back to the overview</a>
+                    <a class="btn btn-primary" href="/protection-gap/">← Back to the overview</a>
                     <a class="btn" href="/#downloads">Get the local-first desktop app</a>
                 </div>
             </section>
@@ -228,8 +234,8 @@
     <footer>
         <div class="wrap">
             SBFinance — local-first financial &amp; insurance-risk intelligence for SMEs.
-            <a href="/">Home</a> · <a href="/protection-gap">Protection Gap</a> · <a href="/privacy">Privacy</a> ·
-            <a href="/terms">Terms</a><br>
+            <a href="/">Home</a> · <a href="/protection-gap/">Protection Gap</a> · <a href="/privacy-policy.html">Privacy</a> ·
+            <a href="/terms.html">Terms</a><br>
             All demo data is synthetic. No affiliation with any insurer or programme is implied.
         </div>
     </footer>
@@ -245,10 +251,15 @@
                 if (!isFinite(n)) return "—";
                 return (ccy ? ccy + " " : "") + n.toLocaleString("en-SG", { maximumFractionDigits: 0 });
             }
+            function esc(value) {
+                return String(value == null ? "" : value).replace(/[&<>"']/g, function (char) {
+                    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char];
+                });
+            }
             function el(id) { return document.getElementById(id); }
             function statusPill(status) {
                 var map = {
-                    "no_matching_coverage": ["bad", "No matching coverage"],
+                    "no_matching_coverage": ["info", "No matching text - review"],
                     "possible_partial_gap": ["warn", "Possible partial gap"],
                     "covered_subject_to_verification": ["good", "Covered — verify"],
                     "unable_to_determine": ["info", "Unable to determine"],
@@ -256,7 +267,7 @@
                     "more_information_required": ["info", "More info required"]
                 };
                 var m = map[status] || ["info", status];
-                return '<span class="pill ' + m[0] + '">' + m[1] + '</span>';
+                return '<span class="pill ' + m[0] + '">' + esc(m[1]) + '</span>';
             }
 
             function fail(msg) {
@@ -277,11 +288,11 @@
 
                 var f = DATA.financial_facts;
                 el("fin-rev").textContent = fmt(ccy, f.revenue_6m);
-                el("fin-margin").textContent = f.profit_margin_pct + "%";
+                el("fin-margin").textContent = f.scenario_contribution_margin_pct + "%";
                 el("fin-cash").textContent = fmt(ccy, f.current_cash);
                 el("fin-runway").textContent = (f.runway_months == null ? "—" : f.runway_months + " mo");
                 el("fin-gap").textContent = f.cash_gap_date || "—";
-                el("fin-supplier").textContent = (f.top_supplier_share_pct || 0) + "%";
+                el("fin-supplier").textContent = f.top_supplier_share_pct == null ? "Unknown" : f.top_supplier_share_pct + "%";
 
                 // Policy facts (stated only, with evidence)
                 var body = el("policy-table").querySelector("tbody");
@@ -289,28 +300,32 @@
                     .forEach(function (x) {
                         var tr = document.createElement("tr");
                         var val = x.field_key === "indemnity_period_days" ? (x.normalized_value + " days") : fmt(ccy, x.normalized_value);
-                        tr.innerHTML = "<td>" + x.category.replace(/_/g, " ") + "</td><td>" + x.field_key.replace(/_/g, " ") +
-                            "</td><td class='num'>" + val + "</td><td class='evidence'>p." + (x.source_page || "?") +
-                            " · " + (x.source_snippet || "").slice(0, 60) + "</td>";
+                        tr.innerHTML = "<td>" + esc(x.category.replace(/_/g, " ")) + "</td><td>" + esc(x.field_key.replace(/_/g, " ")) +
+                            "</td><td class='num'>" + esc(val) + "</td><td class='evidence'>p." + esc(x.source_page || "?") +
+                            " · " + esc((x.source_snippet || "").slice(0, 60)) + "</td>";
                         body.appendChild(tr);
                     });
 
                 // Growth review
                 var g = DATA.growth_review;
-                el("growth-intro").textContent = "Same SME, revenue doubled and a larger asset base. The engine re-runs and flags whether the existing limits still fit. " + (g.reassessment_recommended ? "A fresh review is recommended." : "No material change.");
+                el("growth-intro").textContent = "Same synthetic SME, revenue doubled and a larger asset base. The fixture compares modelled exposure with any supplied numeric limit; it does not determine policy adequacy. " + (g.reassessment_recommended ? "A fresh human review is recommended." : "No material change.");
                 var gb = el("growth-table").querySelector("tbody");
                 g.families.forEach(function (fam) {
-                    var adequate = fam.limit_still_adequate === null ? "—" : (fam.limit_still_adequate ? "Yes" : "No — shortfall " + fmt(ccy, fam.limit_shortfall));
+                    var adequate = fam.limit_still_adequate === null
+                        ? "Not assessed - review policy limit"
+                        : (fam.limit_still_adequate
+                            ? "Exposure does not exceed extracted limit"
+                            : "Exposure exceeds extracted limit by " + fmt(ccy, fam.limit_shortfall));
                     var pct = fam.pct_change === null ? "—" : (fam.pct_change > 0 ? "+" : "") + fam.pct_change + "%";
                     var tr = document.createElement("tr");
-                    tr.innerHTML = "<td>" + fam.family.replace(/_/g, " ") + "</td><td class='num'>" + fmt(ccy, fam.exposure_before) +
-                        "</td><td class='num'>" + fmt(ccy, fam.exposure_after) + "</td><td class='num'>" + pct + "</td><td>" + adequate + "</td>";
+                    tr.innerHTML = "<td>" + esc(fam.family.replace(/_/g, " ")) + "</td><td class='num'>" + esc(fmt(ccy, fam.exposure_before)) +
+                        "</td><td class='num'>" + esc(fmt(ccy, fam.exposure_after)) + "</td><td class='num'>" + esc(pct) + "</td><td>" + esc(adequate) + "</td>";
                     gb.appendChild(tr);
                 });
                 el("growth-note").textContent = g.recommendation + " " + g.disclaimer;
 
-                el("provenance").textContent = "Engine: " + DATA.meta.engine + " · calculation_version " +
-                    DATA.meta.calculation_version + " · build " + DATA.meta.commit + ". Every figure on this page was produced by that engine — the browser only reads the result.";
+                el("provenance").textContent = "Fixture label: " + DATA.meta.engine + " · calculation_version " +
+                    DATA.meta.calculation_version + ". " + DATA.meta.provenance_note;
                 el("global-disclaimer").textContent = DATA.meta.disclaimer;
             }
 
@@ -321,6 +336,8 @@
                 var decline = DATA.scenario_grid.revenue_decline_pct[ri];
                 el("lbl-days").textContent = days + " days";
                 el("lbl-decline").textContent = decline + "%";
+                el("slider-days").setAttribute("aria-valuetext", days + " days");
+                el("slider-decline").setAttribute("aria-valuetext", decline + "% revenue decline");
                 return { days: days, decline: decline, cell: DATA.scenario_grid.cells[days + "|" + decline] };
             }
 
@@ -328,23 +345,26 @@
                 var ccy = DATA.sme.currency;
                 var s = currentCell();
                 var c = s.cell;
-                el("out-uncovered").textContent = fmt(ccy, c.headline_uncovered) + (c.headline_family ? " (" + c.headline_family.replace(/_/g, " ") + ")" : "");
-                el("out-total").textContent = fmt(ccy, c.total_uncovered);
+                el("out-uncovered").textContent = fmt(ccy, c.headline_residual_impact_under_payout_assumption) + (c.headline_family ? " (" + c.headline_family.replace(/_/g, " ") + ")" : "");
+                el("out-total").textContent = fmt(ccy, c.scenario_impact_sum_under_payout_assumptions);
                 var rb = c.runway_before_months == null ? "—" : c.runway_before_months + " mo";
                 var ra = c.runway_after_months == null ? "—" : c.runway_after_months + " mo";
                 el("out-runway").textContent = rb + " → " + ra;
                 el("out-gap").textContent = (c.cash_gap_date_before || "—") + " → " + (c.cash_gap_date_after || "—");
 
-                // Coverage matrix from base assessment, but recompute uncovered from grid for the moved families
+                // This table is the fixed base assessment. The selected cell has no per-family rows.
                 var body = el("gap-table").querySelector("tbody");
                 body.innerHTML = "";
                 DATA.base_assessment.risk_categories.forEach(function (r) {
                     var limit = r.policy_limit != null ? fmt(ccy, r.policy_limit) : (r.sub_limit != null ? fmt(ccy, r.sub_limit) + " (sub-limit)" : "—");
-                    var uncovered = r.uncovered_range ? (fmt(ccy, r.uncovered_range[0]) + "–" + fmt(ccy, r.uncovered_range[1])) : fmt(ccy, r.estimated_uncovered);
+                    var needsReview = r.status === "no_matching_coverage";
+                    var uncovered = needsReview
+                        ? "Requires policy review"
+                        : (r.uncovered_range ? (fmt(ccy, r.uncovered_range[0]) + "–" + fmt(ccy, r.uncovered_range[1])) : fmt(ccy, r.estimated_uncovered));
                     var tr = document.createElement("tr");
-                    tr.innerHTML = "<td>" + r.family.replace(/_/g, " ") + "</td><td>" + statusPill(r.status) +
-                        "</td><td class='num'>" + fmt(ccy, r.gross_impact) + "</td><td class='num'>" + limit +
-                        "</td><td class='num'>" + fmt(ccy, r.covered_amount) + "</td><td class='num'>" + uncovered + "</td>";
+                    tr.innerHTML = "<td>" + esc(r.family.replace(/_/g, " ")) + "</td><td>" + statusPill(r.status) +
+                        "</td><td class='num'>" + esc(fmt(ccy, r.gross_impact)) + "</td><td class='num'>" + esc(limit) +
+                        "</td><td class='num'>" + esc(needsReview ? "Unknown" : fmt(ccy, r.covered_amount)) + "</td><td class='num'>" + esc(uncovered) + "</td>";
                     body.appendChild(tr);
                 });
             }
@@ -352,18 +372,25 @@
             function renderReport() {
                 var ccy = DATA.sme.currency;
                 var s = currentCell();
+                var c = s.cell;
                 var b = DATA.base_assessment;
                 var rows = b.risk_categories.map(function (r) {
-                    return "<tr><td>" + r.family.replace(/_/g, " ") + "</td><td>" + (r.status || "").replace(/_/g, " ") +
-                        "</td><td>" + fmt(ccy, r.gross_impact) + "</td><td>" + fmt(ccy, r.estimated_uncovered) + "</td></tr>";
+                    var uncovered = r.status === "no_matching_coverage" ? "Requires policy review" : fmt(ccy, r.estimated_uncovered);
+                    var status = r.status === "no_matching_coverage" ? "no matching text found - review" : (r.status || "").replace(/_/g, " ");
+                    return "<tr><td>" + esc(r.family.replace(/_/g, " ")) + "</td><td>" + esc(status) +
+                        "</td><td>" + esc(fmt(ccy, r.gross_impact)) + "</td><td>" + esc(uncovered) + "</td></tr>";
                 }).join("");
                 el("report-body").innerHTML =
                     "<h3>SME Risk &amp; Protection Readiness Report (synthetic preview)</h3>" +
-                    "<p><strong>" + DATA.sme.name + "</strong> · " + DATA.sme.country + " · " + ccy + "</p>" +
-                    "<p>Overall protection readiness: <strong>" + (b.overall_score == null ? "—" : b.overall_score) + "/100 (" + (b.score_band || "") + ")</strong></p>" +
-                    "<h4>Coverage-gap register</h4>" +
-                    "<table><thead><tr><th>Risk</th><th>Status</th><th>Modelled impact</th><th>Uncovered</th></tr></thead><tbody>" + rows + "</tbody></table>" +
-                    "<p style='margin-top:10px'><em>Assumptions:</em> conservative fixed-cost proxy; contribution margin from profit margin; interruption length is a user-selected scenario. Every figure is indicative decision-support, not a coverage determination — verify with a licensed broker or insurer.</p>";
+                    "<p><strong>" + esc(DATA.sme.name) + "</strong> · " + esc(DATA.sme.country) + " · " + esc(ccy) + "</p>" +
+                    "<p><strong>Selected stored scenario:</strong> " + esc(s.days) + " days, " + esc(s.decline) + "% revenue decline. Impact under the fixture's payout assumption: " +
+                    esc(fmt(ccy, c.headline_residual_impact_under_payout_assumption)) + " (" + esc((c.headline_family || "").replace(/_/g, " ")) + "). Runway " +
+                    esc(c.runway_before_months) + " to " + esc(c.runway_after_months) + " months; cash-gap date " +
+                    esc(c.cash_gap_date_before || "—") + " to " + esc(c.cash_gap_date_after || "—") + ".</p>" +
+                    "<p>The prototype readiness score is intentionally omitted pending independent methodology review.</p>" +
+                    "<h4>Fixed baseline coverage-gap register (10 days / 0%)</h4>" +
+                    "<div role='region' aria-label='Baseline report coverage table' tabindex='0' class='scrollx'><table><thead><tr><th>Risk</th><th>Status</th><th>Modelled impact</th><th>Uncovered</th></tr></thead><tbody>" + rows + "</tbody></table></div>" +
+                    "<p style='margin-top:10px'><em>Assumptions:</em> conservative fixed-cost proxy; contribution margin from the synthetic fixture; interruption length is user selected; zero payout where matching policy text was not found. Covered and uncovered amounts for those families remain unknown. The arithmetic sum combines separate illustrative scenarios. This is indicative decision-support, not a coverage determination; verify with a qualified professional.</p>";
                 el("report-section").classList.remove("hidden");
                 el("report-section").scrollIntoView({ behavior: "smooth" });
             }

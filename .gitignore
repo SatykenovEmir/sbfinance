@@ -6,3 +6,8 @@
 *.pptx
 *.docx
 *.pdf
+
+# Local test dependencies and browser artifacts.
+node_modules/
+test-results/
+playwright-report/

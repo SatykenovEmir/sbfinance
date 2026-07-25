@@ -1,9 +1,7 @@
-name: SEO checks
+name: Site checks
 
-# Lightweight, zero-dependency SEO sanity checks for the static landing site.
-# Runs independently of the deploy workflow, so a red check never blocks a deploy
-# — it just surfaces SEO regressions (missing title, broken JSON-LD, FAQ schema
-# drifting from visible content, un-deployed assets) on push and PR.
+# Static SEO/content checks plus Chromium routing, responsive, form, and
+# accessibility coverage for the public landing site.
 
 on:
   push:
@@ -12,17 +10,29 @@ on:
   pull_request:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   seo-check:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: '20'
+          cache: npm
 
-      - name: Run SEO checks
-        run: node scripts/seo-check.mjs
+      - name: Install test dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run site checks
+        run: npm test

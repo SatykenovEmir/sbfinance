@@ -1,7 +1,7 @@
 {
-  "name": "SBFinance — Local-First AI-CFO for Small Businesses",
+  "name": "SBFinance - SME Financial Risk & Protection Intelligence",
   "short_name": "SBFinance",
-  "description": "Local-first AI-CFO for small businesses: cash-gap forecasts, financial leak detection, dashboards and executive reports from CSV/XLSX, computed locally with deterministic math.",
+  "description": "Homepage for early-stage local-first financial analysis software and a synthetic SME protection-gap prototype.",
   "start_url": "/",
   "scope": "/",
   "display": "browser",
