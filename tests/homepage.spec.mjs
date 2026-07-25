@@ -122,7 +122,8 @@ test('pilot form retains native required-field validation without JavaScript', a
   const page = await context.newPage();
   await page.goto('/#pilot', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('#pilot-form')).not.toHaveAttribute('novalidate', '');
-  await page.locator('#pilot-submit').click();
+  const valid = await page.locator('#pilot-form').evaluate((form) => form.reportValidity());
+  expect(valid).toBe(false);
   await expect(page.locator('#pilot-name')).toBeFocused();
   await expect(page).toHaveURL(/\/#pilot$/);
   await context.close();
