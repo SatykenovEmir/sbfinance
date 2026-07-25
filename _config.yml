@@ -1,0 +1,9 @@
+exclude:
+  - docs
+  - node_modules
+  - package-lock.json
+  - package.json
+  - playwright.config.mjs
+  - scripts
+  - test-results
+  - tests

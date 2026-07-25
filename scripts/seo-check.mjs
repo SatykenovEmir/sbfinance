@@ -287,6 +287,10 @@ for (const f of ['index.html', 'robots.txt', 'sitemap.xml', 'site.webmanifest', 
 for (const d of ['protection-gap', 'sample-protection-report', 'privacy', 'terms']) {
   check(wf.includes(d), `deploy workflow copies ${d}/ directory`);
 }
+const pagesFallback = read('_config.yml');
+for (const excluded of ['docs', 'package-lock.json', 'package.json', 'playwright.config.mjs', 'scripts', 'tests']) {
+  check(pagesFallback.includes(`- ${excluded}`), `legacy Pages fallback excludes ${excluded}`);
+}
 
 // --- summary ----------------------------------------------------------------
 console.log(`\n${'-'.repeat(48)}`);
